@@ -18,7 +18,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>VueWiki</title>
+    <title>TANIGUCHI Masaya</title>
     <style>
         @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css';
         @import 'https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css';
@@ -32,9 +32,6 @@
         }
         .table-of-contents {
             float: right;
-            border: solid 1px #888888;
-            padding-top: 15px;
-            padding-right: 25px;
         }
     </style>
     <script type="module">
@@ -52,6 +49,7 @@
             .use(MarkdownItAnchor)
             .use(MarkdownItTableOfContents, {
                 includeLevel: [2, 3],
+                containerClass: 'table-of-contents card card-body w-25',
                 slugify(s) {
                     return location.hash.replace(/^#(\/.*?\/).*$/, '$1')
                         + encodeURIComponent(String(s).trim().toLowerCase().replace(/\s+/g, '-'))
@@ -88,7 +86,7 @@
     <div id="app">
         <b-navbar toggleable="md" type="dark" variant="info">
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand href="#">VueWiki</b-navbar-brand>
+            <b-navbar-brand href="#">TANIGUCHIMasaya</b-navbar-brand>
             <b-collapse is-nav id="nav_collapse">
                 <b-navbar-nav>
                 </b-navbar-nav>
