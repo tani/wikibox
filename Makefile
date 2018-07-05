@@ -13,4 +13,4 @@ test: clean vuewiki-yeti.html
 	python3 -m http.server
 
 clean:
-	rm -f vuewiki-*.html
+	rm -f docs/vuewiki-*.html

@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         updateContent() {
-            fetch('docs/'+this.$route.params.file)
+            fetch(this.$route.params.file)
                 .then(response=>response.text())
                 .then(text=>Marked(text))
                 .then(html=>{
