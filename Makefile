@@ -9,7 +9,7 @@ vuewiki-%.html:
 
 build: $(patsubst %,vuewiki-%.html,$(shell ls node_modules/bootswatch/dist/))
 
-test: clean vuewiki-default.html
+test: clean vuewiki-yeti.html
 	python3 -m http.server
 
 clean:
