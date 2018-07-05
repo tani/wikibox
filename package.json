@@ -1,0 +1,55 @@
+{
+  "name": "vuewiki",
+  "version": "0.2.0",
+  "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "make build",
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asciian/vuewiki.git"
+  },
+  "keywords": [
+    "vue",
+    "markdown",
+    "wiki"
+  ],
+  "author": "TANIGUCHI Masaya",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/asciian/vuewiki/issues"
+  },
+  "homepage": "https://github.com/asciian/vuewiki#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "bootswatch": "^4.1.1",
+    "highlight.js": "^9.12.0",
+    "marked": "^0.4.0",
+    "mathjax3": "^3.0.0-beta.1",
+    "vue": "^2.5.16",
+    "vue-async-computed": "^3.3.1",
+    "vue-router": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^0.28.11",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "unlazy-loader": "^0.1.2",
+    "url-loader": "^1.0.1",
+    "vue-loader": "^15.2.4",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-delete-after-emit": "^1.0.5"
+  }
+}

@@ -1,0 +1,15 @@
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+@import "bootswatch";
+@import "~bootstrap-vue/dist/bootstrap-vue";
+.toc-list {
+    padding-left: 1em;
+}
+@for $i from 1 through 5 {
+    .toc-item.toc-h#{$i} {
+        margin-left: #{$i * 1 - 1}em;
+    }
+}
+.Page {
+    margin-top: 30px;
+}
