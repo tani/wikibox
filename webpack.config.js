@@ -7,11 +7,14 @@ const Webpack = require('webpack');
 const Path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.js',
     output: {
         path: Path.resolve(__dirname,'docs'),
         filename: 'bundle.js'
     },
+    cache: true,
+    devtool: 'inline-source-map',
     module:{
         rules: [{
             test: /\.js$/,
@@ -19,6 +22,7 @@ module.exports = {
             use: [{
                 loader: 'babel-loader',
                 options: {
+                    cacheDirectory: true,
                     presets: ['env']
                 }
             }]

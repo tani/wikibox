@@ -1,9 +1,7 @@
-MODE?=production
-
 all: build
 
 vuewiki-%.html:
-	THEME=$(patsubst vuewiki-%.html,%,$@) $(shell npm bin)/webpack --mode=$(MODE)
+	THEME=$(patsubst vuewiki-%.html,%,$@) $(shell npm bin)/webpack
 
 .PHONY: test clean build
 

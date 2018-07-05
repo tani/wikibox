@@ -17,6 +17,7 @@
 import Marked from 'marked';
 import HighlightJS from 'highlight.js';
 import MathJaxTypeset from './MathJaxTypeset';
+import 'highlight.js/styles/solarized-light.css';
 
 Marked.setOptions({
     highlight(code) {
