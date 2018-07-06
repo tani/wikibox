@@ -30,17 +30,14 @@ import 'mathjax3/mathjax3/input/tex/boldsymbol/BoldsymbolConfiguration.js';
 
 RegisterHTMLHandler(browserAdaptor());
 
-export default function MathJaxTypeset() {
+const tex = new TeX({ packages: ['base', 'ams', 'noundefined', 'newcommand', 'boldsymbol'], processEnvironments: true });
+
+const chtml = new CHTML({ fontURL: 'https://cdn.rawgit.com/mathjax/mathjax-v3/3.0.0-beta.1/mathjax2/css' });
+
+export default function MathJaxTypeset(...elements) {
     MathJax
-        .document(window.document, {
-            InputJax: new TeX({
-                packages: ['base', 'ams', 'noundefined', 'newcommand', 'boldsymbol'],
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$','$$'], ['\\[','\\]']]
-            }),
-            OutputJax: new CHTML({ fontURL: 'https://cdn.rawgit.com/mathjax/mathjax-v3/3.0.0-beta.1/mathjax2/css' })
-        })
-        .findMath()
+        .document(window.document, { InputJax: tex, OutputJax: chtml })
+        .findMath({elements})
         .compile()
         .getMetrics()
         .typeset()

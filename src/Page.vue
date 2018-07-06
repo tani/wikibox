@@ -54,24 +54,22 @@ export default {
     methods: {
         updateContent(filePath) {
             fetch(filePath)
-                .then(response=>response.text())
-                .then(text=>Marked(text.replace(/\\([\[\]()])/g,'\\\\$1')))
-                .then(html=>{
-                    this.content = html;
-                    let toc = '<ul class="toc-list">';
+                .then(response=>{
+                    return response.text()
+                }).then(text=>{
                     const div = window.document.createElement('div');
-                    div.innerHTML = html;
-                    div.querySelectorAll('h1,h2,h3,h4,h5').forEach(h=>{
-                        toc += `
-                            <li class='toc-item toc-${h.tagName.toLowerCase()}'>
-                                <a href="#/${filePath}/${h.id}">
-                                ${h.innerHTML}
-                                </a>
-                            </li>
-                        `;
-                    });
-                    toc += '</ul>';
-                    this.toc = toc;
+                    div.innerHTML = text.replace(/</,'&lt;').replace(/>/,'&gt;');
+                    MathJaxTypeset(div);
+                    return div.innerHTML.replace(/&lt;/,'<').replace(/&gt;/,'>');
+                }).then(text=>{
+                    const div = window.document.createElement('div');
+                    div.innerHTML = Marked(text);
+                    this.toc = Array
+                                .from(div.querySelectorAll('h1,h2,h3,h4,h5'))
+                                .map(h=>`<li class='toc-item toc-${h.tagName.toLowerCase()}'><a href="#/${filePath}/${h.id}">${h.innerHTML}</a></li>`)
+                                .concat('</ul>')
+                                .reduce((ul, li)=>ul+li,'<ul class="toc-list">');
+                    this.content = div.innerHTML;
                 });
         }
     },
@@ -80,11 +78,8 @@ export default {
              this.updateContent(this.$route.params.file);
         }
     },
-    mounted(){
+    mounted () {
         this.updateContent(this.$route.params.file);
-    },
-    updated(){
-        MathJaxTypeset();
     }
 };
 </script>
