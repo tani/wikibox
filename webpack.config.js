@@ -65,6 +65,9 @@ module.exports = {
         ),
         new WebpackDeleteAfterEmit({
             globs: ['bundle.js']
+        }),
+        new Webpack.DefinePlugin({
+            THEME: process.env.THEME
         })
     ]
 }

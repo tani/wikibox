@@ -8,7 +8,7 @@ docs/vuewiki-%.html:
 build: $(patsubst %,docs/vuewiki-%.html,$(shell ls node_modules/bootswatch/dist/))
 	cp docs/vuewiki-yeti.html docs/index.html
 
-test: clean vuewiki-yeti.html
+test: clean docs/vuewiki-yeti.html
 	python3 -m http.server
 
 clean:
