@@ -7,7 +7,7 @@ const Webpack = require('webpack');
 const Path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.js',
     output: {
         path: Path.resolve(__dirname,'docs'),
