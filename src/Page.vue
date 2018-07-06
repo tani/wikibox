@@ -21,12 +21,12 @@
 <template>
     <b-container class="Page">
         <b-row>
-            <b-col md="3" lg="2" class="d-none d-md-block">
+            <b-col md="4" lg="2" class="d-none d-md-block">
                 <b-card>
                     <div v-html="toc"></div>
                 </b-card>
             </b-col>
-            <b-col md="9" lg="10">
+            <b-col md="8" lg="10">
                 <div v-html="content"></div>
             </b-col>
         </b-row>
