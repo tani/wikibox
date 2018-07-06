@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - 10
 script:
-  - npm build
+  - npm run build
 deploy:
   provider: pages
   local-dir: ./docs/
