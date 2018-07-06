@@ -21,12 +21,12 @@
 <template>
     <b-container class="Page">
         <b-row>
-            <b-col md="4" lg="2" class="d-none d-md-block">
+            <b-col md="4" lg="3" class="d-none d-md-block">
                 <b-card>
                     <div v-html="toc"></div>
                 </b-card>
             </b-col>
-            <b-col md="8" lg="10">
+            <b-col md="8" lg="9">
                 <div v-html="content"></div>
             </b-col>
         </b-row>
@@ -55,7 +55,7 @@ export default {
         updateContent(filePath) {
             fetch(filePath)
                 .then(response=>response.text())
-                .then(text=>Marked(text))
+                .then(text=>Marked(text.replace(/\\([\[\]()])/g,'\\\\$1')))
                 .then(html=>{
                     this.content = html;
                     let toc = '<ul class="toc-list">';

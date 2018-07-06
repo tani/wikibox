@@ -33,7 +33,7 @@ const routes = [
 ];
 
 const scrollBehavior = (to) => {
-    return { selector: to.params.anchor }
+    return { selector: '#'+to.params.anchor }
 };
 
 const router = new VueRouter({ routes, scrollBehavior });
