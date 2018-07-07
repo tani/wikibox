@@ -21,38 +21,37 @@
 <template>
     <b-container class="Page">
         <b-row>
-            <b-col md="4" lg="3" class="d-none d-md-block">
-                <b-card>
-                    <div v-html="toc"></div>
-                </b-card>
+            <b-col md="3" class="position-relative" ref="parent">
+                <b-list-group class="position-fixed" ref="child">
+                    <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
+                        {{ h.text }}
+                    </b-list-group-item>
+                </b-list-group>
             </b-col>
-            <b-col md="8" lg="9">
-                <div v-html="content"></div>
+            <b-col md="9" class="offset-lg-3 offset-md-4">
+                <div v-html="content" class="content"></div>
             </b-col>
         </b-row>
     </b-container>
 </template>
 <style>
 .Page {
-    margin-top: 30px;
-}
-.toc-list {
-    padding-left: 1em;
+    padding-top: 80px;
 }
 .toc-item.toc-h1 {
-    margin-left: 1em;
+    padding-left: 1em;
 }
 .toc-item.toc-h2 {
-    margin-left: 2em;
+    padding-left: 2em;
 }
 .toc-item.toc-h3 {
-    margin-left: 3em;
+    padding-left: 3em;
 }
 .toc-item.toc-h4 {
-    margin-left: 4em;
+    padding-left: 4em;
 }
 .toc-item.toc-h5 {
-    margin-left: 5em;
+    padding-left: 5em;
 }
 </style>
 <script>
@@ -71,7 +70,7 @@ export default {
     data() {
         return { 
             content: '',
-            toc: ''
+            toc: []
         }
     },
     methods: {
@@ -80,6 +79,7 @@ export default {
                 .then(response=>{
                     return response.text()
                 }).then(text=>{
+                    // Markdown + TeX syntax -> Markdown + CommonHTML
                     const div = window.document.createElement('div');
                     div.innerHTML = text.replace(/</mg,'&lt;').replace(/>/mg,'&gt;').replace(/```([^]*?)```/mg, (_, code)=>{
                         return '<pre><code>'+code+'</code></pre>';
@@ -89,13 +89,14 @@ export default {
                         return '```'+code+'```';
                     });
                 }).then(text=>{
+                    // Markdown + CommonHTML -> HTML
                     const div = window.document.createElement('div');
                     div.innerHTML = Marked(text);
-                    this.toc = Array
-                                .from(div.querySelectorAll('h1,h2,h3,h4,h5'))
-                                .map(h=>`<li class='toc-item toc-${h.tagName.toLowerCase()}'><a href="#/${filePath}/${h.id}">${h.innerHTML}</a></li>`)
-                                .concat('</ul>')
-                                .reduce((ul, li)=>ul+li,'<ul class="toc-list">');
+                    this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h=>({
+                        class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
+                        to: `/${filePath}/${h.id}`,
+                        text: h.innerHTML
+                    }));
                     this.content = div.innerHTML;
                 });
         }
@@ -107,6 +108,12 @@ export default {
     },
     mounted () {
         this.updateContent(this.$route.params.file);
+        const style = window.getComputedStyle(this.$refs.parent);
+        this.$refs.child.style.width = this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        window.addEventListener('resize',()=>{
+            const style = window.getComputedStyle(this.$refs.parent);
+            this.$refs.child.style.width = this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        });
     }
 };
 </script>
