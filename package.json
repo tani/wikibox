@@ -4,6 +4,7 @@
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "main": "src/index.js",
   "scripts": {
+    "deploy": "MODE=production webpack --progress",
     "build": "MODE=production parallel-webpack",
     "test": "MODE=development parallel-webpack"
   },
