@@ -75,7 +75,7 @@ module.exports = themes.map(theme=>({
         }),
         new CopyWebpackPlugin([
             { from: 'docs/*.md', to: '[name].[ext]' },
-            { from: 'README.md', to: '[name].[ext]' }
+            { from: 'README.md', to: 'index.md' }
         ])
     ]
 }));
