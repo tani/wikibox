@@ -32,18 +32,41 @@
         </b-row>
     </b-container>
 </template>
-
+<style>
+.Page {
+    margin-top: 30px;
+}
+.toc-list {
+    padding-left: 1em;
+}
+.toc-item.toc-h1 {
+    margin-left: 1em;
+}
+.toc-item.toc-h2 {
+    margin-left: 2em;
+}
+.toc-item.toc-h3 {
+    margin-left: 3em;
+}
+.toc-item.toc-h4 {
+    margin-left: 4em;
+}
+.toc-item.toc-h5 {
+    margin-left: 5em;
+}
+</style>
 <script>
 import Marked from 'marked';
 import HighlightJS from 'highlight.js';
-import MathJaxTypeset from './MathJaxTypeset';
 import 'highlight.js/styles/solarized-light.css';
+import MathJaxTypeset from './MathJaxTypeset';
 
 Marked.setOptions({
     highlight(code) {
         return HighlightJS.highlightAuto(code).value
     }
 });
+
 export default {
     data() {
         return { 

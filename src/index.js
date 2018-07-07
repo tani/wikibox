@@ -17,12 +17,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-import Vue from 'vue/dist/vue.runtime.esm.js';
+import Vue from 'vue';
 import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue'
 import Page from './Page.vue'
-import './index.scss';
+require('bootswatch/dist/'+THEME+'/bootstrap.css');
 
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
