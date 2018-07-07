@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader').VueLoaderPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const WebpackDeleteAfterEmit = require('webpack-delete-after-emit');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Webpack = require('webpack');
 const Path = require('path');
 
@@ -29,10 +30,13 @@ module.exports = {
         },{
             test: /\.s?css/,
             use: [{
-                loader: 'style-loader'
-            },{
-                loader: 'css-loader'
-            },{
+                loader: MiniCssExtractPlugin.loader
+            }, {
+                loader: 'css-loader',
+                options: {
+                    minimize: true
+                }
+            }, {
                 loader: 'sass-loader',
                 options: {
                     includePaths: [
@@ -40,7 +44,7 @@ module.exports = {
                     ]
                 }
             }]
-        },{
+        }, {
             test: /\.vue$/,
             use: [{
                 loader: 'vue-loader'
@@ -48,10 +52,13 @@ module.exports = {
         }]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'bundle.css'
+        }),
         new HtmlWebpackPlugin({
             title: 'VueWiki',
             filename: 'vuewiki-'+process.env.THEME+'.html',
-            inlineSource: '\.js$',
+            inlineSource: '\.(js|css)$',
             template: 'src/index.html'
         }),
         new HtmlWebpackInlineSourcePlugin(),
@@ -64,7 +71,7 @@ module.exports = {
             }
         ),
         new WebpackDeleteAfterEmit({
-            globs: ['bundle.js']
+            globs: ['bundle.*']
         }),
         new Webpack.DefinePlugin({
             THEME: process.env.THEME
