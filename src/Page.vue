@@ -81,9 +81,13 @@ export default {
                     return response.text()
                 }).then(text=>{
                     const div = window.document.createElement('div');
-                    div.innerHTML = text.replace(/</,'&lt;').replace(/>/,'&gt;');
+                    div.innerHTML = text.replace(/</mg,'&lt;').replace(/>/mg,'&gt;').replace(/```([^]*?)```/mg, (_, code)=>{
+                        return '<pre><code>'+code+'</code></pre>';
+                    });
                     MathJaxTypeset(div);
-                    return div.innerHTML.replace(/&lt;/,'<').replace(/&gt;/,'>');
+                    return div.innerHTML.replace(/&lt;/mg,'<').replace(/&gt;/mg,'>').replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code)=>{
+                        return '```'+code+'```';
+                    });
                 }).then(text=>{
                     const div = window.document.createElement('div');
                     div.innerHTML = Marked(text);
