@@ -15,7 +15,7 @@ const themes = Filehound
                 .map(dirname=>dirname.replace(/.*\//,''));
 
 module.exports = themes.map(theme=>({
-    mode: 'none',
+    mode: process.env.MODE,
     entry: './src/index.js',
     output: {
         path: Path.resolve(__dirname,'docs',theme),

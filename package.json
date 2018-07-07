@@ -4,8 +4,8 @@
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "test": "webpack-serve"
+    "build": "MODE=production parallel-webpack",
+    "test": "MODE=development parallel-webpack"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
+    "parallel-webpack": "^2.3.0",
     "style-loader": "^0.21.0",
     "vue-loader": "^15.2.4",
     "vue-template-compiler": "^2.5.16",
