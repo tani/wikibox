@@ -1,4 +1,4 @@
-# VueWiki
+# VueWiki [![Build Status](https://travis-ci.org/asciian/vuewiki.svg?branch=master)](https://travis-ci.org/asciian/vuewiki)
 
 VueWiki works on the client which means the browser, and it is extendable because of powered by Vue ecosystem.
 To start your wiki, just put some markdown into the same folder. Then you can access the document like `https://veuwiki.js.org/#/example.md`

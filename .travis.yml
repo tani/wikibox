@@ -7,7 +7,7 @@ script:
   - $(npm bin)/webpack --config-name=cyborg --mode=production
   - $(npm bin)/webpack --config-name=darkly --mode=production
   - $(npm bin)/webpack --config-name=flatly --mode=production
-  - $(npm bin)/webpack --config-name=journalv --mode=production
+  - $(npm bin)/webpack --config-name=journal --mode=production
   - $(npm bin)/webpack --config-name=litera --mode=production
   - $(npm bin)/webpack --config-name=lumen --mode=production
   - $(npm bin)/webpack --config-name=lux --mode=production
