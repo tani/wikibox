@@ -60,15 +60,8 @@
 }
 </style>
 <script>
-import Marked from 'marked';
-import HighlightJS from 'highlight.js';
-import MathJaxTypeset from './MathJaxTypeset';
-
-Marked.setOptions({
-    highlight(code) {
-        return HighlightJS.highlightAuto(code).value
-    }
-});
+import renderMarkdown from './render';
+import handleResponse from './handleResponse';
 
 export default {
     data() {
@@ -91,20 +84,10 @@ export default {
         },
         updateContent(filePath) {
             fetch(filePath)
-                .then(response=>{
-                    return response.text()
-                }).then(markdown=>{
-                    const div = window.document.createElement('div');
-                    div.innerHTML = markdown.replace(/</mg,'&lt;').replace(/>/mg,'&gt;').replace(/```([^]*?)```/mg, (_, code)=>{
-                        return '<pre><code>'+code+'</code></pre>';
-                    });
-                    MathJaxTypeset(div);
-                    const markdownAndCommoHTML = div.innerHTML.replace(/&lt;/mg,'<').replace(/&gt;/mg,'>').replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code)=>{
-                        return '```'+code+'```';
-                    });
-                    this.content = Marked(markdownAndCommoHTML);
-                    this.updateTableOfContent(filePath);
-                });
+                .then(response=>{ return handleResponse(response); })
+                .then(markdown=>{ this.content = renderMarkdown(markdown); })
+                .then(()=>{ this.updateTableOfContent(filePath); })
+                .catch(reason=>{ console.log(reason) });
         }
     },
     watch: {

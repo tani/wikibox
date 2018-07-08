@@ -34,7 +34,7 @@ const tex = new TeX({ packages: ['base', 'ams', 'noundefined', 'newcommand', 'bo
 
 const chtml = new CHTML({ fontURL: 'https://cdn.rawgit.com/mathjax/mathjax-v3/3.0.0-beta.1/mathjax2/css' });
 
-export default function MathJaxTypeset(...elements) {
+export default (...elements) => {
     MathJax
         .document(window.document, { InputJax: tex, OutputJax: chtml })
         .findMath({elements})
