@@ -22,6 +22,7 @@ import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue'
 import Page from './Page.vue'
+require('highlight.js/styles/solarized-light.css');
 require('bootswatch/dist/'+THEME+'/bootstrap.css');
 
 Vue.use(BootstrapVue);

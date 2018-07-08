@@ -62,7 +62,6 @@
 <script>
 import Marked from 'marked';
 import HighlightJS from 'highlight.js';
-import 'highlight.js/styles/solarized-light.css';
 import MathJaxTypeset from './MathJaxTypeset';
 
 Marked.setOptions({
