@@ -21,14 +21,14 @@
 <template>
     <b-container class="Page">
         <b-row>
-            <b-col md="3" class="position-relative" ref="parent">
-                <b-list-group class="position-fixed" ref="child">
+            <b-col md="3" ref="parent">
+                <b-list-group class="toc-list" ref="child">
                     <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
-                        {{ h.text }}
+                        <span v-html="h.html"></span>
                     </b-list-group-item>
                 </b-list-group>
             </b-col>
-            <b-col md="9" class="offset-lg-3 offset-md-4">
+            <b-col md="9" class="offset-md-3">
                 <div v-html="content" class="content"></div>
             </b-col>
         </b-row>
@@ -37,6 +37,11 @@
 <style>
 .Page {
     padding-top: 80px;
+}
+@media (min-width: 768px) {
+    .toc-list {
+        position: fixed;
+    }
 }
 .toc-item.toc-h1 {
     padding-left: 1em;
@@ -74,30 +79,32 @@ export default {
         }
     },
     methods: {
+        updateTableOfContent(filePath) {
+            const div = window.document.createElement('div');
+            div.innerHTML = this.content;
+            this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h=>({
+                class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
+                to: `/${filePath}/${h.id}`,
+                html: h.innerHTML
+            }));
+            const style = window.getComputedStyle(this.$refs.parent);
+            this.$refs.child.style.width = (this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)) +'px';
+        },
         updateContent(filePath) {
             fetch(filePath)
                 .then(response=>{
                     return response.text()
-                }).then(text=>{
-                    // Markdown + TeX syntax -> Markdown + CommonHTML
+                }).then(markdown=>{
                     const div = window.document.createElement('div');
-                    div.innerHTML = text.replace(/</mg,'&lt;').replace(/>/mg,'&gt;').replace(/```([^]*?)```/mg, (_, code)=>{
+                    div.innerHTML = markdown.replace(/</mg,'&lt;').replace(/>/mg,'&gt;').replace(/```([^]*?)```/mg, (_, code)=>{
                         return '<pre><code>'+code+'</code></pre>';
                     });
                     MathJaxTypeset(div);
-                    return div.innerHTML.replace(/&lt;/mg,'<').replace(/&gt;/mg,'>').replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code)=>{
+                    const markdownAndCommoHTML = div.innerHTML.replace(/&lt;/mg,'<').replace(/&gt;/mg,'>').replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code)=>{
                         return '```'+code+'```';
                     });
-                }).then(text=>{
-                    // Markdown + CommonHTML -> HTML
-                    const div = window.document.createElement('div');
-                    div.innerHTML = Marked(text);
-                    this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h=>({
-                        class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
-                        to: `/${filePath}/${h.id}`,
-                        text: h.innerHTML
-                    }));
-                    this.content = div.innerHTML;
+                    this.content = Marked(markdownAndCommoHTML);
+                    this.updateTableOfContent(filePath);
                 });
         }
     },
@@ -108,11 +115,8 @@ export default {
     },
     mounted () {
         this.updateContent(this.$route.params.file);
-        const style = window.getComputedStyle(this.$refs.parent);
-        this.$refs.child.style.width = this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
         window.addEventListener('resize',()=>{
-            const style = window.getComputedStyle(this.$refs.parent);
-            this.$refs.child.style.width = this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+            this.updateTableOfContent(this.$route.params.file);
         });
     }
 };
