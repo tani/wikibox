@@ -1,7 +1,6 @@
 export default (response) => {
-    if (response.ok) {
-        return response.text();
-    } else {
-        throw Error(response.statusText);
-    }
-}
+  if (response.ok) {
+    return response.text();
+  }
+  throw Error(response.statusText);
+};

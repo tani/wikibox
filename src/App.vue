@@ -1,6 +1,6 @@
 <!--
                                 VueWiki
-    ==================================================================== 
+    ====================================================================
     - Homepage https://github.com/asciian/vuewiki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
@@ -34,12 +34,13 @@
 
 <script>
 import Footer from './Footer.vue';
+
 export default {
-    components: { Footer },
-    data() {
-        return {
-            title: window.document.querySelector('title').innerHTML
-        };
-    }
-}
+  components: { Footer },
+  data() {
+    return {
+      title: window.document.querySelector('title').innerHTML,
+    };
+  },
+};
 </script>

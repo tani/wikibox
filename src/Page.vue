@@ -1,6 +1,6 @@
 <!--
                                 VueWiki
-    ==================================================================== 
+    ====================================================================
     - Homepage https://github.com/asciian/vuewiki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
@@ -64,42 +64,42 @@ import renderMarkdown from './render';
 import handleResponse from './handleResponse';
 
 export default {
-    data() {
-        return { 
-            content: '',
-            toc: []
-        }
+  data() {
+    return {
+      content: '',
+      toc: [],
+    };
+  },
+  methods: {
+    updateTableOfContent(filePath) {
+      const div = window.document.createElement('div');
+      div.innerHTML = this.content;
+      this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h => ({
+        class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
+        to: `/${filePath}/${h.id}`,
+        html: h.innerHTML,
+      }));
+      const style = window.getComputedStyle(this.$refs.parent);
+      this.$refs.child.style.width = `${this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)}px`;
     },
-    methods: {
-        updateTableOfContent(filePath) {
-            const div = window.document.createElement('div');
-            div.innerHTML = this.content;
-            this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h=>({
-                class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
-                to: `/${filePath}/${h.id}`,
-                html: h.innerHTML
-            }));
-            const style = window.getComputedStyle(this.$refs.parent);
-            this.$refs.child.style.width = (this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)) +'px';
-        },
-        updateContent(filePath) {
-            fetch(filePath)
-                .then(response=>{ return handleResponse(response); })
-                .then(markdown=>{ this.content = renderMarkdown(markdown); })
-                .then(()=>{ this.updateTableOfContent(filePath); })
-                .catch(reason=>{ console.log(reason) });
-        }
+    updateContent(filePath) {
+      fetch(filePath)
+        .then(response => handleResponse(response))
+        .then((markdown) => { this.content = renderMarkdown(markdown); })
+        .then(() => { this.updateTableOfContent(filePath); })
+        .catch((/* reason */) => { /* console.log(reason); */ });
     },
-    watch: {
-        '$route' () {
-             this.updateContent(this.$route.params.file);
-        }
+  },
+  watch: {
+    $route() {
+      this.updateContent(this.$route.params.file);
     },
-    mounted () {
-        this.updateContent(this.$route.params.file);
-        window.addEventListener('resize',()=>{
-            this.updateTableOfContent(this.$route.params.file);
-        });
-    }
+  },
+  mounted() {
+    this.updateContent(this.$route.params.file);
+    window.addEventListener('resize', () => {
+      this.updateTableOfContent(this.$route.params.file);
+    });
+  },
 };
 </script>

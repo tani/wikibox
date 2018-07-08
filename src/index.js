@@ -1,6 +1,6 @@
 /*
                                 VueWiki
-    ==================================================================== 
+    ====================================================================
     - Homepage https://github.com/asciian/vuewiki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
@@ -20,28 +20,31 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
-import App from './App.vue'
-import Page from './Page.vue'
+import App from './App.vue';
+import Page from './Page.vue';
+
 require('highlight.js/styles/solarized-light.css');
-require('bootswatch/dist/'+THEME+'/bootstrap.css');
+// eslint-disable-next-line import/no-dynamic-require,no-undef
+require(`bootswatch/dist/${THEME}/bootstrap.css`);
 
 Vue.use(BootstrapVue);
+
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/:file/:anchor?', component: Page },
-    { path: '/', redirect: '/index.md/' }
+  { path: '/:file/:anchor?', component: Page },
+  { path: '/', redirect: '/index.md/' },
 ];
 
-const scrollBehavior = (to) => {
-    return { selector: '#'+to.params.anchor }
-};
+const scrollBehavior = to => ({ selector: `#${to.params.anchor}` });
 
 const router = new VueRouter({ routes, scrollBehavior });
+
 const app = new Vue({
-    router,
-    el: '#app',
-    render(createElement) {
-        return createElement(App);
-    }
-})
+  router,
+  render(createElement) {
+    return createElement(App);
+  },
+});
+
+app.$mount('#app');

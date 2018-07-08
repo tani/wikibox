@@ -7,22 +7,23 @@
 <script>
 import render from './render';
 import handleResponse from './handleResponse';
+
 export default {
-    data() {
-        return {
-            content: ''
-        }
+  data() {
+    return {
+      content: '',
+    };
+  },
+  methods: {
+    updateContent(filePath) {
+      fetch(filePath)
+        .then(response => handleResponse(response))
+        .then((markdown) => { this.content = render(markdown); })
+        .catch((/* reason */) => { /* console.log(reason); */ });
     },
-    methods: {
-        updateContent(filePath) {
-            fetch(filePath)
-                .then(response=>{ return handleResponse(response); })
-                .then(markdown=>{ this.content = render(markdown); })
-                .catch(reason=>{ console.log(rea); });
-        }
-    },
-    mounted() {
-        this.updateContent("_footer.md");
-    }
-}
+  },
+  mounted() {
+    this.updateContent('_footer.md');
+  },
+};
 </script>
