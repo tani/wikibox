@@ -2,7 +2,27 @@ language: node_js
 node_js:
   - 10
 script:
-  - npm run deploy
+  - $(npm bin)/webpack --config-name=cerulean --mode=production
+  - $(npm bin)/webpack --config-name=cosmo --mode=production
+  - $(npm bin)/webpack --config-name=cyborg --mode=production
+  - $(npm bin)/webpack --config-name=darkly --mode=production
+  - $(npm bin)/webpack --config-name=flatly --mode=production
+  - $(npm bin)/webpack --config-name=journalv --mode=production
+  - $(npm bin)/webpack --config-name=litera --mode=production
+  - $(npm bin)/webpack --config-name=lumen --mode=production
+  - $(npm bin)/webpack --config-name=lux --mode=production
+  - $(npm bin)/webpack --config-name=materia --mode=production
+  - $(npm bin)/webpack --config-name=minty --mode=production
+  - $(npm bin)/webpack --config-name=pulse --mode=production
+  - $(npm bin)/webpack --config-name=sandstone --mode=production
+  - $(npm bin)/webpack --config-name=simplex --mode=production
+  - $(npm bin)/webpack --config-name=sketchy --mode=production
+  - $(npm bin)/webpack --config-name=slate --mode=production
+  - $(npm bin)/webpack --config-name=solar --mode=production
+  - $(npm bin)/webpack --config-name=spacelab --mode=production
+  - $(npm bin)/webpack --config-name=superhero --mode=production
+  - $(npm bin)/webpack --config-name=united --mode=production
+  - $(npm bin)/webpack --config-name=yeti --mode=production
 deploy:
   provider: pages
   local-dir: ./docs/
