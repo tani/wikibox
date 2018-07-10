@@ -1,19 +1,27 @@
-# VueWiki [![Build Status](https://travis-ci.org/asciian/vuewiki.svg?branch=master)](https://travis-ci.org/asciian/vuewiki)
+# VueWiki 
+[![Build Status](https://travis-ci.org/asciian/vuewiki.svg?branch=master)](https://travis-ci.org/asciian/vuewiki)
 
-VueWiki works on the client which means the browser, and it is extendable because of powered by Vue ecosystem.
-To start your wiki, just put some markdown into the same folder. Then you can access the document like `https://veuwiki.js.org/#/example.md`
+VueWiki works on the client environment, and it is extendable because of powered by Vue ecosystem.
+VueWiki is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery and Bootstrap 3, and VueWiki modernize it using Vue and Bootstrap 4 to be faster and beautiful. Of course MathJax is also upgraded to version 3.
 
-## Supported features
+## Features
 
-- Mathematics Equation (Mathjax 3)
+- LaTeX Syntax (Mathjax 3)
 - Markdown (Marked)
 - Code Highlight (Highlight.js)
-- Multiple Theme (Bootswatch) - 21 themes are available now.
+- Beautiful Themes (Bootswatch) - 21 themes are available now!
+- Generating Table of Contents
+- Loding Custom CSS
 
-## Installation
+## Quick guide
 
-You can download compiled HTML at [VueWiki Download](https://vuewiki.js.org/yeti/#/download.md/).
-If you want to compile yourself, VueWiki is hosted on GitHub ([asciian/vuewiki](https://github.com/asciian/vuewiki/)).
+### For GitHub Pages
+
+1. Make an account of GitHub and creates your repository named `<username>/<username>.github.io`.
+2. Download precompiled HTML at [VueWiki Download](https://vuewiki.js.org/yeti/#/download.md/). If you want to compile it by yourself, VueWiki is hosted on GitHub ([asciian/vuewiki](https://github.com/asciian/vuewiki/)).
+3. Drag and Drop `index.html` from your _Downloads_ directory to the _Uploads files_ of the repository.
+4. Create `index.md` in your repository with _Create new file_ of the repository.
+5. Enable GitHub Pages in _Settings_ of the repository.
 
 ## Copyright
 
