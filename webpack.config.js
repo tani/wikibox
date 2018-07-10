@@ -50,6 +50,9 @@ module.exports = themes.map(theme => ({
       test: /\.vue$/,
       use: [{
         loader: 'vue-loader',
+        options: {
+          transformAssetUrls: {}
+        }
       }, {
         loader: 'eslint-loader',
       }],

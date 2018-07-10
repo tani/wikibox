@@ -19,14 +19,7 @@
 -->
 <template>
     <div>
-        <b-navbar toggleable="md" variant="primary" fixed="top" class="App">
-            <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand class="text-white" href="#">{{ title }}</b-navbar-brand>
-            <b-collapse is-nav id="nav_collapse">
-                <b-navbar-nav>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
+        <Header></Header>
         <router-view></router-view>
         <Footer></Footer>
     </div>
@@ -34,13 +27,9 @@
 
 <script>
 import Footer from './Footer.vue';
+import Header from './Header.vue';
 
 export default {
-  components: { Footer },
-  data() {
-    return {
-      title: window.document.querySelector('title').innerHTML,
-    };
-  },
+  components: { Footer, Header },
 };
 </script>
