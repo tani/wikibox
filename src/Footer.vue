@@ -34,7 +34,7 @@ export default {
     };
   },
   mounted() {
-    fetch('_footer.md')
+    fetch('footer.md')
       .then(response => handleResponse(response))
       .then((markdown) => { this.content = render(markdown); })
       .catch((/* reason */) => { /* console.log(reason); */ });

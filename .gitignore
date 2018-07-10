@@ -79,4 +79,24 @@ typings/
 
 # End of https://www.gitignore.io/api/node
 
-docs/*/
+docs/journal
+docs/solar
+docs/united
+docs/sketchy
+docs/minty
+docs/litera
+docs/cerulean
+docs/sandstone
+docs/pulse
+docs/slate
+docs/materia
+docs/simplex
+docs/lumen
+docs/flatly
+docs/cosmo
+docs/superhero
+docs/cyborg
+docs/darkly
+docs/lux
+docs/spacelab
+docs/yeti

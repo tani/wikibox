@@ -56,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    fetch('_header.md')
+    fetch('header.md')
       .then(response => handleResponse(response))
       .then(markdown => render(markdown))
       .then((content) => {
