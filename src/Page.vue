@@ -18,25 +18,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <b-container class="Page">
-        <b-row>
-            <b-col md="3" ref="parent">
-                <b-list-group class="toc-list" ref="child">
-                    <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
-                        <span v-html="h.html"></span>
-                    </b-list-group-item>
-                </b-list-group>
-            </b-col>
-            <b-col md="9" class="offset-md-3">
-                <div v-html="content" class="content"></div>
-            </b-col>
-        </b-row>
-    </b-container>
+    <b-row>
+        <b-col md="3" ref="parent">
+            <b-list-group class="toc-list" ref="child">
+                <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
+                    <span v-html="h.html"></span>
+                </b-list-group-item>
+            </b-list-group>
+        </b-col>
+        <b-col md="9" class="offset-md-3">
+            <div v-html="content" class="content"></div>
+        </b-col>
+    </b-row>
 </template>
 <style>
-.Page {
-    padding-top: 80px;
-}
 @media (min-width: 768px) {
     .toc-list {
         position: fixed;

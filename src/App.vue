@@ -18,11 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <div>
-        <Header></Header>
-        <router-view></router-view>
-        <Footer></Footer>
-    </div>
+    <b-container>
+        <header ref="header">
+            <Header></Header>
+        </header>
+        <main ref="main">
+            <router-view></router-view>
+        </main>
+        <footer ref="footer">
+            <Footer></Footer>
+        </footer>
+    </b-container>
 </template>
 
 <script>
@@ -31,5 +37,8 @@ import Header from './Header.vue';
 
 export default {
   components: { Footer, Header },
+  mounted() {
+    this.$refs.main.style.marginTop = `${this.$refs.header.firstElementChild.clientHeight + 20}px`;
+  },
 };
 </script>

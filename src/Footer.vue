@@ -18,10 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <b-container>
-        <footer v-html="content">
-        </footer>
-    </b-container>
+  <b-row>
+    <div v-html="content"></div>
+  </b-row>
 </template>
 <script>
 import render from './render';
