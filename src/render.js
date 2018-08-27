@@ -19,6 +19,7 @@
 */
 import Marked from 'marked';
 import HighlightJS from 'highlight.js';
+import XSS from 'xss';
 import typesetMathJax from './typeset';
 
 Marked.setOptions({
@@ -29,8 +30,30 @@ Marked.setOptions({
 
 export default (markdown) => {
   const div = window.document.createElement('div');
-  div.innerHTML = markdown.replace(/</mg, '&lt;').replace(/>/mg, '&gt;').replace(/```([^]*?)```/mg, (_, code) => `<pre><code>${code}</code></pre>`);
+  div.innerHTML = markdown
+    .replace(/</mg, '&lt;')
+    .replace(/>/mg, '&gt;')
+    .replace(/'/mg, '&quot;')
+    .replace(/"/mg, '&#39;')
+    .replace(/```([^]*?)```/mg, (_, code) => `<pre><code>${code}</code></pre>`);
   typesetMathJax(div);
-  const markdownAndCommoHTML = div.innerHTML.replace(/&lt;/mg, '<').replace(/&gt;/mg, '>').replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code) => `\`\`\`${code}\`\`\``);
-  return Marked(markdownAndCommoHTML);
+  const markdownAndCommonHTML = div.innerHTML
+    .replace(/&lt;/mg, '<')
+    .replace(/&gt;/mg, '>')
+    .replace(/&quot;/mg, '\'')
+    .replace(/&#39;/mg, '"')
+    .replace(/<pre><code>([^]*?)<\/code><\/pre>/, (_, code) => `\`\`\`${code}\`\`\``);
+  return XSS(Marked(markdownAndCommonHTML), {
+    whiteList: Object.assign(XSS.whiteList, {
+      h1: ['id'],
+      h2: ['id'],
+      h3: ['id'],
+      h4: ['id'],
+      h5: ['id'],
+      h6: ['id'],
+    }),
+    onIgnoreTag(tag, html) {
+      return tag.match(/mjx-*/) ? html : null;
+    },
+  });
 };
