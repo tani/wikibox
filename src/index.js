@@ -34,7 +34,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: '', redirect: '/index.md/' },
   { path: '/', redirect: '/index.md/' },
-  { path: '/:file/:anchor?', component: Page },
+  { path: '/(\\w+\\.md)/:anchor?', component: Page },
 ];
 
 const scrollBehavior = to => ({ selector: `#${to.params.anchor}` });

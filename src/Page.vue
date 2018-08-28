@@ -86,13 +86,13 @@ export default {
   },
   watch: {
     $route() {
-      this.updateContent(this.$route.params.file);
+      this.updateContent(this.$route.params[0]);
     },
   },
   mounted() {
-    this.updateContent(this.$route.params.file);
+    this.updateContent(this.$route.params[0]);
     window.addEventListener('resize', () => {
-      this.updateTableOfContent(this.$route.params.file);
+      this.updateTableOfContent(this.$route.params[0]);
     });
   },
 };
