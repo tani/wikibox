@@ -18,7 +18,7 @@ const themes = Filehound
 module.exports = themes.map(theme => ({
   name: theme,
   mode: process.env.MODE,
-  entry: './src/index.js',
+  entry: './src/client/index.js',
   output: {
     path: Path.resolve(__dirname, 'docs', theme),
     filename: 'bundle.js',
@@ -31,7 +31,7 @@ module.exports = themes.map(theme => ({
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          presets: ['env'],
+          presets: ['@babel/preset-env'],
         },
       }, {
         loader: 'eslint-loader',
@@ -63,10 +63,10 @@ module.exports = themes.map(theme => ({
       filename: 'bundle.css',
     }),
     new HtmlWebpackPlugin({
-      title: 'VueWiki',
+      title: 'Rakugaki',
       filename: 'index.html',
       inlineSource: '\.(js|css)$',
-      template: 'src/index.html',
+      template: 'src/client/index.html',
     }),
     new HtmlWebpackInlineSourcePlugin(),
     new VueLoaderPlugin(),
