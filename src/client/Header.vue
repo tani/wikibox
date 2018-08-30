@@ -1,7 +1,7 @@
 <!--
-                                VueWiki
+                                Rakugaki
     ====================================================================
-    - Homepage https://github.com/asciian/vuewiki
+    - Homepage https://github.com/asciian/Rakugaki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <b-navbar toggleable="md" type="dark" variant="primary" fixed="top" class="App">
+    <b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-        <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
+        <b-navbar-brand to="/page/index.md">{{ title }}</b-navbar-brand>
         <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
                 <template v-for="item in navigation">
@@ -45,20 +45,22 @@
 </template>
 
 <script>
-import handleResponse from './handleResponse';
-import render from './render';
+import Remarkable from 'remarkable';
+import RemarkableKaTeX from 'remarkable-katex';
+
+const remarkable = new Remarkable().use(RemarkableKaTeX);
 
 export default {
   data() {
     return {
-      title: 'VueWIki',
+      title: 'Rakugaki',
       navigation: [],
     };
   },
   mounted() {
     fetch('header.md')
-      .then(response => handleResponse(response))
-      .then(markdown => render(markdown))
+      .then(response => response.text())
+      .then(markdown => remarkable.render(markdown))
       .then((content) => {
         const div = window.document.createElement('div');
         div.innerHTML = content;

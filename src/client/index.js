@@ -1,7 +1,7 @@
 /*
-                                VueWiki
+                                Rakugaki
     ====================================================================
-    - Homepage https://github.com/asciian/vuewiki
+    - Homepage https://github.com/asciian/Rakugaki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,10 @@ import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Page from './Page.vue';
+import Edit from './Edit.vue';
+import Create from './Create.vue';
+// import History from './History.vue';
+// import Delete from './Delete.vue';
 
 require('highlight.js/styles/solarized-light.css');
 // eslint-disable-next-line import/no-dynamic-require,no-undef
@@ -32,9 +36,13 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '', redirect: '/index.md/' },
-  { path: '/', redirect: '/index.md/' },
-  { path: '/(\\w+\\.md)/:anchor?', component: Page },
+  { path: '', redirect: '/page/index.md/' },
+  { path: '/', redirect: '/page/index.md/' },
+  { path: '/create/', component: Create },
+  { path: '/edit/:filename(\\w+\\.md)/', component: Edit, props: true },
+  //  { path: '/delete/:filename(\\w+\\.md)/', component: Delete, props: true },
+  //  { path: '/history/:filename(\\w+\\.md)/', component: History, props: true },
+  { path: '/page/:filename(\\w+\\.md)/:anchor?', component: Page, props: true },
 ];
 
 const scrollBehavior = to => ({ selector: `#${to.params.anchor}` });

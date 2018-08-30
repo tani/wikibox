@@ -1,6 +1,6 @@
-# VueWiki
+# Rakugaki
 
-- [Home](#/index.md/)
+- [Home](#/page/index.md/)
 - [User Guide](#/user_guide.md/)
 - [Developer Guide](#/developer_guide.md/)
 - [Themes]()

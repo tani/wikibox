@@ -1,7 +1,7 @@
 <!--
-                                VueWiki
+                                Rakugaki
     ====================================================================
-    - Homepage https://github.com/asciian/vuewiki
+    - Homepage https://github.com/asciian/Rakugaki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,10 @@
   </b-row>
 </template>
 <script>
-import render from './render';
-import handleResponse from './handleResponse';
+import Remarkable from 'remarkable';
+import RemarkableKaTeX from 'remarkable-katex';
+
+const remarkable = new Remarkable().use(RemarkableKaTeX);
 
 export default {
   data() {
@@ -34,9 +36,8 @@ export default {
   },
   mounted() {
     fetch('footer.md')
-      .then(response => handleResponse(response))
-      .then((markdown) => { this.content = render(markdown); })
-      .catch((/* reason */) => { /* console.log(reason); */ });
+      .then(response => response.text())
+      .then((markdown) => { this.content = remarkable.render(markdown); });
   },
 };
 </script>

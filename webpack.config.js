@@ -1,10 +1,7 @@
 const VueLoaderPlugin = require('vue-loader').VueLoaderPlugin;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-const WebpackDeleteAfterEmit = require('webpack-delete-after-emit');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { DefinePlugin, NormalModuleReplacementPlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const Path = require('path');
 const Filehound = require('filehound');
 
@@ -18,10 +15,12 @@ const themes = Filehound
 module.exports = themes.map(theme => ({
   name: theme,
   mode: process.env.MODE,
-  entry: './src/client/index.js',
+  entry: {
+    'bundle': './src/client/index.js',
+  },
   output: {
     path: Path.resolve(__dirname, 'docs', theme),
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
   module: {
     rules: [{
@@ -60,32 +59,17 @@ module.exports = themes.map(theme => ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'bundle.css',
+      filename: '[name].css',
     }),
-    new HtmlWebpackPlugin({
-      title: 'Rakugaki',
-      filename: 'index.html',
-      inlineSource: '\.(js|css)$',
-      template: 'src/client/index.html',
-    }),
-    new HtmlWebpackInlineSourcePlugin(),
     new VueLoaderPlugin(),
-    new NormalModuleReplacementPlugin(
-      /AsyncLoad\.js/,
-      ((resource) => {
-        resource.request = resource.request.replace(/AsyncLoad/, 'AsyncLoad-disabled');
-      }),
-    ),
-    new WebpackDeleteAfterEmit({
-      globs: ['bundle.*'],
-    }),
     new DefinePlugin({
       THEME: JSON.stringify(theme),
     }),
     new CopyWebpackPlugin([
-      { from: 'docs/*.md', to: '[name].[ext]' },
-      { from: 'docs/*.css', to: '[name].[ext]' },
+      { from: 'src/client/resource/*.*', to: '[name].[ext]' },
+      { from: 'src/client/resource/*.*', to: 'standalone/[name].[ext]' },
       { from: 'README.md', to: 'index.md' },
+      { from: 'README.md', to: 'standalone/index.md' },
     ]),
   ],
 }));

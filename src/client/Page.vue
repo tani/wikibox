@@ -1,7 +1,7 @@
 <!--
-                                VueWiki
+                                Rakugaki
     ====================================================================
-    - Homepage https://github.com/asciian/vuewiki
+    - Homepage https://github.com/asciian/Rakugaki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,45 +19,81 @@
 -->
 <template>
     <b-row>
-        <b-col md="3" ref="parent">
-            <b-list-group class="toc-list" ref="child">
-                <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
-                    <span v-html="h.html"></span>
-                </b-list-group-item>
-            </b-list-group>
+        <b-col md="3" order-md="2" class="d-none d-md-block">
+            <div class="sidebar">
+                <b-button-toolbar>
+                    <b-button-group class="mr-2">
+                        <b-button v-on:click="$router.push(`/history/${filename}`)">
+                            History
+                        </b-button>
+                        <b-button v-on:click="$router.push(`/edit/${filename}`)">
+                            Edit
+                        </b-button>
+                        <b-button v-on:click="$router.push(`/delete/${filename}`)">
+                            Delete
+                        </b-button>
+                    </b-button-group>
+                    <b-button-group>
+                        <b-button v-on:click="$router.push(`/create/`)">
+                            Create
+                        </b-button>
+                    </b-button-group>
+                </b-button-toolbar>
+                <b-list-group class="toc-list">
+                    <b-list-group-item v-for="h in toc" :key="h.to" :to="h.to" :class="h.class">
+                        <span v-html="h.html"></span>
+                    </b-list-group-item>
+                </b-list-group>
+            </div>
         </b-col>
-        <b-col md="9" class="offset-md-3">
-            <div v-html="content" class="content"></div>
+        <b-col md="9" order-md="1">
+            <b-card><div v-html="content"></div></b-card>
         </b-col>
     </b-row>
 </template>
 <style>
-@media (min-width: 768px) {
-    .toc-list {
-        position: fixed;
-    }
+.sidebar{
+    position: fixed;
 }
-.toc-item.toc-h1 {
+.toc-list {
+    margin-top: 20px;
+}
+.toc-item-h1 > span {
+    padding-left: 0em;
+}
+.toc-item-h2 > span {
     padding-left: 1em;
 }
-.toc-item.toc-h2 {
+.toc-item-h3 > span {
     padding-left: 2em;
 }
-.toc-item.toc-h3 {
+.toc-item-h4 > span {
     padding-left: 3em;
 }
-.toc-item.toc-h4 {
+.toc-item-h5 > span {
     padding-left: 4em;
 }
-.toc-item.toc-h5 {
+.toc-item-h6 > span {
     padding-left: 5em;
 }
 </style>
 <script>
-import renderMarkdown from './render';
-import handleResponse from './handleResponse';
+import Remarkable from 'remarkable';
+import RemarkableKaTeX from 'remarkable-katex';
+import HighlightJS from 'highlight.js';
+import slugify from 'slugify';
+
+const remarkable = new Remarkable({
+  highlight(str) {
+    return HighlightJS.highlightAuto(str).value;
+  },
+}).use(RemarkableKaTeX).use(({ renderer }) => {
+  // eslint-disable-next-line no-param-reassign
+  renderer.rules.heading_open = (tokens, idx) => `<h${tokens[idx].hLevel} id="${slugify(tokens[idx + 1].content.toLowerCase())}">`;
+});
 
 export default {
+  props: ['filename'],
   data() {
     return {
       content: '',
@@ -65,35 +101,29 @@ export default {
     };
   },
   methods: {
-    updateTableOfContent(filePath) {
-      const div = window.document.createElement('div');
-      div.innerHTML = this.content;
-      this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h => ({
-        class: ['toc-item', `toc-${h.tagName.toLowerCase()}`],
-        to: `/${filePath}/${h.id}`,
-        html: h.innerHTML,
-      }));
-      const style = window.getComputedStyle(this.$refs.parent);
-      this.$refs.child.style.width = `${this.$refs.parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)}px`;
-    },
     updateContent(filePath) {
       fetch(filePath)
-        .then(response => handleResponse(response))
-        .then((markdown) => { this.content = renderMarkdown(markdown); })
-        .then(() => { this.updateTableOfContent(filePath); })
-        .catch((/* reason */) => { /* console.log(reason); */ });
+        .then(response => response.text())
+        .then(markdown => remarkable.render(markdown))
+        .then((html) => {
+          const div = window.document.createElement('div');
+          div.innerHTML = html;
+          this.content = html;
+          this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h => ({
+            class: [`toc-item-${h.tagName.toLowerCase()}`],
+            to: `/page/${filePath}/${h.id}`,
+            html: h.innerHTML,
+          }));
+        });
     },
   },
   watch: {
     $route() {
-      this.updateContent(this.$route.params[0]);
+      this.updateContent(this.filename);
     },
   },
   mounted() {
-    this.updateContent(this.$route.params[0]);
-    window.addEventListener('resize', () => {
-      this.updateTableOfContent(this.$route.params[0]);
-    });
+    this.updateContent(this.filename);
   },
 };
 </script>
