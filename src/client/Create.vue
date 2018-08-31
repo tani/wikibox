@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <template>
-    <b-form>
+    <b-form :action="`/${filename}`" method="POST">
         <b-form-group>
             <b-input-group>
                 <b-input-group-prepend>
@@ -26,11 +26,11 @@
                         <font-awesome-icon icon="file"></font-awesome-icon>
                     </b-input-group-text>
                 </b-input-group-prepend>
-                <b-form-input placeholder="filename.md" pattern="\w+\.md" :required="true"></b-form-input>
+                <b-form-input name="filename" placeholder="filename.md" type="text" pattern="\w+\.md" required></b-form-input>
             </b-input-group>
         </b-form-group>
         <b-form-group>
-            <b-form-textarea max-rows="15" :value="content"></b-form-textarea>
+            <b-form-textarea name="content"></b-form-textarea>
         </b-form-group>
         <b-form-row>
             <b-col md="4">
@@ -40,7 +40,7 @@
                             <font-awesome-icon icon="at"></font-awesome-icon>
                         </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input placeholder="username" :required="true"></b-form-input>
+                    <b-form-input name="username" type="text" placeholder="username" required></b-form-input>
                 </b-input-group>
             </b-col>
             <b-col md="4">
@@ -50,7 +50,7 @@
                             <font-awesome-icon icon="key"></font-awesome-icon>
                         </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input type="password" placeholder="password" :required="true"></b-form-input>
+                    <b-form-input name="password" type="password" placeholder="password" required></b-form-input>
                 </b-input-group>
             </b-col>
             <b-col md="2">
@@ -62,8 +62,6 @@
         </b-form-row>
     </b-form>
 </template>
-<style>
-</style>
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faKey, faAt, faFile } from '@fortawesome/free-solid-svg-icons';
@@ -74,8 +72,8 @@ library.add(faKey, faAt, faFile);
 export default {
   components: { FontAwesomeIcon },
   data() {
-    return {
-      content: '',
+    return { 
+      filename: '',
     };
   },
 };
