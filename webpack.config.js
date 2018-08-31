@@ -8,7 +8,7 @@ module.exports = (env, argv) => ({
   name: argv.theme,
   mode: argv.mode,
   entry: {
-    'bundle': './src/frontend/index.js',
+    'bundle': './src/frontend/index.ts',
   },
   output: {
     path: Path.resolve(__dirname, 'docs', argv.theme),
@@ -16,16 +16,13 @@ module.exports = (env, argv) => ({
   },
   module: {
     rules: [{
-      test: /\.js$/,
+      test: /\.ts$/,
       exclude: /node_modules/,
       use: [{
-        loader: 'babel-loader',
+        loader: 'ts-loader',
         options: {
-          cacheDirectory: true,
-          presets: ['@babel/preset-env'],
+          appendTsSuffixTo: [/\.vue$/],
         },
-      }, {
-        loader: 'eslint-loader',
       }],
     }, {
       test: /\.css/,
@@ -44,8 +41,6 @@ module.exports = (env, argv) => ({
         options: {
           transformAssetUrls: {}
         }
-      }, {
-        loader: 'eslint-loader',
       }],
     }],
   },

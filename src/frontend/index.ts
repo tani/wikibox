@@ -17,8 +17,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, { Route } from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import Page from './Page.vue';
@@ -26,9 +27,9 @@ import Edit from './Edit.vue';
 import Create from './Create.vue';
 // import History from './History.vue';
 // import Delete from './Delete.vue';
-
+declare function require(s: string): any;
+declare var THEME: string;
 require('highlight.js/styles/solarized-light.css');
-// eslint-disable-next-line import/no-dynamic-require,no-undef
 require(`bootswatch/dist/${THEME}/bootstrap.css`);
 
 Vue.use(BootstrapVue);
@@ -45,7 +46,7 @@ const routes = [
   { path: '/page/:filename(\\w+\\.md)/:anchor?', component: Page, props: true },
 ];
 
-const scrollBehavior = to => ({ selector: `#${to.params.anchor}` });
+const scrollBehavior = (to: Route) => ({ selector: `#${to.params.anchor}` });
 
 const router = new VueRouter({ routes, scrollBehavior });
 

@@ -31,16 +31,21 @@
     </b-container>
 </template>
 <style>
-    html, body { margin: 0; }
+html,
+body {
+  margin: 0;
+}
 </style>
-<script>
-import Footer from './Footer.vue';
-import Header from './Header.vue';
+<script lang="ts">
+import Vue from "vue";
+import Footer from "./Footer.vue";
+import Header from "./Header.vue";
 
-export default {
-  components: { Footer, Header },
+export default Vue.extend({
+  components: { Header, Footer },
   mounted() {
-    this.$refs.main.style.marginTop = `${this.$refs.header.firstElementChild.clientHeight + 20}px`;
-  },
-};
+    (this.$refs.main as HTMLMainElement).style.marginTop = `${((this.$refs.header as HTMLDivElement)
+      .firstElementChild as Element).clientHeight + 20}px`;
+  }
+})
 </script>

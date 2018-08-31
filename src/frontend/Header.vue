@@ -44,46 +44,47 @@
     </b-navbar>
 </template>
 
-<script>
+<script lang="ts">
 import Remarkable from 'remarkable';
-import RemarkableKaTeX from 'remarkable-katex';
+import Vue from 'vue';
 
-const remarkable = new Remarkable().use(RemarkableKaTeX);
+declare function require(x: string): any;
 
-export default {
+const remarkable = new Remarkable().use(require('remarkable-katex'));
+
+export default Vue.extend({
   data() {
     return {
       title: 'Rakugaki',
-      navigation: [],
-    };
+      navigation: []
+    } as { title: string, navigation: { href: string, text: string }[] };
   },
   mounted() {
-    fetch('header.md')
+    fetch('./header.md')
       .then(response => response.text())
       .then(markdown => remarkable.render(markdown))
       .then((content) => {
-        const div = window.document.createElement('div');
+        const div = document.createElement('div');
         div.innerHTML = content;
-        const h1 = div.querySelector('h1');
+        const h1 = div.querySelector('h1') as HTMLHeadingElement;
         this.title = h1.innerHTML;
-        window.document.querySelector('title').innerHTML = h1.innerHTML;
-        this.navigation = Array.from(div.querySelector('ul').children).map((item) => {
+        (document.querySelector('title') as HTMLElement).innerHTML = h1.innerHTML;
+        this.navigation = Array.from((div.querySelector('ul') as HTMLElement).children).map((item) => {
           const subnavigation = Array.from(item.querySelectorAll('li')).map((subitem) => {
-            const a = subitem.querySelector('a');
+            const a = subitem.querySelector('a') as HTMLAnchorElement;
             return {
               href: a.href,
               text: a.innerHTML,
             };
           });
-          const a = item.querySelector('a');
+          const a = item.querySelector('a') as HTMLAnchorElement;
           return {
             href: a.href,
             text: a.innerHTML,
             subnavigation,
           };
         });
-      })
-      .catch();
-  },
-};
+      });
+  }
+});
 </script>

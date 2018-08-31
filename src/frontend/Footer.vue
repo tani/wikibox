@@ -22,22 +22,22 @@
     <div v-html="content"></div>
   </b-row>
 </template>
-<script>
+<script lang="ts">
 import Remarkable from 'remarkable';
-import RemarkableKaTeX from 'remarkable-katex';
+import Vue from 'vue';
+declare function require(x: string): any;
+const remarkable = new Remarkable().use(require('remarkable-katex'));
 
-const remarkable = new Remarkable().use(RemarkableKaTeX);
-
-export default {
+export default Vue.extend({
   data() {
     return {
       content: '',
-    };
+    }
   },
   mounted() {
-    fetch('footer.md')
+    fetch('./footer.md')
       .then(response => response.text())
       .then((markdown) => { this.content = remarkable.render(markdown); });
-  },
-};
+  }
+})
 </script>

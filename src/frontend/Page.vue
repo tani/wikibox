@@ -52,78 +52,86 @@
     </b-row>
 </template>
 <style>
-.sidebar{
-    position: fixed;
+.sidebar {
+  position: fixed;
 }
 .toc-list {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .toc-item-h1 > span {
-    padding-left: 0em;
+  padding-left: 0em;
 }
 .toc-item-h2 > span {
-    padding-left: 1em;
+  padding-left: 1em;
 }
 .toc-item-h3 > span {
-    padding-left: 2em;
+  padding-left: 2em;
 }
 .toc-item-h4 > span {
-    padding-left: 3em;
+  padding-left: 3em;
 }
 .toc-item-h5 > span {
-    padding-left: 4em;
+  padding-left: 4em;
 }
 .toc-item-h6 > span {
-    padding-left: 5em;
+  padding-left: 5em;
 }
 </style>
-<script>
-import Remarkable from 'remarkable';
-import RemarkableKaTeX from 'remarkable-katex';
-import HighlightJS from 'highlight.js';
-import slug from 'slug';
+<script lang="ts">
+import Remarkable from "remarkable";
+import HighlightJS from "highlight.js";
+import slug from "slug";
+import Vue from "vue";
+
+declare function require(x: string): any;
 
 const remarkable = new Remarkable({
   highlight(str) {
     return HighlightJS.highlightAuto(str).value;
-  },
-}).use(RemarkableKaTeX).use(({ renderer }) => {
-  // eslint-disable-next-line no-param-reassign
-  renderer.rules.heading_open = (tokens, idx) => `<h${tokens[idx].hLevel} id="${slug(tokens[idx + 1].content.toLowerCase())}">`;
-});
-
-export default {
-  props: ['filename'],
-  data() {
-    return {
-      content: '',
-      toc: [],
+  }
+})
+  .use(({ renderer }) => {
+    renderer.rules.heading_open = (tokens, idx) => {
+      const id = slug((tokens[idx + 1] as any).content.toLowerCase());
+      return `<h${tokens[idx].hLevel} id="${id}">`;
     };
+  })
+  .use(require("remarkable-katex"));
+
+export default Vue.extend({
+  props: ['filename'],
+  data(){
+      return {
+          content: "",
+          toc: []
+      } as { content: string, toc: { class: string[]; to: string; html: string }[] };
   },
   methods: {
-    updateContent(filePath) {
-      fetch(filePath)
+    updateContent(filePath: string) {
+        fetch(filePath)
         .then(response => response.text())
         .then(markdown => remarkable.render(markdown))
-        .then((html) => {
-          const div = window.document.createElement('div');
-          div.innerHTML = html;
-          this.content = html;
-          this.toc = Array.from(div.querySelectorAll('h1,h2,h3,h4,h5')).map(h => ({
-            class: [`toc-item-${h.tagName.toLowerCase()}`],
-            to: `/page/${filePath}/${h.id}`,
-            html: h.innerHTML,
-          }));
+        .then(html => {
+            const div = window.document.createElement("div");
+            div.innerHTML = html;
+            this.content = html;
+            this.toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5")).map(
+            h => ({
+                class: [`toc-item-${h.tagName.toLowerCase()}`],
+                to: `/page/${filePath}/${h.id}`,
+                html: h.innerHTML
+            })
+            );
         });
-    },
+    }
   },
   watch: {
-    $route() {
-      this.updateContent(this.filename);
-    },
+      $route() {
+          this.updateContent(this.filename);
+      }
   },
   mounted() {
     this.updateContent(this.filename);
-  },
-};
+  }
+});
 </script>

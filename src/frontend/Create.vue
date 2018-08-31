@@ -26,7 +26,7 @@
                         <font-awesome-icon icon="file"></font-awesome-icon>
                     </b-input-group-text>
                 </b-input-group-prepend>
-                <b-form-input name="filename" placeholder="filename.md" type="text" pattern="\w+\.md" required></b-form-input>
+                <b-form-input :value="filename" name="filename" placeholder="filename.md" type="text" pattern="\w+\.md" required></b-form-input>
             </b-input-group>
         </b-form-group>
         <b-form-group>
@@ -62,19 +62,15 @@
         </b-form-row>
     </b-form>
 </template>
-<script>
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faKey, faAt, faFile } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
+<script lang="ts">
+import Vue from "vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faKey, faAt, faFile } from "@fortawesome/free-solid-svg-icons";
+declare function require(x: string): any;
+const { FontAwesomeIcon } = require("@fortawesome/vue-fontawesome");
 library.add(faKey, faAt, faFile);
-
-export default {
+export default Vue.extend({
   components: { FontAwesomeIcon },
-  data() {
-    return { 
-      filename: '',
-    };
-  },
-};
+  data(){ return { filename: "" } }
+})
 </script>
