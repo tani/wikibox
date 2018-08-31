@@ -81,7 +81,7 @@
 import Remarkable from 'remarkable';
 import RemarkableKaTeX from 'remarkable-katex';
 import HighlightJS from 'highlight.js';
-import slugify from 'slugify';
+import slug from 'slug';
 
 const remarkable = new Remarkable({
   highlight(str) {
@@ -89,7 +89,7 @@ const remarkable = new Remarkable({
   },
 }).use(RemarkableKaTeX).use(({ renderer }) => {
   // eslint-disable-next-line no-param-reassign
-  renderer.rules.heading_open = (tokens, idx) => `<h${tokens[idx].hLevel} id="${slugify(tokens[idx + 1].content.toLowerCase())}">`;
+  renderer.rules.heading_open = (tokens, idx) => `<h${tokens[idx].hLevel} id="${slug(tokens[idx + 1].content.toLowerCase())}">`;
 });
 
 export default {
