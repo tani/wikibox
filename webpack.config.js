@@ -3,23 +3,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const Path = require('path');
-const Filehound = require('filehound');
 
-const themes = Filehound
-  .create()
-  .path('node_modules/bootswatch/dist')
-  .directory()
-  .findSync()
-  .map(dirname => dirname.replace(/.*\//, ''));
-
-module.exports = themes.map(theme => ({
-  name: theme,
-  mode: process.env.MODE,
+module.exports = (env, argv) => ({
+  name: argv.theme,
+  mode: argv.mode,
   entry: {
-    'bundle': './src/client/index.js',
+    'bundle': './src/frontend/index.js',
   },
   output: {
-    path: Path.resolve(__dirname, 'docs', theme),
+    path: Path.resolve(__dirname, 'docs', argv.theme),
     filename: '[name].js',
   },
   module: {
@@ -63,13 +55,11 @@ module.exports = themes.map(theme => ({
     }),
     new VueLoaderPlugin(),
     new DefinePlugin({
-      THEME: JSON.stringify(theme),
+      THEME: JSON.stringify(argv.theme),
     }),
     new CopyWebpackPlugin([
-      { from: 'src/client/resource/*.*', to: '[name].[ext]' },
-      { from: 'src/client/resource/*.*', to: 'standalone/[name].[ext]' },
+      { from: 'src/frontend/resource/*.*', to: '[name].[ext]' },
       { from: 'README.md', to: 'index.md' },
-      { from: 'README.md', to: 'standalone/index.md' },
     ]),
   ],
-}));
+});

@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
-    "build": "MODE=production parallel-webpack",
-    "test": "MODE=development parallel-webpack"
+    "build": "webpack --theme=yeti --mode=production",
+    "test": "webpack --theme=yeti --mode=development --watch"
   },
   "repository": {
     "type": "git",
@@ -47,17 +47,11 @@
     "eslint-loader": "^2.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-vue": "^4.5.0",
-    "filehound": "^1.16.4",
-    "html-webpack-inline-source-plugin": "0.0.10",
-    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
-    "parallel-webpack": "^2.3.0",
     "puppeteer": "^1.7.0",
-    "style-loader": "^0.22.1",
     "vue-loader": "^15.2.4",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8",
-    "webpack-delete-after-emit": "^1.0.5"
+    "webpack-cli": "^3.0.8"
   }
 }

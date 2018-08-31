@@ -5,27 +5,27 @@ cache:
   directories:
     - "$HOME/.npm"
 script:
-  - $(npm bin)/webpack --config-name=cerulean --mode=production
-  - $(npm bin)/webpack --config-name=cosmo --mode=production
-  - $(npm bin)/webpack --config-name=cyborg --mode=production
-  - $(npm bin)/webpack --config-name=darkly --mode=production
-  - $(npm bin)/webpack --config-name=flatly --mode=production
-  - $(npm bin)/webpack --config-name=journal --mode=production
-  - $(npm bin)/webpack --config-name=litera --mode=production
-  - $(npm bin)/webpack --config-name=lumen --mode=production
-  - $(npm bin)/webpack --config-name=lux --mode=production
-  - $(npm bin)/webpack --config-name=materia --mode=production
-  - $(npm bin)/webpack --config-name=minty --mode=production
-  - $(npm bin)/webpack --config-name=pulse --mode=production
-  - $(npm bin)/webpack --config-name=sandstone --mode=production
-  - $(npm bin)/webpack --config-name=simplex --mode=production
-  - $(npm bin)/webpack --config-name=sketchy --mode=production
-  - $(npm bin)/webpack --config-name=slate --mode=production
-  - $(npm bin)/webpack --config-name=solar --mode=production
-  - $(npm bin)/webpack --config-name=spacelab --mode=production
-  - $(npm bin)/webpack --config-name=superhero --mode=production
-  - $(npm bin)/webpack --config-name=united --mode=production
-  - $(npm bin)/webpack --config-name=yeti --mode=production
+  - npx webpack --theme=cerulean --mode=production
+  - npx webpack --theme=cosmo --mode=production
+  - npx webpack --theme=cyborg --mode=production
+  - npx webpack --theme=darkly --mode=production
+  - npx webpack --theme=flatly --mode=production
+  - npx webpack --theme=journal --mode=production
+  - npx webpack --theme=litera --mode=production
+  - npx webpack --theme=lumen --mode=production
+  - npx webpack --theme=lux --mode=production
+  - npx webpack --theme=materia --mode=production
+  - npx webpack --theme=minty --mode=production
+  - npx webpack --theme=pulse --mode=production
+  - npx webpack --theme=sandstone --mode=production
+  - npx webpack --theme=simplex --mode=production
+  - npx webpack --theme=sketchy --mode=production
+  - npx webpack --theme=slate --mode=production
+  - npx webpack --theme=solar --mode=production
+  - npx webpack --theme=spacelab --mode=production
+  - npx webpack --theme=superhero --mode=production
+  - npx webpack --theme=united --mode=production
+  - npx webpack --theme=yeti --mode=production
 deploy:
   provider: pages
   local-dir: ./docs/
