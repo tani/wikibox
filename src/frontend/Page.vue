@@ -80,7 +80,7 @@
 <script lang="ts">
 import Remarkable from "remarkable";
 import HighlightJS from "highlight.js";
-import slug from "slug";
+import slugify from "slugify";
 import Vue from "vue";
 
 declare function require(x: string): any;
@@ -92,7 +92,7 @@ const remarkable = new Remarkable({
 })
   .use(({ renderer }) => {
     renderer.rules.heading_open = (tokens, idx) => {
-      const id = slug((tokens[idx + 1] as any).content.toLowerCase());
+      const id = slugify((tokens[idx + 1] as any).content.toLowerCase());
       return `<h${tokens[idx].hLevel} id="${id}">`;
     };
   })
