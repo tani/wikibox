@@ -69,8 +69,9 @@ export default Vue.extend({
           .getOrElse("");
         const title = some(document)
           .mapNullable(_ => _.querySelector("title"))
-          .map(_ => (_.innerHTML = this.title = h1))
+          .map(_ => (_.innerHTML = h1))
           .getOrElse("");
+        this.title = title;
         this.navigation = div
           .mapNullable(_ => _.querySelector("ul"))
           .map(_ =>
@@ -82,7 +83,7 @@ export default Vue.extend({
                   );
                   return {
                     href: a.map(_ => _.href).getOrElse(""),
-                    text: a.map(_ => _.href).getOrElse("")
+                    text: a.map(_ => _.innerHTML).getOrElse("")
                   };
                 }
               );
