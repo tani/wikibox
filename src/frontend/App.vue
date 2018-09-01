@@ -30,7 +30,7 @@
         </footer>
     </b-container>
 </template>
-<style>
+<style lang="scss">
 html,
 body {
   margin: 0;

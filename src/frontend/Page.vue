@@ -51,41 +51,28 @@
         </b-col>
     </b-row>
 </template>
-<style>
+<style lang="scss">
 .sidebar {
   position: fixed;
 }
 .toc-list {
   margin-top: 20px;
 }
-.toc-item-h1 > span {
-  padding-left: 0em;
-}
-.toc-item-h2 > span {
-  padding-left: 1em;
-}
-.toc-item-h3 > span {
-  padding-left: 2em;
-}
-.toc-item-h4 > span {
-  padding-left: 3em;
-}
-.toc-item-h5 > span {
-  padding-left: 4em;
-}
-.toc-item-h6 > span {
-  padding-left: 5em;
+@for $i from 1 through 6 {
+  .toc-item-h#{$i} > span {
+      padding-left: #{$i - 1}em;
+  }
 }
 </style>
 <script lang="ts">
-import Remarkable from "remarkable";
+import Remarkable,{ ContentToken } from "remarkable";
 import HighlightJS from "highlight.js";
 import slugify from "slugify";
 import Vue from "vue";
 
 const RemarkableSlug = ({ renderer }: Remarkable) => {
   renderer.rules.heading_open = (tokens, idx) => {
-    const id = slugify((tokens[idx + 1] as any).content.toLowerCase());
+    const id = slugify((tokens[idx + 1] as ContentToken).content.toLowerCase());
     return `<h${tokens[idx].hLevel} id="${id}">`;
   };
 };

@@ -16,7 +16,7 @@ module.exports = (env, argv) => ({
   },
   module: {
     rules: [{
-      test: /\.ts$/,
+      test: /\.tsx?$/,
       exclude: /node_modules/,
       use: [{
         loader: 'ts-loader',
@@ -25,14 +25,13 @@ module.exports = (env, argv) => ({
         },
       }],
     }, {
-      test: /\.css/,
+      test: /\.s?css$/,
       use: [{
         loader: MiniCssExtractPlugin.loader,
       }, {
         loader: 'css-loader',
-        options: {
-          minimize: true,
-        },
+      }, {
+        loader: 'sass-loader',
       }],
     }, {
       test: /\.vue$/,
