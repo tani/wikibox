@@ -43,47 +43,58 @@
         </b-collapse>
     </b-navbar>
 </template>
-
 <script lang="ts">
-import Remarkable from 'remarkable';
-import Vue from 'vue';
-
-declare function require(x: string): any;
-
-const remarkable = new Remarkable().use(require('remarkable-katex'));
+import Remarkable from "remarkable";
+import Vue from "vue";
+import { some } from "fp-ts/lib/Option";
+const remarkable = new Remarkable().use(require("remarkable-katex"));
 
 export default Vue.extend({
-  data() {
+  data(): { title: string; navigation: { href: string; text: string }[] } {
     return {
-      title: 'Rakugaki',
+      title: "Rakugaki",
       navigation: []
-    } as { title: string, navigation: { href: string, text: string }[] };
+    };
   },
   mounted() {
-    fetch('./header.md')
+    fetch("./header.md")
       .then(response => response.text())
       .then(markdown => remarkable.render(markdown))
-      .then((content) => {
-        const div = document.createElement('div');
-        div.innerHTML = content;
-        const h1 = div.querySelector('h1') as HTMLHeadingElement;
-        this.title = h1.innerHTML;
-        (document.querySelector('title') as HTMLElement).innerHTML = h1.innerHTML;
-        this.navigation = Array.from((div.querySelector('ul') as HTMLElement).children).map((item) => {
-          const subnavigation = Array.from(item.querySelectorAll('li')).map((subitem) => {
-            const a = subitem.querySelector('a') as HTMLAnchorElement;
-            return {
-              href: a.href,
-              text: a.innerHTML,
-            };
-          });
-          const a = item.querySelector('a') as HTMLAnchorElement;
-          return {
-            href: a.href,
-            text: a.innerHTML,
-            subnavigation,
-          };
-        });
+      .then(content => {
+        const div = some(document).mapNullable(_ => _.createElement("div"));
+        div.map(_ => (_.innerHTML = content));
+        const h1 = some(document)
+          .mapNullable(_ => _.querySelector("h1"))
+          .map(_ => _.innerHTML)
+          .getOrElse("");
+        const title = some(document)
+          .mapNullable(_ => _.querySelector("title"))
+          .map(_ => (_.innerHTML = this.title = h1))
+          .getOrElse("");
+        this.navigation = div
+          .mapNullable(_ => _.querySelector("ul"))
+          .map(_ =>
+            Array.from(_.children).map(item => {
+              const subnavigation = Array.from(item.querySelectorAll("li")).map(
+                subitem => {
+                  const a = some(subitem).mapNullable(_ =>
+                    _.querySelector("a")
+                  );
+                  return {
+                    href: a.map(_ => _.href).getOrElse(""),
+                    text: a.map(_ => _.href).getOrElse("")
+                  };
+                }
+              );
+              const a = some(item).mapNullable(_ => _.querySelector("a"));
+              return {
+                href: a.map(_ => _.href).getOrElse(""),
+                text: a.map(_ => _.innerHTML).getOrElse(""),
+                subnavigation
+              };
+            })
+          )
+          .getOrElse([]);
       });
   }
 });

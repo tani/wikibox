@@ -27,7 +27,6 @@ import Edit from './Edit.vue';
 import Create from './Create.vue';
 // import History from './History.vue';
 // import Delete from './Delete.vue';
-declare function require(s: string): any;
 declare var THEME: string;
 require('highlight.js/styles/solarized-light.css');
 require(`bootswatch/dist/${THEME}/bootstrap.css`);

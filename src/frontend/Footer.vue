@@ -25,7 +25,6 @@
 <script lang="ts">
 import Remarkable from 'remarkable';
 import Vue from 'vue';
-declare function require(x: string): any;
 const remarkable = new Remarkable().use(require('remarkable-katex'));
 
 export default Vue.extend({

@@ -40,12 +40,20 @@ body {
 import Vue from "vue";
 import Footer from "./Footer.vue";
 import Header from "./Header.vue";
-
+import { some } from "fp-ts/lib/Option";
 export default Vue.extend({
   components: { Header, Footer },
   mounted() {
-    (this.$refs.main as HTMLMainElement).style.marginTop = `${((this.$refs.header as HTMLDivElement)
-      .firstElementChild as Element).clientHeight + 20}px`;
+    if (
+      this.$refs.main instanceof HTMLMainElement &&
+      this.$refs.header instanceof HTMLDivElement
+    ) {
+      const height = some(this.$refs.header)
+        .mapNullable(_ => _.firstElementChild)
+        .map(_ => _.clientHeight)
+        .getOrElse(0);
+      this.$refs.main.style.marginTop = `${height + 20}px`;
+    }
   }
-})
+});
 </script>

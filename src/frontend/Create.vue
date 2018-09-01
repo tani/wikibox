@@ -66,11 +66,12 @@
 import Vue from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faKey, faAt, faFile } from "@fortawesome/free-solid-svg-icons";
-declare function require(x: string): any;
 const { FontAwesomeIcon } = require("@fortawesome/vue-fontawesome");
 library.add(faKey, faAt, faFile);
 export default Vue.extend({
   components: { FontAwesomeIcon },
-  data(){ return { filename: "" } }
-})
+  data() {
+    return { filename: "" };
+  }
+});
 </script>

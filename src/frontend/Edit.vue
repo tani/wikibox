@@ -62,34 +62,37 @@
         </b-form-row>
     </b-form>
 </template>
-<style>
-</style>
-<script>
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faKey, faAt, faFile } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+<script lang="ts">
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faKey, faAt, faFile } from "@fortawesome/free-solid-svg-icons";
+import Vue from "vue";
+const { FontAwesomeIcon } = require("@fortawesome/vue-fontawesome");
 
 library.add(faKey, faAt, faFile);
 
-export default {
+export default Vue.extend({
   components: { FontAwesomeIcon },
-  props: ['filename'],
+  props: ["filename"],
   data() {
     return {
-      content: '',
+      content: ""
     };
   },
   watch: {
     $route() {
       fetch(this.filename)
         .then(response => response.text())
-        .then((markdown) => { this.content = markdown; });
-    },
+        .then(markdown => {
+          this.content = markdown;
+        });
+    }
   },
   mounted() {
     fetch(this.filename)
       .then(response => response.text())
-      .then((markdown) => { this.content = markdown; });
-  },
-};
+      .then(markdown => {
+        this.content = markdown;
+      });
+  }
+});
 </script>

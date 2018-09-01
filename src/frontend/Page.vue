@@ -83,52 +83,55 @@ import HighlightJS from "highlight.js";
 import slugify from "slugify";
 import Vue from "vue";
 
-declare function require(x: string): any;
+const RemarkableSlug = ({ renderer }: Remarkable) => {
+  renderer.rules.heading_open = (tokens, idx) => {
+    const id = slugify((tokens[idx + 1] as any).content.toLowerCase());
+    return `<h${tokens[idx].hLevel} id="${id}">`;
+  };
+};
 
 const remarkable = new Remarkable({
   highlight(str) {
     return HighlightJS.highlightAuto(str).value;
   }
-})
-  .use(({ renderer }) => {
-    renderer.rules.heading_open = (tokens, idx) => {
-      const id = slugify((tokens[idx + 1] as any).content.toLowerCase());
-      return `<h${tokens[idx].hLevel} id="${id}">`;
-    };
-  })
-  .use(require("remarkable-katex"));
+});
+remarkable.use(RemarkableSlug);
+remarkable.use(require("remarkable-katex"));
 
 export default Vue.extend({
-  props: ['filename'],
-  data(){
-      return {
-          content: "",
-          toc: []
-      } as { content: string, toc: { class: string[]; to: string; html: string }[] };
+  props: ["filename"],
+  data(): {
+    content: string;
+    toc: { class: string[]; to: string; html: string }[];
+  } {
+    return {
+      content: "",
+      toc: []
+    };
   },
   methods: {
     updateContent(filePath: string) {
-        fetch(filePath)
+      fetch(filePath)
         .then(response => response.text())
         .then(markdown => remarkable.render(markdown))
         .then(html => {
-            const div = window.document.createElement("div");
-            div.innerHTML = html;
-            this.content = html;
-            this.toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5")).map(
+          const div = window.document.createElement("div");
+          div.innerHTML = html;
+          this.content = html;
+          this.toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5")).map(
             h => ({
-                class: [`toc-item-${h.tagName.toLowerCase()}`],
-                to: `/page/${filePath}/${h.id}`,
-                html: h.innerHTML
+              class: [`toc-item-${h.tagName.toLowerCase()}`],
+              to: `/page/${filePath}/${h.id}`,
+              html: h.innerHTML
             })
-            );
+          );
         });
     }
   },
   watch: {
-      $route() {
-          this.updateContent(this.filename);
-      }
+    $route() {
+      this.updateContent(this.filename);
+    }
   },
   mounted() {
     this.updateContent(this.filename);
