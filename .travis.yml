@@ -9,6 +9,8 @@ before_install:
   - cd frontend
 install:
   - npm ci
+after_install:
+  - cd ..
 before_script:
   - cd frontend
 script:
@@ -33,6 +35,8 @@ script:
   - THEME=superhero npx webpack
   - THEME=united npx webpack
   - THEME=yeti npx webpack
+after_script:
+  - cd ..
 deploy:
   provider: pages
   local-dir: ./frontend/build/
