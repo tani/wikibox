@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <!--
                                 Rakugaki
-    ====================================================================
+    ==================================================================== 
     - Homepage https://github.com/asciian/Rakugaki
     - Copyright (c) 2018 TANIGUCHI Masaya All Right Reserved.
 
@@ -17,26 +18,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<template>
-  <b-row>
-    <div v-html="content"></div>
-  </b-row>
-</template>
-<script lang="ts">
-import Remarkable from 'remarkable';
-import Vue from 'vue';
-const remarkable = new Remarkable().use(require('remarkable-katex'));
+<html lang="en">
 
-export default Vue.extend({
-  data() {
-    return {
-      content: '',
-    }
-  },
-  mounted() {
-    fetch('./footer.md')
-      .then(response => response.text())
-      .then((markdown) => { this.content = remarkable.render(markdown); });
-  }
-})
-</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="bundle.css">
+    <script src="bundle.js" async></script>    
+    <title>Rakugaki</title>
+</head>
+
+<body>
+    <div id="root">
+    </div>
+</body>
+
+</html>

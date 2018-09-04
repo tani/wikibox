@@ -1,34 +1,39 @@
 sudo: false
 language: node_js
-node_js: 10
 cache:
   directories:
     - "$HOME/.npm"
+before_install:
+  - cd frontend
+install:
+  - npm ci
+before_script:
+  - cd frontend
 script:
-  - npx webpack --theme=cerulean --mode=production
-  - npx webpack --theme=cosmo --mode=production
-  - npx webpack --theme=cyborg --mode=production
-  - npx webpack --theme=darkly --mode=production
-  - npx webpack --theme=flatly --mode=production
-  - npx webpack --theme=journal --mode=production
-  - npx webpack --theme=litera --mode=production
-  - npx webpack --theme=lumen --mode=production
-  - npx webpack --theme=lux --mode=production
-  - npx webpack --theme=materia --mode=production
-  - npx webpack --theme=minty --mode=production
-  - npx webpack --theme=pulse --mode=production
-  - npx webpack --theme=sandstone --mode=production
-  - npx webpack --theme=simplex --mode=production
-  - npx webpack --theme=sketchy --mode=production
-  - npx webpack --theme=slate --mode=production
-  - npx webpack --theme=solar --mode=production
-  - npx webpack --theme=spacelab --mode=production
-  - npx webpack --theme=superhero --mode=production
-  - npx webpack --theme=united --mode=production
-  - npx webpack --theme=yeti --mode=production
+  - THEME=cerulean npx webpack
+  - THEME=cosmo npx webpack
+  - THEME=cyborg npx webpack
+  - THEME=darkly npx webpack
+  - THEME=flatly npx webpack
+  - THEME=journal npx webpack
+  - THEME=litera npx webpack
+  - THEME=lumen npx webpack
+  - THEME=lux npx webpack
+  - THEME=materia npx webpack
+  - THEME=minty npx webpack
+  - THEME=pulse npx webpack
+  - THEME=sandstone npx webpack
+  - THEME=simplex npx webpack
+  - THEME=sketchy npx webpack
+  - THEME=slate npx webpack
+  - THEME=solar npx webpack
+  - THEME=spacelab npx webpack
+  - THEME=superhero npx webpack
+  - THEME=united npx webpack
+  - THEME=yeti npx webpack
 deploy:
   provider: pages
-  local-dir: ./docs/
+  local-dir: ./frontend/build/
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   on:
