@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
-import { Row, Card, CardBody } from "reactstrap";
+import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
-import { Link } from "react-router-dom";
+import { Link, Element } from "react-scroll";
 import markdown from "./markdown";
+import slugify from "slugify";
 const RemarkHighlightJs = require("remark-highlight.js");
 const RemarkSlug = require("remark-slug");
 const RemarkMath = require("remark-math");
@@ -32,7 +33,7 @@ export default class Page extends Component<PageProps, PageState> {
     div.innerHTML = await markdown(source);
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
       h => ({
-        href: h.id,
+        href: slugify(h.innerHTML),
         text: h.innerHTML,
         hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""))
       })
@@ -44,25 +45,40 @@ export default class Page extends Component<PageProps, PageState> {
   }
   componentDidMount() {
     const filename = this.props.match.params.filename;
-    this.setState({filename})
+    this.setState({ filename });
     this.updateSource();
   }
   componentWillReceiveProps() {
     const filename = this.props.match.params.filename;
-    this.setState({filename})
+    this.setState({ filename });
     this.updateSource();
   }
   render() {
+    const renderers = {
+      headings(p: any) {
+        const Hn = `h${p.level}`;
+        return (
+          <Hn>
+            <Element name={slugify(p.children.toString())}>
+              {p.children}
+            </Element>
+          </Hn>
+        );
+      },
+      math(p: any) {
+        return <BlockMath math={p.value} />;
+      },
+      inlineMath(p: any) {
+        return <InlineMath math={p.value} />;
+      }
+    };
     return (
       <Row>
         <Col md="9">
           <ReactMarkdown
             source={this.state.source}
             plugins={[RemarkMath, RemarkSlug, RemarkHighlightJs]}
-            renderers={{
-              math: p => <BlockMath math={p.value} />,
-              inlineMath: p => <InlineMath math={p.value} />
-            }}
+            renderers={renderers}
           />
         </Col>
         <Col md="3">
@@ -83,21 +99,23 @@ export default class Page extends Component<PageProps, PageState> {
                 style={{ paddingLeft: `${item.hlevel - 1}em` }}
                 key={item.text}
               >
-                <Link to={item.href}>{item.text}</Link>
+                <Link
+                  to={slugify(item.text.toString())}
+                  href={`#/page/${this.state.filename}`}
+                >
+                  {item.text}
+                </Link>
               </li>
             ))}
           </ul>
-          {
-            /*
+          {/*
             <div style={{paddingLeft: 20}}>
             [ <Link to={`/edit/${this.state.filename}`}>Edit</Link> 
             / <Link to={`/create`}>Create</Link>
             / <Link to={`/delete/${this.state.filename}`}>Delete</Link>
             / <Link to={`/history/${this.state.filename}`}>History</Link> ]
             </div>
-            */
-          }
-          
+            */}
         </Col>
       </Row>
     );

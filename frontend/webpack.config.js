@@ -26,7 +26,7 @@ module.exports = {
               presets: [
                 "@babel/preset-typescript",
                 "@babel/preset-react",
-                ["@babel/preset-env", { useBuiltIns: "usage" }]
+                ["@babel/preset-env", { useBuiltIns: "usage", modules: false }]
               ],
               plugins: ["transform-inline-environment-variables"]
             }
