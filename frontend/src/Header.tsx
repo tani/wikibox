@@ -83,7 +83,7 @@ export default class Header extends Component<HeaderProps, HeaderState> {
   }
   render() {
     return (
-      <Navbar fixed="top" color="primary" dark expand="md">
+      <Navbar color="primary" dark expand="md">
         <NavbarToggler onClick={this.handleTogglerClick} />
         <NavbarBrand href="./" className="text-light">{this.state.title}</NavbarBrand>
         <Collapse navbar isOpen={this.state.isOpen}>

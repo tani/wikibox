@@ -5,7 +5,10 @@ import {
   FormGroup,
   Input,
   InputGroup,
-  InputGroupAddon
+  InputGroupText,
+  InputGroupAddon,
+  Row,
+  Col
 } from "reactstrap";
 import { faFile, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -74,9 +77,11 @@ export default class Edit extends Component<EditProps, EditState> {
         <FormGroup>
           <InputGroup>
             <InputGroupAddon addonType="prepend">
-              <FontAwesomeIcon icon={faFile} />
+              <InputGroupText>
+                <FontAwesomeIcon icon={faFile} />
+              </InputGroupText>
             </InputGroupAddon>
-            <Input value={this.state.filename} disabled/>
+            <Input value={this.state.filename} disabled />
           </InputGroup>
         </FormGroup>
         <FormGroup>
@@ -84,33 +89,42 @@ export default class Edit extends Component<EditProps, EditState> {
             type="textarea"
             onChange={this.handleSourceChange}
             value={this.state.source}
+            rows={20}
           />
         </FormGroup>
-        <FormGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <FontAwesomeIcon icon={faUser} />
-            </InputGroupAddon>
-            <Input
-              onChange={this.handleUsernameChange}
-              value={this.state.username}
-            />
-          </InputGroup>
-        </FormGroup>
-        <FormGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <FontAwesomeIcon icon={faKey} />
-            </InputGroupAddon>
-            <Input
-              type="password"
-              onChange={this.handlePasswordChange}
-              value={this.state.password}
-            />
-          </InputGroup>
-        </FormGroup>
-        <FormGroup>
-          <Input type="submit" />
+        <FormGroup row>
+          <Col>
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <FontAwesomeIcon icon={faUser} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                onChange={this.handleUsernameChange}
+                value={this.state.username}
+                placeholder="username"
+              />
+            </InputGroup>
+          </Col>
+          <Col>
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <FontAwesomeIcon icon={faKey} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="password"
+                onChange={this.handlePasswordChange}
+                value={this.state.password}
+                placeholder="password"
+              />
+            </InputGroup>
+          </Col>
+          <Col>
+            <Input type="submit" />
+          </Col>
         </FormGroup>
       </Form>
     );

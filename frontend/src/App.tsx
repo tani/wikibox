@@ -11,19 +11,15 @@ export default class App extends Component {
   render() {
     return (
       <Router>
-        <Container>
-          <header>
+        <div>
             <Header />
-          </header>
-          <main>
-            <Route exact path="/page/:filename" component={Page} />
-            <Route path="/edit/:filename" component={Edit} />
-            <Route path="/create" component={Create} />
-          </main>
-          <footer>
-            <Footer />
-          </footer>
-        </Container>
+            <Container style={{marginTop: 20}}>
+              <Route exact path="/page/:filename" component={Page} />
+              <Route path="/edit/:filename" component={Edit} />
+              <Route path="/create" component={Create} />
+              <Footer />
+            </Container>
+        </div>
       </Router>
     );
   }

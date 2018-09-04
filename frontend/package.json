@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
-    "start": "THEME=yeti webpack-dev-server --mode=development"
+    "start": "THEME=yeti webpack-dev-server --mode=development --hot"
   },
   "repository": {
     "type": "git",
