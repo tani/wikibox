@@ -5,38 +5,30 @@ node_js:
 cache:
   directories:
     - "$HOME/.npm"
-before_install:
-  - cd frontend
 install:
-  - npm ci
-after_install:
-  - cd ..
-before_script:
-  - cd frontend
+  - cd frontend && npm ci && cd ..
 script:
-  - THEME=cerulean npx webpack
-  - THEME=cosmo npx webpack
-  - THEME=cyborg npx webpack
-  - THEME=darkly npx webpack
-  - THEME=flatly npx webpack
-  - THEME=journal npx webpack
-  - THEME=litera npx webpack
-  - THEME=lumen npx webpack
-  - THEME=lux npx webpack
-  - THEME=materia npx webpack
-  - THEME=minty npx webpack
-  - THEME=pulse npx webpack
-  - THEME=sandstone npx webpack
-  - THEME=simplex npx webpack
-  - THEME=sketchy npx webpack
-  - THEME=slate npx webpack
-  - THEME=solar npx webpack
-  - THEME=spacelab npx webpack
-  - THEME=superhero npx webpack
-  - THEME=united npx webpack
-  - THEME=yeti npx webpack
-after_script:
-  - cd ..
+  - cd frontend && THEME=cerulean npx webpack && cd ..
+  - cd frontend && THEME=cosmo npx webpack && cd ..
+  - cd frontend && THEME=cyborg npx webpack && cd ..
+  - cd frontend && THEME=darkly npx webpack && cd ..
+  - cd frontend && THEME=flatly npx webpack && cd ..
+  - cd frontend && THEME=journal npx webpack && cd ..
+  - cd frontend && THEME=litera npx webpack && cd ..
+  - cd frontend && THEME=lumen npx webpack && cd ..
+  - cd frontend && THEME=lux npx webpack && cd ..
+  - cd frontend && THEME=materia npx webpack && cd ..
+  - cd frontend && THEME=minty npx webpack && cd ..
+  - cd frontend && THEME=pulse npx webpack && cd ..
+  - cd frontend && THEME=sandstone npx webpack && cd ..
+  - cd frontend && THEME=simplex npx webpack && cd ..
+  - cd frontend && THEME=sketchy npx webpack && cd ..
+  - cd frontend && THEME=slate npx webpack && cd ..
+  - cd frontend && THEME=solar npx webpack && cd ..
+  - cd frontend && THEME=spacelab npx webpack && cd ..
+  - cd frontend && THEME=superhero npx webpack && cd ..
+  - cd frontend && THEME=united npx webpack && cd ..
+  - cd frontend && THEME=yeti npx webpack && cd ..
 deploy:
   provider: pages
   local-dir: ./frontend/build/
