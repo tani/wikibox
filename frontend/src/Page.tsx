@@ -7,7 +7,6 @@ import { Link, Element } from "react-scroll";
 import markdown from "./markdown";
 import slugify from "slugify";
 const RemarkHighlightJs = require("remark-highlight.js");
-const RemarkSlug = require("remark-slug");
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
 
@@ -77,7 +76,7 @@ export default class Page extends Component<PageProps, PageState> {
         <Col md="9">
           <ReactMarkdown
             source={this.state.source}
-            plugins={[RemarkMath, RemarkSlug, RemarkHighlightJs]}
+            plugins={[RemarkMath, RemarkHighlightJs]}
             renderers={renderers}
           />
         </Col>

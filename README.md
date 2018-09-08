@@ -1,8 +1,8 @@
-# Rakugaki 
-[![Build Status](https://travis-ci.org/xtaniguchimasaya/Rakugaki.svg?branch=master)](https://travis-ci.org/xtaniguchimasaya/Rakugaki)
+# WikiBox 
+[![Build Status](https://travis-ci.org/xtaniguchimasaya/WikiBox.svg?branch=master)](https://travis-ci.org/xtaniguchimasaya/WikiBox)
 
-Rakugaki works on the client environment, and it is extendable because of powered by Vue ecosystem.
-Rakugaki is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery and Bootstrap 3, and Rakugaki modernize it using Vue and Bootstrap 4 to be faster and beautiful. Of course MathJax is also upgraded to version 3.
+WikiBox works on the client environment, and it is extendable because of powered by Vue ecosystem.
+WikiBox is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using Vue and Bootstrap 4 to be faster and beautiful. Of course MathJax is also upgraded to version 3.
 
 ## Features
 
@@ -18,11 +18,11 @@ Rakugaki is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery
 ### For GitHub Pages
 
 1. Make an account of GitHub and creates your repository named `<username>/<username>.github.io`.
-2. Download precompiled HTML at [Rakugaki Download](https://Rakugaki.js.org/yeti/#/download.md/). If you want to compile it by yourself, Rakugaki is hosted on GitHub ([xtaniguchimasaya/Rakugaki](https://github.com/xtaniguchimasaya/Rakugaki/)).
+2. Download precompiled HTML at [WikiBox Download](https://WikiBox.js.org/yeti/#/download.md/). If you want to compile it by yourself, WikiBox is hosted on GitHub ([xtaniguchimasaya/WikiBox](https://github.com/xtaniguchimasaya/WikiBox/)).
 3. Drag and Drop `index.html` from your _Downloads_ directory to the _Uploads files_ of the repository.
 4. Create `index.md` in your repository with _Create new file_ of the repository.
 5. Enable GitHub Pages in _Settings_ of the repository.
 
 ## Copyright
 
-Rakugaki has started to develop since 2018 and been written by TANIGUCHI Masaya under the GPLv3.
+WikiBox has started to develop since 2018 and been written by TANIGUCHI Masaya under the GPLv3.

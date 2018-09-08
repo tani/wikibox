@@ -1,4 +1,4 @@
-# Rakugaki
+# WikiBox
 
 - [Home](#/page/index.md/)
 - [User Guide](#/page/user_guide.md/)

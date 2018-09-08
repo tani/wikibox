@@ -18,6 +18,7 @@ interface EditState {
   username: string;
   password: string;
 }
+
 export default class Edit extends Component<EditProps, EditState> {
   constructor(props: EditProps) {
     super(props);

@@ -1,25 +1,25 @@
 {
-  "name": "rakugaki",
+  "name": "wikibox",
   "version": "0.2.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
-    "start": "THEME=yeti webpack-dev-server --mode=development --hot"
+    "frontend:generate": "pcregrep -o -M '```typescript[\\s\\S]*?```' resource/api.md | grep -v '```' > src/api.ts",
+    "frontend:start": "THEME=yeti webpack-dev-server --mode=development --hot"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xtaniguchimasaya/rakugaki.git"
+    "url": "git+https://github.com/xtaniguchimasaya/wikibox.git"
   },
   "keywords": [
-    "vue",
     "markdown",
     "wiki"
   ],
   "author": "TANIGUCHI Masaya",
   "license": "GPL-3.0+",
   "bugs": {
-    "url": "https://github.com/asciian/Rakugaki/issues"
+    "url": "https://github.com/asciian/WikiBox/issues"
   },
-  "homepage": "https://github.com/asciian/Rakugaki#readme",
+  "homepage": "https://github.com/asciian/WikiBox#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
@@ -30,7 +30,9 @@
     "bootswatch": "^4.1.1",
     "es6-promisify": "^6.0.0",
     "fp-ts": "^1.8.0",
+    "localforage": "^1.7.2",
     "react": "^16.4.2",
+    "react-ace": "^6.1.4",
     "react-dom": "^16.4.2",
     "react-katex": "^2.0.2",
     "react-markdown": "^3.4.1",
@@ -52,6 +54,7 @@
     "@babel/preset-typescript": "^7.0.0",
     "@types/es6-promisify": "^6.0.0",
     "@types/highlight.js": "^9.12.3",
+    "@types/localforage": "0.0.34",
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.13",
     "@types/react-dom": "^16.0.7",
@@ -67,6 +70,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
     "prettier": "^1.14.2",
+    "remark-cli": "^5.0.0",
     "typescript": "^3.0.3",
     "url-loader": "^1.1.1",
     "webpack": "^4.14.0",
