@@ -28,7 +28,7 @@ module.exports = {
                 "@babel/preset-react",
                 ["@babel/preset-env", { useBuiltIns: "usage", modules: false }]
               ],
-              plugins: ["transform-inline-environment-variables"]
+              plugins: ["transform-inline-environment-variables", "@babel/plugin-proposal-class-properties"]
             }
           }
         ]

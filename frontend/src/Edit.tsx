@@ -7,10 +7,11 @@ import {
   InputGroup,
   InputGroupText,
   InputGroupAddon,
-  Col
 } from "reactstrap";
-import { faFile, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Consumer } from "./Context";
+import Api from "./api";
 interface EditProps extends RouteComponentProps<{ filename: string }> {}
 interface EditState {
   filename: string;
@@ -28,10 +29,18 @@ export default class Edit extends Component<EditProps, EditState> {
       username: "",
       password: ""
     };
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleSubmit(api: Api) {
+    return async () => {
+      await api.edit(
+        this.state.filename,
+        new Blob([this.state.source], { type: "text/plain" })
+      );
+      this.props.history.push(`/page/${this.state.filename}`);
+    };
   }
   async handlePropsChange() {
     const response = await fetch(`./${this.props.match.params.filename}`);
@@ -40,16 +49,10 @@ export default class Edit extends Component<EditProps, EditState> {
       source
     });
   }
-  handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
-    const username = event.target.value;
+  handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
+    const filename = event.target.value;
     this.setState({
-      username
-    });
-  }
-  handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
-    const password = event.target.value;
-    this.setState({
-      password
+      filename
     });
   }
   handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
@@ -57,13 +60,6 @@ export default class Edit extends Component<EditProps, EditState> {
     this.setState({
       source
     });
-  }
-  async handleSubmit() {
-    await fetch(`./${this.state.filename}`, {
-      method: "POST",
-      body: JSON.stringify(this.state)
-    });
-    this.props.history.push(`/page/${this.state.filename}`);
   }
   componentDidMount() {
     this.handlePropsChange();
@@ -73,60 +69,33 @@ export default class Edit extends Component<EditProps, EditState> {
   }
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormGroup>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>
-                <FontAwesomeIcon icon={faFile} />
-              </InputGroupText>
-            </InputGroupAddon>
-            <Input value={this.state.filename} disabled />
-          </InputGroup>
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type="textarea"
-            onChange={this.handleSourceChange}
-            value={this.state.source}
-            rows={20}
-          />
-        </FormGroup>
-        <FormGroup row>
-          <Col>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <FontAwesomeIcon icon={faUser} />
-                </InputGroupText>
-              </InputGroupAddon>
+      <Consumer>
+        {context => (
+          <Form onSubmit={this.handleSubmit(context.api)}>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <FontAwesomeIcon icon={faFile} />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input value={this.state.filename} onChange={this.handleFilenameChange} />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
               <Input
-                onChange={this.handleUsernameChange}
-                value={this.state.username}
-                placeholder="username"
+                type="textarea"
+                onChange={this.handleSourceChange}
+                value={this.state.source}
+                rows={20}
               />
-            </InputGroup>
-          </Col>
-          <Col>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <FontAwesomeIcon icon={faKey} />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                type="password"
-                onChange={this.handlePasswordChange}
-                value={this.state.password}
-                placeholder="password"
-              />
-            </InputGroup>
-          </Col>
-          <Col>
-            <Input type="submit" />
-          </Col>
-        </FormGroup>
-      </Form>
+            </FormGroup>
+            <FormGroup>
+              <Input type="submit" />
+            </FormGroup>
+          </Form>
+        )}
+      </Consumer>
     );
   }
 }
