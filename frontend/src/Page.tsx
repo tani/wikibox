@@ -22,7 +22,7 @@ export default class Page extends Component<PageProps, PageState> {
     this.state = {
       filename: props.match.params.filename,
       source: "",
-      toc: [],
+      toc: []
     };
   }
   public async updateSource() {
@@ -31,15 +31,15 @@ export default class Page extends Component<PageProps, PageState> {
     const div = document.createElement("div");
     div.innerHTML = await markdown(source);
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
-      (h) => ({
+      h => ({
         hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
         href: slugify(h.innerHTML),
-        text: h.innerHTML,
-      }),
+        text: h.innerHTML
+      })
     );
     this.setState({
       source,
-      toc,
+      toc
     });
   }
   public componentDidMount() {
@@ -60,14 +60,17 @@ export default class Page extends Component<PageProps, PageState> {
       paddingLeft: 20,
       paddingTop: 5,
       position: "sticky" as "sticky",
-      top: 20,
+      top: 20
     };
-    const tocItemStyle = (hlevel: number) => (
-      { paddingLeft: `${hlevel - 1}em` }
-    );
-    const tocItems = this.state.toc.map((item) => (
+    const tocItemStyle = (hlevel: number) => ({
+      paddingLeft: `${hlevel - 1}em`
+    });
+    const tocItems = this.state.toc.map(item => (
       <li style={tocItemStyle(item.hlevel)} key={item.text}>
-        <Link to={slugify(item.text.toString())} href={`#/page/${this.state.filename}`}>
+        <Link
+          to={slugify(item.text.toString())}
+          href={`#/page/${this.state.filename}`}
+        >
           {item.text}
         </Link>
       </li>
@@ -88,7 +91,7 @@ export default class Page extends Component<PageProps, PageState> {
       },
       inlineMath(p: any) {
         return <InlineMath math={p.value} />;
-      },
+      }
     };
     return (
       <Row>

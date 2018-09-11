@@ -17,7 +17,7 @@ export default class App extends Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      sessionToken: undefined,
+      sessionToken: undefined
     };
     this.login = this.login.bind(this);
   }
@@ -33,7 +33,9 @@ export default class App extends Component<{}, AppState> {
   public render() {
     return (
       <Router>
-        <Provider value={{ sessionToken: this.state.sessionToken, login: this.login }}>
+        <Provider
+          value={{ sessionToken: this.state.sessionToken, login: this.login }}
+        >
           <Header />
           <Container style={{ marginTop: 20 }}>
             <Route path="/page/:filename" component={Page} />

@@ -10,7 +10,7 @@ export default class Footer extends Component<{}, FooterState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      source: "",
+      source: ""
     };
   }
   public componentDidMount() {
@@ -22,8 +22,12 @@ export default class Footer extends Component<{}, FooterState> {
   }
   public render() {
     const renderers = {
-      inlineMath(p: { value: any }) { return <InlineMath math={p.value} />; },
-      math(p: { value: any }) { return <BlockMath math={p.value} />; },
+      inlineMath(p: { value: any }) {
+        return <InlineMath math={p.value} />;
+      },
+      math(p: { value: any }) {
+        return <BlockMath math={p.value} />;
+      }
     };
     return (
       <ReactMarkdown

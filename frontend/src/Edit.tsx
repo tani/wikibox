@@ -8,7 +8,7 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
+  InputGroupText
 } from "reactstrap";
 import Api from "./api";
 import { Consumer } from "./Context";
@@ -27,7 +27,7 @@ export default class Edit extends Component<EditProps, EditState> {
       filename: this.props.match.params.filename,
       password: "",
       source: "",
-      username: "",
+      username: ""
     };
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
@@ -37,7 +37,7 @@ export default class Edit extends Component<EditProps, EditState> {
     return async () => {
       await new Api(location.href, sessionToken).edit(
         this.state.filename,
-        new Blob([this.state.source], { type: "text/plain" }),
+        new Blob([this.state.source], { type: "text/plain" })
       );
       this.props.history.push(`/page/${this.state.filename}`);
     };
@@ -46,19 +46,19 @@ export default class Edit extends Component<EditProps, EditState> {
     const response = await fetch(`./${this.props.match.params.filename}`);
     const source = await response.text();
     this.setState({
-      source,
+      source
     });
   }
   public handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
     const filename = event.target.value;
     this.setState({
-      filename,
+      filename
     });
   }
   public handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
     const source = event.target.value;
     this.setState({
-      source,
+      source
     });
   }
   public componentDidMount() {

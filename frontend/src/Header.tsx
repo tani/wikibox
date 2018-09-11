@@ -11,7 +11,7 @@ import {
   NavbarToggler,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
+  UncontrolledDropdown
 } from "reactstrap";
 import { Consumer } from "./Context";
 import markdown from "./markdown";
@@ -32,14 +32,14 @@ export default class Header extends Component<{}, HeaderState> {
     this.state = {
       isOpen: false,
       navigation: [],
-      title: "",
+      title: ""
     };
     this.handleTogglerClick = this.handleTogglerClick.bind(this);
   }
   public handleTogglerClick() {
     const isOpen = !this.state.isOpen;
     this.setState({
-      isOpen,
+      isOpen
     });
   }
   public componentDidMount() {
@@ -49,40 +49,40 @@ export default class Header extends Component<{}, HeaderState> {
       const div = document.createElement("div");
       div.innerHTML = await markdown(source);
       const h1 = fromNullable(div.querySelector("h1"))
-        .map(($h1) => $h1.innerHTML)
+        .map($h1 => $h1.innerHTML)
         .getOrElse("");
       const title = fromNullable(document.querySelector("title"))
-        .map(($title) => ($title.innerHTML = h1))
+        .map($title => ($title.innerHTML = h1))
         .getOrElse("");
       const navigation = fromNullable(div.querySelector("ul"))
-        .map((ul) =>
-          Array.from(ul.children).map((child) => {
+        .map(ul =>
+          Array.from(ul.children).map(child => {
             const subnavigation = Array.from(child.querySelectorAll("li")).map(
-              (subitem) => {
+              subitem => {
                 const b = fromNullable(subitem.querySelector("a"));
                 return {
-                  href: b.map(($b) => $b.href).getOrElse(""),
-                  text: b.map(($b) => $b.innerHTML).getOrElse(""),
+                  href: b.map($b => $b.href).getOrElse(""),
+                  text: b.map($b => $b.innerHTML).getOrElse("")
                 };
-              },
+              }
             );
             const a = fromNullable(child.querySelector("a"));
             return {
-              href: a.map(($a) => $a.href).getOrElse(""),
+              href: a.map($a => $a.href).getOrElse(""),
               subnavigation,
-              text: a.map(($a) => $a.innerHTML).getOrElse(""),
+              text: a.map($a => $a.innerHTML).getOrElse("")
             };
-          }),
+          })
         )
         .getOrElse([]);
       this.setState({
         navigation,
-        title,
+        title
       });
     })();
   }
   public render() {
-    const $HeaderItems = this.state.navigation.map((item) => {
+    const $HeaderItems = this.state.navigation.map(item => {
       if (item.subnavigation.length === 0) {
         return (
           <NavItem>

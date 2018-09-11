@@ -8,7 +8,7 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
+  InputGroupText
 } from "reactstrap";
 import { Consumer } from "./Context";
 
@@ -24,12 +24,12 @@ export default class Login extends Component<LoginProps, LoginState> {
     super(props);
     this.state = {
       password: "",
-      username: "",
+      username: ""
     };
     this.handleSumbit = this.handleSumbit.bind(this);
   }
   public handleSumbit(
-    login: (username: string, password: string) => Promise<void>,
+    login: (username: string, password: string) => Promise<void>
   ) {
     return async () => {
       login(this.state.username, this.state.password);
@@ -37,7 +37,7 @@ export default class Login extends Component<LoginProps, LoginState> {
     };
   }
   public render() {
-    const $Login = ({sessionToken, login}: any) => (
+    const $Login = ({ sessionToken, login }: any) =>
       sessionToken ? (
         <Redirect to={this.props.location.state.from} />
       ) : (
@@ -67,10 +67,12 @@ export default class Login extends Component<LoginProps, LoginState> {
             <Input type="submit" />
           </FormGroup>
         </Form>
-    ));
+      );
     return (
       <Consumer>
-        {(context) => <$Login sessionToken={context.sessionToken} login={context.login} />}
+        {context => (
+          <$Login sessionToken={context.sessionToken} login={context.login} />
+        )}
       </Consumer>
     );
   }

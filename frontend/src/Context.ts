@@ -7,5 +7,5 @@ export const { Provider, Consumer } = createContext<ContextPrams>({
   sessionToken: undefined,
   async login(username: string, password: string) {
     return;
-  },
+  }
 });
