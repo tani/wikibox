@@ -12,15 +12,15 @@ import {
 } from "reactstrap";
 import { Consumer } from "./Context";
 
-interface SecretProps extends RouteComponentProps<{}> {}
+interface LoginProps extends RouteComponentProps<{}> {}
 
-interface SecretState {
+interface LoginState {
   username: string;
   password: string;
 }
 
-export default class Login extends Component<SecretProps, SecretState> {
-  constructor(props: SecretProps) {
+export default class Login extends Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
     this.state = {
       password: "",
