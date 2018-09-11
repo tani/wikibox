@@ -82,47 +82,47 @@ export default class Header extends Component<{}, HeaderState> {
     })();
   }
   public render() {
+    const $HeaderItems = this.state.navigation.map((item) => {
+      if (item.subnavigation.length === 0) {
+        return (
+          <NavItem>
+            <NavLink href={item.href}>{item.text}</NavLink>
+          </NavItem>
+        );
+      } else {
+        const DropdownItems = item.subnavigation.map((subitem: any) => (
+          <DropdownItem key={subitem.text}>
+            <NavLink href={subitem.href}>{subitem.text}</NavLink>
+          </DropdownItem>
+        ));
+        return (
+          <UncontrolledDropdown key={item.text} inNavbar={true}>
+            <DropdownToggle nav={true} caret={true}>
+              {item.text}
+            </DropdownToggle>
+            <DropdownMenu>{DropdownItems}</DropdownMenu>
+          </UncontrolledDropdown>
+        );
+      }
+    });
+    const $Header = ({ sessionToken }: any) => (
+      <Navbar
+        color={sessionToken ? "success" : "primary"}
+        dark={true}
+        expand="md"
+      >
+        <NavbarToggler onClick={this.handleTogglerClick} />
+        <NavbarBrand href="./" className="text-light">
+          {this.state.title}
+        </NavbarBrand>
+        <Collapse navbar={true} isOpen={this.state.isOpen}>
+          <Nav navbar={true}>{$HeaderItems}</Nav>
+        </Collapse>
+      </Navbar>
+    );
     return (
       <Consumer>
-        {({ sessionToken }) => (
-          <Navbar
-            color={sessionToken ? "success" : "primary"}
-            dark={true}
-            expand="md"
-          >
-            <NavbarToggler onClick={this.handleTogglerClick} />
-            <NavbarBrand href="./" className="text-light">
-              {this.state.title}
-            </NavbarBrand>
-            <Collapse navbar={true} isOpen={this.state.isOpen}>
-              <Nav navbar={true}>
-                {this.state.navigation.map(
-                  (item) =>
-                    item.subnavigation.length === 0 ? (
-                      <NavItem key={item.text}>
-                        <NavLink href={item.href}>{item.text}</NavLink>
-                      </NavItem>
-                    ) : (
-                      <UncontrolledDropdown key={item.text} inNavbar={true}>
-                        <DropdownToggle nav={true} caret={true}>
-                          {item.text}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          {item.subnavigation.map((subitem) => (
-                            <DropdownItem key={subitem.text}>
-                              <NavLink href={subitem.href}>
-                                {subitem.text}
-                              </NavLink>
-                            </DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    ),
-                )}
-              </Nav>
-            </Collapse>
-          </Navbar>
-        )}
+        {({ sessionToken }: any) => <$Header sessionToken={sessionToken} />}
       </Consumer>
     );
   }

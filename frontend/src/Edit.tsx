@@ -68,36 +68,37 @@ export default class Edit extends Component<EditProps, EditState> {
     this.handlePropsChange();
   }
   public render() {
+    const MyForm = ({ sessionToken }: any) => (
+      <Form onSubmit={this.handleSubmit(sessionToken)}>
+        <FormGroup>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <FontAwesomeIcon icon={faFile} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input
+              value={this.state.filename}
+              onChange={this.handleFilenameChange}
+            />
+          </InputGroup>
+        </FormGroup>
+        <FormGroup>
+          <Input
+            type="textarea"
+            onChange={this.handleSourceChange}
+            value={this.state.source}
+            rows={20}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Input type="submit" />
+        </FormGroup>
+      </Form>
+    );
     return (
       <Consumer>
-        {({ sessionToken }: { sessionToken?: string }) => (
-          <Form onSubmit={this.handleSubmit(sessionToken)}>
-            <FormGroup>
-              <InputGroup>
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <FontAwesomeIcon icon={faFile} />
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input
-                  value={this.state.filename}
-                  onChange={this.handleFilenameChange}
-                />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup>
-              <Input
-                type="textarea"
-                onChange={this.handleSourceChange}
-                value={this.state.source}
-                rows={20}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input type="submit" />
-            </FormGroup>
-          </Form>
-        )}
+        {({ sessionToken }: any) => <MyForm sessionTOken={sessionToken} />}
       </Consumer>
     );
   }

@@ -23,14 +23,17 @@ Api.prototype.auth = async function(username: string, password: string) {
         body, method: "POST",
     });
     if (response.status === 200) {
-        const json = response.json();
+        const json = await response.json();
         return json;
     } else {
         return null;
     }
 };
+interface EditBody {
+    content: string;
+}
 interface Api {
-    edit(filename: string, content: Blob): Promise<{} | null>;
+    edit(filename: string, content: Blob): Promise<EditBody | null>;
 }
 Api.prototype.edit = async function(filename: string, content: Blob) {
     if (this.sessionToken === undefined) {
@@ -58,23 +61,8 @@ interface Api {
 Api.prototype.src = async function(filename: string) {
     const response = await fetch(`${this.host}/src/${filename}`);
     if (response.status === 200) {
-        const body = await response.json();
-        return body;
-    } else {
-        return null;
-    }
-};
-interface HistoryBody {
-    history: Array<{ username: string, timestamp: string }>;
-}
-interface Api {
-    hist(filename: string): Promise<HistoryBody | null>;
-}
-Api.prototype.hist = async function(filename: string) {
-    const response = await fetch(`${this.host}/hist/${filename}`);
-    if (response.status) {
-        const body = await response.json();
-        return body;
+        const json = await response.json();
+        return json;
     } else {
         return null;
     }

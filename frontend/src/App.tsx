@@ -19,20 +19,21 @@ export default class App extends Component<{}, AppState> {
     this.state = {
       sessionToken: undefined,
     };
+    this.login = this.login.bind(this);
+  }
+  public async login(username: string, password: string) {
+    const api = new Api(location.href);
+    const response = await api.auth(username, password);
+    if (response) {
+      this.setState({ sessionToken: response.sessionToken });
+    } else {
+      this.setState({ sessionToken: undefined });
+    }
   }
   public render() {
-    const login = async (username: string, password: string) => {
-      const api = new Api(location.href);
-      const response = await api.auth(username, password);
-      if (response) {
-        this.setState({ sessionToken: response.sessionToken });
-      } else {
-        this.setState({ sessionToken: undefined });
-      }
-    };
     return (
       <Router>
-        <Provider value={{ sessionToken: this.state.sessionToken, login }}>
+        <Provider value={{ sessionToken: this.state.sessionToken, login: this.login }}>
           <Header />
           <Container style={{ marginTop: 20 }}>
             <Route path="/page/:filename" component={Page} />

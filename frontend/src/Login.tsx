@@ -37,40 +37,40 @@ export default class Login extends Component<LoginProps, LoginState> {
     };
   }
   public render() {
+    const $Login = ({sessionToken, login}: any) => (
+      sessionToken ? (
+        <Redirect to={this.props.location.state.from} />
+      ) : (
+        <Form onSubmit={this.handleSumbit(login)}>
+          <h1>Login</h1>
+          <FormGroup>
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <FontAwesomeIcon icon={faUser} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input placeholder="username" />
+            </InputGroup>
+          </FormGroup>
+          <FormGroup>
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <FontAwesomeIcon icon={faKey} />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input placeholder="username" />
+            </InputGroup>
+          </FormGroup>
+          <FormGroup>
+            <Input type="submit" />
+          </FormGroup>
+        </Form>
+    ));
     return (
       <Consumer>
-        {(context) =>
-          context.sessionToken ? (
-            <Redirect to={this.props.location.state.from} />
-          ) : (
-            <Form onSubmit={this.handleSumbit(context.login)}>
-              <h1>Login</h1>
-              <FormGroup>
-                <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <FontAwesomeIcon icon={faUser} />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input placeholder="username" />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <InputGroup>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <FontAwesomeIcon icon={faKey} />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input placeholder="username" />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <Input type="submit" />
-              </FormGroup>
-            </Form>
-          )
-        }
+        {(context) => <$Login sessionToken={context.sessionToken} login={context.login} />}
       </Consumer>
     );
   }

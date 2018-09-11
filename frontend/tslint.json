@@ -8,8 +8,7 @@
     "rules": {
         "interface-name": [true, "never-prefix"],
         "no-var-requires": false,
-        "no-submodule-imports": false,
-        "jsx-no-multiline-js": false
+        "no-submodule-imports": false
     },
     "rulesDirectory": []
 }

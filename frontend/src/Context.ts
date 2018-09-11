@@ -1,8 +1,11 @@
 import { createContext } from "react";
-export const { Provider, Consumer } = createContext<{
-  sessionToken?: string,
-  login: (username: string, password: string) => Promise<void>,
-}>({
+interface ContextPrams {
+  sessionToken?: string;
+  login: (username: string, password: string) => Promise<void>;
+}
+export const { Provider, Consumer } = createContext<ContextPrams>({
   sessionToken: undefined,
-  async login(username: string, password: string) { return; },
+  async login(username: string, password: string) {
+    return;
+  },
 });
