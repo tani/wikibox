@@ -12,7 +12,7 @@ class Api {
 ```
 
 ### Authorization
-- Request (`POST /auth/:username`)
+- Request (`POST /auth`)
     
     | Parameters |   Type   |
     | :--------- | :------- |
@@ -40,7 +40,7 @@ Api.prototype.auth = async function(username: string, password: string) {
     if (process.env.NODE_ENV === "development") {
         return { sessionToken: "development" };
     }
-    const response = await fetch(`${this.host}/auth/${username}`, {
+    const response = await fetch(`${this.host}/auth`, {
         body, method: "POST",
     });
     if (response.status === 200) {
@@ -53,7 +53,7 @@ Api.prototype.auth = async function(username: string, password: string) {
 ```
 
 ### Editing
-- Request (`POST /edit/:filename`)
+- Request (`POST /:filename`)
     
     |  Parameters  |   Type   |
     | :----------- | :------- |
@@ -82,7 +82,7 @@ Api.prototype.edit = async function(filename: string, content: Blob) {
     const body = new FormData();
     body.append("content", content);
     body.append("sessionToken", this.sessionToken);
-    const response = await fetch(`${this.host}/edit/${filename}`, {
+    const response = await fetch(`${this.host}/${filename}`, {
         body, method: "POST",
     });
     if (response.status === 200) {
@@ -95,7 +95,7 @@ Api.prototype.edit = async function(filename: string, content: Blob) {
 ```
 
 #### Source
-- Request (`GET /src/:filename`)
+- Request (`GET /:filename`)
     
     | Parameters |   Type   |
     | :--------- | :------- |
@@ -117,7 +117,7 @@ interface Api {
     src(filename: string): Promise<SourceBody | null>;
 }
 Api.prototype.src = async function(filename: string) {
-    const response = await fetch(`${this.host}/src/${filename}`);
+    const response = await fetch(`${this.host}/${filename}`);
     if (response.status === 200) {
         const json = await response.json();
         return json;
