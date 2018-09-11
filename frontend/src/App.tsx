@@ -1,36 +1,35 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
 import { HashRouter as Router, Route } from "react-router-dom";
-import Header from "./Header";
-import Page from "./Page";
+import { Container } from "reactstrap";
+import Api from "./api";
+import { Provider } from "./Context";
 import Edit from "./Edit";
 import Footer from "./Footer";
-import { Provider } from "./Context";
-import Api from "./api";
-import PrivateRoute from "./PrivateRoute";
+import Header from "./Header";
 import Login from "./Login";
+import Page from "./Page";
+import PrivateRoute from "./PrivateRoute";
 
-interface AppProps {}
 interface AppState {
-  sessionToken?: string
+  sessionToken?: string;
 }
-export default class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+export default class App extends Component<{}, AppState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
-      sessionToken: undefined
+      sessionToken: undefined,
     };
   }
-  render() {
+  public render() {
     const login = async (username: string, password: string) => {
       const api = new Api(location.href);
       const response = await api.auth(username, password);
-      if(response) {
+      if (response) {
         this.setState({ sessionToken: response.sessionToken });
       } else {
-        this.setState({ sessionToken: undefined })
+        this.setState({ sessionToken: undefined });
       }
-    }
+    };
     return (
       <Router>
         <Provider value={{ sessionToken: this.state.sessionToken, login }}>

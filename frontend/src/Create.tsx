@@ -1,14 +1,14 @@
-import React, { Component, ChangeEvent } from "react";
+import { faFile, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router";
 import {
   Form,
   FormGroup,
   Input,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
 } from "reactstrap";
-import { faFile, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface EditProps extends RouteComponentProps<{ filename: string }> {}
 interface EditState {
   filename: string;
@@ -21,9 +21,9 @@ export default class Edit extends Component<EditProps, EditState> {
     super(props);
     this.state = {
       filename: "",
+      password: "",
       source: "",
       username: "",
-      password: ""
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -31,38 +31,38 @@ export default class Edit extends Component<EditProps, EditState> {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
   }
-  async handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
+  public async handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
     const filename = event.target.value;
     this.setState({
-      filename
+      filename,
     });
   }
-  handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+  public handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const username = event.target.value;
     this.setState({
-      username
+      username,
     });
   }
-  handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+  public handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
     const password = event.target.value;
     this.setState({
-      password
+      password,
     });
   }
-  handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
+  public handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
     const source = event.target.value;
     this.setState({
-      source
+      source,
     });
   }
-  async handleSubmit() {
+  public async handleSubmit() {
     await fetch(`./${this.state.filename}`, {
+      body: JSON.stringify(this.state),
       method: "PUT",
-      body: JSON.stringify(this.state)
     });
     this.props.history.push(`/page/${this.state.filename}`);
   }
-  render() {
+  public render() {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormGroup>

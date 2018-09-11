@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
+import { Element, Link } from "react-scroll";
 import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
-import { Link, Element } from "react-scroll";
-import markdown from "./markdown";
 import slugify from "slugify";
+import markdown from "./markdown";
 const RemarkHighlightJs = require("remark-highlight.js");
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
@@ -14,7 +14,7 @@ interface PageProps extends RouteComponentProps<{ filename: string }> {}
 interface PageState {
   filename: string;
   source: string;
-  toc: { href: string; text: string; hlevel: number }[];
+  toc: Array<{ href: string; text: string; hlevel: number }>;
 }
 export default class Page extends Component<PageProps, PageState> {
   constructor(props: PageProps) {
@@ -22,39 +22,39 @@ export default class Page extends Component<PageProps, PageState> {
     this.state = {
       filename: props.match.params.filename,
       source: "",
-      toc: []
+      toc: [],
     };
   }
-  async updateSource() {
+  public async updateSource() {
     const response = await fetch(this.state.filename);
     const source = await response.text();
     const div = document.createElement("div");
     div.innerHTML = await markdown(source);
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
-      h => ({
+      (h) => ({
+        hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
         href: slugify(h.innerHTML),
         text: h.innerHTML,
-        hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""))
-      })
+      }),
     );
     this.setState({
       source,
-      toc
+      toc,
     });
   }
-  componentDidMount() {
+  public componentDidMount() {
     const filename = this.props.match.params.filename;
     this.setState({ filename });
     this.updateSource();
   }
-  componentWillReceiveProps() {
+  public componentWillReceiveProps() {
     const filename = this.props.match.params.filename;
     this.setState({ filename });
     this.updateSource();
   }
-  render() {
+  public render() {
     const renderers = {
-      headings(p: any) {
+      heading(p: any) {
         const Hn = `h${p.level}`;
         return (
           <Hn>
@@ -69,7 +69,7 @@ export default class Page extends Component<PageProps, PageState> {
       },
       inlineMath(p: any) {
         return <InlineMath math={p.value} />;
-      }
+      },
     };
     return (
       <Row>
@@ -84,16 +84,16 @@ export default class Page extends Component<PageProps, PageState> {
           <ul
             style={{
               borderLeft: "solid 1px rgba(32,32,32,0.2)",
-              position: "sticky",
-              top: 20,
+              listStyle: "none",
+              paddingBottom: 5,
               paddingLeft: 20,
               paddingTop: 5,
-              paddingBottom: 5,
-              listStyle: "none"
+              position: "sticky",
+              top: 20,
             }}
             className="d-none d-md-block"
           >
-            {this.state.toc.map(item => (
+            {this.state.toc.map((item) => (
               <li
                 style={{ paddingLeft: `${item.hlevel - 1}em` }}
                 key={item.text}
@@ -109,7 +109,7 @@ export default class Page extends Component<PageProps, PageState> {
           </ul>
           {/*
             <div style={{paddingLeft: 20}}>
-            [ <Link to={`/edit/${this.state.filename}`}>Edit</Link> 
+            [ <Link to={`/edit/${this.state.filename}`}>Edit</Link>
             / <Link to={`/create`}>Create</Link>
             / <Link to={`/delete/${this.state.filename}`}>Delete</Link>
             / <Link to={`/history/${this.state.filename}`}>History</Link> ]

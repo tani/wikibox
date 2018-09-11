@@ -9,5 +9,5 @@ export default promisify(
     .use(RemarkMath)
     .use(RemarkHTMLKatex)
     .use(RemarkHighlightJs)
-    .use(RemarkHTML).process
+    .use(RemarkHTML).process,
 ) as (_: string) => Promise<string>;

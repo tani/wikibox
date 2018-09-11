@@ -2,35 +2,34 @@ import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
-require("katex/dist/katex.css");
 
-interface FooterProps {}
 interface FooterState {
   source: string;
 }
-export default class Footer extends Component<FooterProps, FooterState> {
-  constructor(props: FooterProps) {
+export default class Footer extends Component<{}, FooterState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
-      source: ""
+      source: "",
     };
   }
-  componentDidMount() {
+  public componentDidMount() {
     (async () => {
       const response = await fetch("footer.md");
       const source = await response.text();
       this.setState({ source });
     })();
   }
-  render() {
+  public render() {
+    const renderers = {
+      inlineMath: (p: { value: any }) => <InlineMath math={p.value} />,
+      math: (p: { value: any }) => <BlockMath math={p.value} />,
+    };
     return (
       <ReactMarkdown
         source={this.state.source}
         plugins={[RemarkMath]}
-        renderers={{
-          math: p => <BlockMath math={p.value} />,
-          inlineMath: p => <InlineMath math={p.value} />
-        }}
+        renderers={renderers}
       />
     );
   }

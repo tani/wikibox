@@ -1,16 +1,16 @@
+import { faKey, faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
-import { Consumer } from "./Context";
+import { Redirect, RouteComponentProps } from "react-router";
 import {
   Form,
   FormGroup,
+  Input,
   InputGroup,
   InputGroupAddon,
-  Input,
-  InputGroupText
+  InputGroupText,
 } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faKey } from "@fortawesome/free-solid-svg-icons";
-import { RouteComponentProps, Redirect } from "react-router";
+import { Consumer } from "./Context";
 
 interface SecretProps extends RouteComponentProps<{}> {}
 
@@ -23,23 +23,27 @@ export default class Login extends Component<SecretProps, SecretState> {
   constructor(props: SecretProps) {
     super(props);
     this.state = {
+      password: "",
       username: "",
-      password: ""
+    };
+    this.handleSumbit = this.handleSumbit.bind(this);
+  }
+  public handleSumbit(
+    login: (username: string, password: string) => Promise<void>,
+  ) {
+    return async () => {
+      login(this.state.username, this.state.password);
+      return false;
     };
   }
-  render() {
+  public render() {
     return (
       <Consumer>
-        {context =>
+        {(context) =>
           context.sessionToken ? (
             <Redirect to={this.props.location.state.from} />
           ) : (
-            <Form
-              onSubmit={async () => {
-                context.login(this.state.username, this.state.password);
-                return false;
-              }}
-            >
+            <Form onSubmit={this.handleSumbit(context.login)}>
               <h1>Login</h1>
               <FormGroup>
                 <InputGroup>

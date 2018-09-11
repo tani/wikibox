@@ -1,111 +1,114 @@
+import { fromNullable } from "fp-ts/lib/Option";
+import React, { Component } from "react";
 import {
-  Nav,
-  Navbar,
-  NavItem,
-  NavLink,
-  DropdownToggle,
-  UncontrolledDropdown,
+  Collapse,
   DropdownItem,
   DropdownMenu,
+  DropdownToggle,
+  Nav,
+  Navbar,
   NavbarBrand,
   NavbarToggler,
-  Collapse
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
 } from "reactstrap";
-import React, { Component } from "react";
-import { fromNullable } from "fp-ts/lib/Option";
-import markdown from "./markdown";
 import { Consumer } from "./Context";
+import markdown from "./markdown";
 
-interface HeaderProps {}
 interface HeaderState {
   isOpen: boolean;
   title: string;
-  navigation: {
+  navigation: Array<{
     href: string;
     text: string;
-    subnavigation: { href: string; text: string }[];
-  }[];
+    subnavigation: Array<{ href: string; text: string }>;
+  }>;
 }
 
-export default class Header extends Component<HeaderProps, HeaderState> {
-  constructor(props: HeaderProps) {
+export default class Header extends Component<{}, HeaderState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       isOpen: false,
+      navigation: [],
       title: "",
-      navigation: []
     };
     this.handleTogglerClick = this.handleTogglerClick.bind(this);
   }
-  handleTogglerClick() {
+  public handleTogglerClick() {
     const isOpen = !this.state.isOpen;
     this.setState({
-      isOpen
+      isOpen,
     });
   }
-  componentDidMount() {
+  public componentDidMount() {
     (async () => {
       const response = await fetch("./header.md");
       const source = await response.text();
       const div = document.createElement("div");
       div.innerHTML = await markdown(source);
       const h1 = fromNullable(div.querySelector("h1"))
-        .map(_ => _.innerHTML)
+        .map(($h1) => $h1.innerHTML)
         .getOrElse("");
       const title = fromNullable(document.querySelector("title"))
-        .map(_ => (_.innerHTML = h1))
+        .map(($title) => ($title.innerHTML = h1))
         .getOrElse("");
       const navigation = fromNullable(div.querySelector("ul"))
-        .map(_ =>
-          Array.from(_.children).map(item => {
-            const subnavigation = Array.from(item.querySelectorAll("li")).map(
-              subitem => {
-                const a = fromNullable(subitem.querySelector("a"));
+        .map((ul) =>
+          Array.from(ul.children).map((child) => {
+            const subnavigation = Array.from(child.querySelectorAll("li")).map(
+              (subitem) => {
+                const b = fromNullable(subitem.querySelector("a"));
                 return {
-                  href: a.map(_ => _.href).getOrElse(""),
-                  text: a.map(_ => _.innerHTML).getOrElse("")
+                  href: b.map(($b) => $b.href).getOrElse(""),
+                  text: b.map(($b) => $b.innerHTML).getOrElse(""),
                 };
-              }
+              },
             );
-            const a = fromNullable(item.querySelector("a"));
+            const a = fromNullable(child.querySelector("a"));
             return {
-              href: a.map(_ => _.href).getOrElse(""),
-              text: a.map(_ => _.innerHTML).getOrElse(""),
-              subnavigation
+              href: a.map(($a) => $a.href).getOrElse(""),
+              subnavigation,
+              text: a.map(($a) => $a.innerHTML).getOrElse(""),
             };
-          })
+          }),
         )
         .getOrElse([]);
       this.setState({
+        navigation,
         title,
-        navigation
       });
     })();
   }
-  render() {
+  public render() {
     return (
       <Consumer>
         {({ sessionToken }) => (
-          <Navbar color={sessionToken?"success":"primary"} dark expand="md">
+          <Navbar
+            color={sessionToken ? "success" : "primary"}
+            dark={true}
+            expand="md"
+          >
             <NavbarToggler onClick={this.handleTogglerClick} />
             <NavbarBrand href="./" className="text-light">
               {this.state.title}
             </NavbarBrand>
-            <Collapse navbar isOpen={this.state.isOpen}>
-              <Nav navbar>
+            <Collapse navbar={true} isOpen={this.state.isOpen}>
+              <Nav navbar={true}>
                 {this.state.navigation.map(
-                  item =>
+                  (item) =>
                     item.subnavigation.length === 0 ? (
                       <NavItem key={item.text}>
                         <NavLink href={item.href}>{item.text}</NavLink>
                       </NavItem>
                     ) : (
-                      <UncontrolledDropdown key={item.text} inNavbar>
-                        <DropdownToggle nav caret>
+                      <UncontrolledDropdown key={item.text} inNavbar={true}>
+                        <DropdownToggle nav={true} caret={true}>
                           {item.text}
                         </DropdownToggle>
                         <DropdownMenu>
-                          {item.subnavigation.map(subitem => (
+                          {item.subnavigation.map((subitem) => (
                             <DropdownItem key={subitem.text}>
                               <NavLink href={subitem.href}>
                                 {subitem.text}
@@ -114,7 +117,7 @@ export default class Header extends Component<HeaderProps, HeaderState> {
                           ))}
                         </DropdownMenu>
                       </UncontrolledDropdown>
-                    )
+                    ),
                 )}
               </Nav>
             </Collapse>

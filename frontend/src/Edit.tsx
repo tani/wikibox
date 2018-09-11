@@ -1,17 +1,17 @@
-import React, { Component, ChangeEvent } from "react";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router";
 import {
   Form,
   FormGroup,
   Input,
   InputGroup,
-  InputGroupText,
   InputGroupAddon,
+  InputGroupText,
 } from "reactstrap";
-import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Consumer } from "./Context";
 import Api from "./api";
+import { Consumer } from "./Context";
 interface EditProps extends RouteComponentProps<{ filename: string }> {}
 interface EditState {
   filename: string;
@@ -25,53 +25,53 @@ export default class Edit extends Component<EditProps, EditState> {
     super(props);
     this.state = {
       filename: this.props.match.params.filename,
+      password: "",
       source: "",
       username: "",
-      password: ""
     };
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit(sessionToken?: string) {
+  public handleSubmit(sessionToken?: string) {
     return async () => {
-      await (new Api(location.href, sessionToken)).edit(
+      await new Api(location.href, sessionToken).edit(
         this.state.filename,
-        new Blob([this.state.source], { type: "text/plain" })
+        new Blob([this.state.source], { type: "text/plain" }),
       );
       this.props.history.push(`/page/${this.state.filename}`);
     };
   }
-  async handlePropsChange() {
+  public async handlePropsChange() {
     const response = await fetch(`./${this.props.match.params.filename}`);
     const source = await response.text();
     this.setState({
-      source
+      source,
     });
   }
-  handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
+  public handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
     const filename = event.target.value;
     this.setState({
-      filename
+      filename,
     });
   }
-  handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
+  public handleSourceChange(event: ChangeEvent<HTMLInputElement>) {
     const source = event.target.value;
     this.setState({
-      source
+      source,
     });
   }
-  componentDidMount() {
+  public componentDidMount() {
     this.handlePropsChange();
   }
-  componentWillReceiveProps() {
+  public componentWillReceiveProps() {
     this.handlePropsChange();
   }
-  render() {
+  public render() {
     return (
       <Consumer>
-        {context => (
-          <Form onSubmit={this.handleSubmit(context.sessionToken)}>
+        {({ sessionToken }: { sessionToken?: string }) => (
+          <Form onSubmit={this.handleSubmit(sessionToken)}>
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -79,7 +79,10 @@ export default class Edit extends Component<EditProps, EditState> {
                     <FontAwesomeIcon icon={faFile} />
                   </InputGroupText>
                 </InputGroupAddon>
-                <Input value={this.state.filename} onChange={this.handleFilenameChange} />
+                <Input
+                  value={this.state.filename}
+                  onChange={this.handleFilenameChange}
+                />
               </InputGroup>
             </FormGroup>
             <FormGroup>
