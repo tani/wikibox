@@ -33,9 +33,9 @@ export default class Edit extends Component<EditProps, EditState> {
     this.handleSourceChange = this.handleSourceChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit(api: Api) {
+  handleSubmit(sessionToken?: string) {
     return async () => {
-      await api.edit(
+      await (new Api(location.href, sessionToken)).edit(
         this.state.filename,
         new Blob([this.state.source], { type: "text/plain" })
       );
@@ -71,7 +71,7 @@ export default class Edit extends Component<EditProps, EditState> {
     return (
       <Consumer>
         {context => (
-          <Form onSubmit={this.handleSubmit(context.api)}>
+          <Form onSubmit={this.handleSubmit(context.sessionToken)}>
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">

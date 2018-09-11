@@ -10,15 +10,16 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons";
+import { RouteComponentProps, Redirect } from "react-router";
 
-interface SecretProps {}
+interface SecretProps extends RouteComponentProps<{}> {}
 
 interface SecretState {
   username: string;
   password: string;
 }
 
-export default class Secret extends Component<SecretProps, SecretState> {
+export default class Login extends Component<SecretProps, SecretState> {
   constructor(props: SecretProps) {
     super(props);
     this.state = {
@@ -30,11 +31,11 @@ export default class Secret extends Component<SecretProps, SecretState> {
     return (
       <Consumer>
         {context =>
-          context.api.isAuthorized ? (
-            this.props.children
+          context.sessionToken ? (
+            <Redirect to={this.props.location.state.from} />
           ) : (
             <Form
-              onSubmit={() => {
+              onSubmit={async () => {
                 context.login(this.state.username, this.state.password);
                 return false;
               }}

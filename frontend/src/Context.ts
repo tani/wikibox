@@ -1,6 +1,8 @@
 import { createContext } from "react";
-import Api from "./api";
-export const { Provider, Consumer } = createContext({
-  api: new Api(),
+export const { Provider, Consumer } = createContext<{
+  sessionToken?: string,
+  login: (username: string, password: string) => Promise<void>
+}>({
+  sessionToken: undefined,
   async login(username: string, password: string) {}
 });

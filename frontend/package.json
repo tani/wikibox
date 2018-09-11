@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
-    "frontend:generate": "pcregrep -o -M '```typescript[\\s\\S]*?```' resource/api.md | grep -v '```' > src/api.ts",
-    "frontend:start": "THEME=yeti webpack-dev-server --mode=development --hot"
+    "prestart": "pcregrep -o -M '```typescript[\\s\\S]*?```' resource/api.md | grep -v '```' > src/api.ts",
+    "start": "THEME=yeti webpack-dev-server --mode=development --hot"
   },
   "repository": {
     "type": "git",

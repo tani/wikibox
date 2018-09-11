@@ -14,6 +14,7 @@ import {
 import React, { Component } from "react";
 import { fromNullable } from "fp-ts/lib/Option";
 import markdown from "./markdown";
+import { Consumer } from "./Context";
 
 interface HeaderProps {}
 interface HeaderState {
@@ -83,35 +84,43 @@ export default class Header extends Component<HeaderProps, HeaderState> {
   }
   render() {
     return (
-      <Navbar color="primary" dark expand="md">
-        <NavbarToggler onClick={this.handleTogglerClick} />
-        <NavbarBrand href="./" className="text-light">{this.state.title}</NavbarBrand>
-        <Collapse navbar isOpen={this.state.isOpen}>
-          <Nav navbar>
-            {this.state.navigation.map(
-              item =>
-                item.subnavigation.length === 0 ? (
-                  <NavItem key={item.text}>
-                    <NavLink href={item.href}>{item.text}</NavLink>
-                  </NavItem>
-                ) : (
-                  <UncontrolledDropdown key={item.text} inNavbar>
-                    <DropdownToggle nav caret>
-                      {item.text}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {item.subnavigation.map(subitem => (
-                        <DropdownItem key={subitem.text}>
-                          <NavLink href={subitem.href}>{subitem.text}</NavLink>
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                )
-            )}
-          </Nav>
-        </Collapse>
-      </Navbar>
+      <Consumer>
+        {({ sessionToken }) => (
+          <Navbar color={sessionToken?"success":"primary"} dark expand="md">
+            <NavbarToggler onClick={this.handleTogglerClick} />
+            <NavbarBrand href="./" className="text-light">
+              {this.state.title}
+            </NavbarBrand>
+            <Collapse navbar isOpen={this.state.isOpen}>
+              <Nav navbar>
+                {this.state.navigation.map(
+                  item =>
+                    item.subnavigation.length === 0 ? (
+                      <NavItem key={item.text}>
+                        <NavLink href={item.href}>{item.text}</NavLink>
+                      </NavItem>
+                    ) : (
+                      <UncontrolledDropdown key={item.text} inNavbar>
+                        <DropdownToggle nav caret>
+                          {item.text}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          {item.subnavigation.map(subitem => (
+                            <DropdownItem key={subitem.text}>
+                              <NavLink href={subitem.href}>
+                                {subitem.text}
+                              </NavLink>
+                            </DropdownItem>
+                          ))}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    )
+                )}
+              </Nav>
+            </Collapse>
+          </Navbar>
+        )}
+      </Consumer>
     );
   }
 }
