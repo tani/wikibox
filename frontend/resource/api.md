@@ -13,12 +13,14 @@ class Api {
 
 ### Authorization
 - Request (`POST /auth/:username`)
+    
     | Parameters |   Type   |
     | :--------- | :------- |
     | usernmae   | `string` |
     | password   | `string` |
 
 - Response
+    
     | Status |            body            |    Meaning     |
     | :----- | :------------------------- | :------------- |
     | 200    | `{ sessionToken: string }` | Authorized     |
@@ -52,6 +54,7 @@ Api.prototype.auth = async function (username: string, password: string) {
 
 ### Editing
 - Request (`POST /edit/:filename`)
+    
     |  Parameters  |     Type      |
     | :----------- | :------------ |
     | filename     | `string`      |
@@ -59,6 +62,7 @@ Api.prototype.auth = async function (username: string, password: string) {
     | content      | `Blob`        |
 
 - Response
+    
     | Status | Content |   Meaning   |
     | :----- | :------ | :---------- |
     | 200    | `{}`    | Edited      |
@@ -90,11 +94,13 @@ Api.prototype.edit = async function (filename: string, content: Blob) {
 
 #### Source
 - Request (`GET /src/:filename`)
+    
     | Parameters |   Type   |
     | :--------- | :------- |
     | filename   | `string` |
 
-- Response
+- Response  
+    
     | Status |        Content        |       Meaning       |
     | :----- | :-------------------- | :------------------ |
     | 200    | `{ content: string }` | content of filename |
@@ -121,11 +127,13 @@ Api.prototype.src = async function(filename: string) {
 
 #### History
 - Request (`GET /hist/:filename`)
+    
     | Parameters |   Type   |
     | :--------- | :------- |
     | filename   | `string` |
 
 - Response
+    
     | Status |                         Content                          |       Meaning       |
     | :----- | :------------------------------------------------------- | :------------------ |
     | 200    | `{ history: { username: string, timestamp: string }[] }` | history of filename |
