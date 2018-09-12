@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^\.htaccess$|\.css(\.map)?$|\.js(\.map)?$|\.json$|\.html$">
+  deny from all
+</FilesMatch>

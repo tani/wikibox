@@ -35,7 +35,7 @@ export default class Edit extends Component<EditProps, EditState> {
   }
   public handleSubmit(sessionToken?: string) {
     return async () => {
-      await new Api(location.href, sessionToken).edit(
+      await new Api(sessionToken).edit(
         this.state.filename,
         new Blob([this.state.source], { type: "text/plain" })
       );

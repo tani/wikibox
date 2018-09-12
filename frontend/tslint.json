@@ -9,7 +9,8 @@
     "rules": {
         "interface-name": [true, "never-prefix"],
         "no-var-requires": false,
-        "no-submodule-imports": false
+        "no-submodule-imports": false,
+        "only-arrow-functions": false
     },
     "rulesDirectory": []
 }

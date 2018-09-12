@@ -22,7 +22,7 @@ export default class App extends Component<{}, AppState> {
     this.login = this.login.bind(this);
   }
   public async login(username: string, password: string) {
-    const api = new Api(location.href);
+    const api = new Api();
     const response = await api.auth(username, password);
     if (response) {
       this.setState({ sessionToken: response.sessionToken });
