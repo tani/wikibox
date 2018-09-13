@@ -4,34 +4,28 @@ class Api {
         this.sessionToken = sessionToken;
     }
 }
-interface AuthBody {
-    sessionToken: string;
-}
 interface Api {
-    auth(username: string, password: string): Promise<AuthBody | null>;
+    token(username: string, password: string): Promise<string | null>;
 }
-Api.prototype.auth = async function(username: string, password: string) {
+Api.prototype.token = async function(username: string, password: string) {
     const body = new FormData();
     body.append("username", username);
     body.append("password", password);
     if (process.env.NODE_ENV === "development") {
-        return { sessionToken: "development" };
+        return "development";
     }
-    const response = await fetch(`./auth`, {
+    const response = await fetch(`./token`, {
         body, method: "POST",
     });
     if (response.status === 200) {
-        const json = await response.json();
-        return json;
+        const text = await response.text();
+        return text;
     } else {
         return null;
     }
 };
-interface EditBody {
-    content: string;
-}
 interface Api {
-    edit(filename: string, content: Blob): Promise<EditBody | null>;
+    edit(filename: string, content: Blob): Promise<string | null>;
 }
 Api.prototype.edit = async function(filename: string, content: Blob) {
     if (this.sessionToken === undefined) {
@@ -44,23 +38,20 @@ Api.prototype.edit = async function(filename: string, content: Blob) {
         body, method: "PUT",
     });
     if (response.status === 200) {
-        const json = await response.json();
-        return json;
+        const text = await response.text();
+        return text;
     } else {
         return null;
     }
 };
-interface SourceBody {
-    content: string;
-}
 interface Api {
-    src(filename: string): Promise<SourceBody | null>;
+    src(filename: string): Promise<string | null>;
 }
 Api.prototype.src = async function(filename: string) {
     const response = await fetch(`./data/${filename}`);
     if (response.status === 200) {
-        const json = await response.json();
-        return json;
+        const text = await response.text();
+        return text;
     } else {
         return null;
     }

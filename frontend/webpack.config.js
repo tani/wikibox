@@ -2,8 +2,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const Path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
-  mode: "production",
+  mode: process.env.NODE_ENV,
   entry: {
     bundle: "./src/index.tsx"
   },
@@ -58,16 +60,22 @@ module.exports = {
     ]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: Path.resolve(`${__dirname}/src/index.html`)
+    }),
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].css"
     }),
     new CopyWebpackPlugin([
-      { from: "resource/*.*", to: "[name].[ext]" },
-      { from: Path.resolve(`${__dirname}/../README.md`), to: "index.md" }
+      {
+        from: Path.resolve(`${__dirname}/../data/*.md`),
+        to: "data/[name].[ext]"
+      },
+      { from: Path.resolve(`${__dirname}/../README.md`), to: "data/index.md" }
     ])
   ],
-  devtool: "source-map",
+  devtool: process.env.NODE_ENV === "development" ? "source-map" : "none",
   devServer: {
     contentBase: Path.resolve(`${__dirname}/build/${process.env.THEME}/`),
     hot: true,

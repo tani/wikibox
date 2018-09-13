@@ -12,15 +12,35 @@ exec ros -Q -- $0 "$@"
   (:use :cl))
 (in-package :ros.script.wikibox.3745654346)
 
-(defun getparams (params key)
+(defun getparam (params key)
   (cdr (assoc key params :test #'string=)))
 
+(defvar *sessionTokens* '())
+
+(defvar *accounts* '())
+
 (defvar *app* (make-instance 'ningle:<app>))
+(setf (ningle:route *app* "/auth" :method :POST)
+  (lambda (params)
+    (declare (ignorable params))
+    (let ((username (getparam params "username"))
+          (password (getparam params "password")))
+      )))
+
+(setf (ningle:route *app* "/:filename" :method :POST)
+  (lambda (params)
+    (declare (ignorable params))
+    (let ((filename (getparam params "filename"))
+          (sessionToken (getparam params "sessionToken")
+          (content (getparam params "content"))))
+      (alexandria:write-file-with-stirng filename content))))
 
 (setf (ningle:route *app* "/:filename" :method :GET)
-      (lambda (params)
-        (let ((filename (getparams params "filename")))
-          (alexandria:read-file-into-string filename))))
+  (lambda (params)
+    (let ((filename (getparam params "filename")))
+      (declare (ignorable params))
+      (if ())
+      (alexandria:reaf-file-into-string filename))))
 
 (defun main (&rest argv)
   (declare (ignorable argv))

@@ -1,4 +1,10 @@
 Options -Indexes
-<FilesMatch "^\.htaccess$|\.css(\.map)?$|\.js(\.map)?$|\.json$|\.html$">
-  deny from all
-</FilesMatch>
+DirectoryIndex index.html
+<Files ~ ".(htaccess|json)$">
+deny from all
+</Files>
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} ^(POST|PUT|DELETE)$
+RewriteRule ^([a-z]+)$ $1.php [L]
+RewriteCond %{REQUEST_METHOD} ^(POST|PUT|DELETE)$
+RewriteRule ^([a-z]+)/(.+)$ $1.php/$2 [L]

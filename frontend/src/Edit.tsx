@@ -1,5 +1,6 @@
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fromNullable } from "fp-ts/lib/Option";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router";
 import {
@@ -31,9 +32,12 @@ export default class Edit extends Component<EditProps, EditState> {
     };
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUploadClick = this.handleUploadClick.bind(this);
   }
-  public handleSubmit(sessionToken?: string) {
+  public handleSubmit(){
+    return false;
+  }
+  public handleUploadClick(sessionToken?: string) {
     return async () => {
       await new Api(sessionToken).edit(
         this.state.filename,
@@ -43,11 +47,9 @@ export default class Edit extends Component<EditProps, EditState> {
     };
   }
   public async handlePropsChange() {
-    const response = await fetch(`./${this.props.match.params.filename}`);
-    const source = await response.text();
-    this.setState({
-      source
-    });
+    const api = new Api();
+    const response = await api.src(this.props.match.params.filename);
+    this.setState({ source: response || "" });
   }
   public handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
     const filename = event.target.value;
@@ -68,8 +70,8 @@ export default class Edit extends Component<EditProps, EditState> {
     this.handlePropsChange();
   }
   public render() {
-    const MyForm = ({ sessionToken }: any) => (
-      <Form onSubmit={this.handleSubmit(sessionToken)}>
+    return (
+      <Form onSubmit={this.handleSubmit}>
         <FormGroup>
           <InputGroup>
             <InputGroupAddon addonType="prepend">
@@ -92,14 +94,17 @@ export default class Edit extends Component<EditProps, EditState> {
           />
         </FormGroup>
         <FormGroup>
-          <Input type="submit" />
+          <Consumer>
+            {({ sessionToken }: any) => (
+              <Input
+                type="button"
+                value="Upload"
+                onClick={this.handleUploadClick(sessionToken)}
+              />
+            )}
+          </Consumer>
         </FormGroup>
       </Form>
-    );
-    return (
-      <Consumer>
-        {({ sessionToken }: any) => <MyForm sessionTOken={sessionToken} />}
-      </Consumer>
     );
   }
 }

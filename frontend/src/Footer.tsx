@@ -1,5 +1,7 @@
+import { fromNullable } from "fp-ts/lib/Option";
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
+import Api from "./api";
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
 
@@ -15,9 +17,9 @@ export default class Footer extends Component<{}, FooterState> {
   }
   public componentDidMount() {
     (async () => {
-      const response = await fetch("footer.md");
-      const source = await response.text();
-      this.setState({ source });
+      const api = new Api();
+      const response = await api.src("footer.md");
+      this.setState({ source: response || "" });
     })();
   }
   public render() {

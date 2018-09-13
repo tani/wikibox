@@ -1,3 +1,4 @@
+import { fromNullable } from "fp-ts/lib/Option";
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
@@ -5,6 +6,7 @@ import { Element, Link } from "react-scroll";
 import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import slugify from "slugify";
+import Api from "./api";
 import markdown from "./markdown";
 const RemarkHighlightJs = require("remark-highlight.js");
 const RemarkMath = require("remark-math");
@@ -26,10 +28,10 @@ export default class Page extends Component<PageProps, PageState> {
     };
   }
   public async updateSource() {
-    const response = await fetch(this.state.filename);
-    const source = await response.text();
+    const api = new Api();
+    const response = await api.src(this.state.filename);
     const div = document.createElement("div");
-    div.innerHTML = await markdown(source);
+    div.innerHTML = await markdown(response || "");
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
       h => ({
         hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
@@ -38,7 +40,7 @@ export default class Page extends Component<PageProps, PageState> {
       })
     );
     this.setState({
-      source,
+      source: response || "",
       toc
     });
   }

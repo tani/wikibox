@@ -1,6 +1,6 @@
 import { faKey, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { Component } from "react";
+import React, { ChangeEvent, Component } from "react";
 import { Redirect, RouteComponentProps } from "react-router";
 import {
   Form,
@@ -26,9 +26,10 @@ export default class Login extends Component<LoginProps, LoginState> {
       password: "",
       username: ""
     };
-    this.handleSumbit = this.handleSumbit.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
-  public handleSumbit(
+  public handleSubmitClick(
     login: (username: string, password: string) => Promise<void>
   ) {
     return async () => {
@@ -36,44 +37,69 @@ export default class Login extends Component<LoginProps, LoginState> {
       return false;
     };
   }
+  public handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+    const username = event.target.value;
+    this.setState({
+      username
+    });
+  }
+  public handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    const password = event.target.value;
+    this.setState({
+      password
+    });
+  }
   public render() {
-    const $Login = ({ sessionToken, login }: any) =>
-      sessionToken ? (
+    const $Login = ({ sessionToken, login }: any) => {
+      return sessionToken ? (
         <Redirect to={this.props.location.state.from} />
       ) : (
-        <Form onSubmit={this.handleSumbit(login)}>
-          <h1>Login</h1>
-          <FormGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <FontAwesomeIcon icon={faUser} />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input placeholder="username" />
-            </InputGroup>
-          </FormGroup>
-          <FormGroup>
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <FontAwesomeIcon icon={faKey} />
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input placeholder="username" />
-            </InputGroup>
-          </FormGroup>
-          <FormGroup>
-            <Input type="submit" />
-          </FormGroup>
-        </Form>
+        <Input type="button" value="Login" onClick={this.handleSubmitClick(login)} />
       );
+    };
     return (
-      <Consumer>
-        {context => (
-          <$Login sessionToken={context.sessionToken} login={context.login} />
-        )}
-      </Consumer>
+      <Form>
+        <h1>Login</h1>
+        <FormGroup>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <FontAwesomeIcon icon={faUser} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input
+              value={this.state.username}
+              placeholder="username"
+              onChange={this.handleUsernameChange}
+            />
+          </InputGroup>
+        </FormGroup>
+        <FormGroup>
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <FontAwesomeIcon icon={faKey} />
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input
+              value={this.state.password}
+              placeholder="password"
+              type="password"
+              onChange={this.handlePasswordChange}
+            />
+          </InputGroup>
+        </FormGroup>
+        <FormGroup>
+          <Consumer>
+            {context => (
+              <$Login
+                sessionToken={context.sessionToken}
+                login={context.login}
+              />
+            )}
+          </Consumer>
+        </FormGroup>
+      </Form>
     );
   }
 }

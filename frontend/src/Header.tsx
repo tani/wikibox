@@ -13,6 +13,7 @@ import {
   NavLink,
   UncontrolledDropdown
 } from "reactstrap";
+import Api from "./api";
 import { Consumer } from "./Context";
 import markdown from "./markdown";
 
@@ -44,10 +45,10 @@ export default class Header extends Component<{}, HeaderState> {
   }
   public componentDidMount() {
     (async () => {
-      const response = await fetch("./header.md");
-      const source = await response.text();
+      const api = new Api();
+      const response = await api.src("header.md");
       const div = document.createElement("div");
-      div.innerHTML = await markdown(source);
+      div.innerHTML = await markdown(response || "");
       const h1 = fromNullable(div.querySelector("h1"))
         .map($h1 => $h1.innerHTML)
         .getOrElse("");
