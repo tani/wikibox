@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { Redirect, Route } from "react-router";
+import { HashRouter as Router } from "react-router-dom";
 import { Container } from "reactstrap";
 import Api from "./api";
 import { Provider } from "./Context";
@@ -31,6 +32,7 @@ export default class App extends Component<{}, AppState> {
     }
   }
   public render() {
+    const Default = () => (<Redirect to="/page/index.md"/>);
     return (
       <Router>
         <Provider
@@ -38,6 +40,7 @@ export default class App extends Component<{}, AppState> {
         >
           <Header />
           <Container style={{ marginTop: 20 }}>
+            <Route exact={true} path="/" component={Default}/>
             <Route path="/page/:filename" component={Page} />
             <PrivateRoute path="/edit/:filename" component={Edit} />
             <Route path="/login" component={Login} />

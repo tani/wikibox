@@ -28,6 +28,7 @@ export default class Login extends Component<LoginProps, LoginState> {
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.props.location.state = { from: this.props.location.state && this.props.location.state.from || "/" };
   }
   public handleSubmitClick(
     login: (username: string, password: string) => Promise<void>

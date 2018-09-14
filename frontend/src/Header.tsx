@@ -86,7 +86,7 @@ export default class Header extends Component<{}, HeaderState> {
     const $HeaderItems = this.state.navigation.map(item => {
       if (item.subnavigation.length === 0) {
         return (
-          <NavItem>
+          <NavItem key={item.text}>
             <NavLink href={item.href}>{item.text}</NavLink>
           </NavItem>
         );

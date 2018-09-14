@@ -9,23 +9,22 @@ interface PrivateRouteProps extends RouteProps {
 export default class PrivateRoute extends Component<PrivateRouteProps, {}> {
   public render() {
     const { component: PrivateComponent, ...rest } = this.props;
-    const destination = (from: string) => ({
-      pathname: "/login",
-      state: { from }
-    });
-    const $PrivateRoute = ({ sessionToken, ...props }: any) =>
-      sessionToken ? (
-        <PrivateComponent {...props} />
-      ) : (
-        <Redirect to={destination(props.location)} />
-      );
-    const render = (props: any) => (
+    const $render = (props: any) => (
       <Consumer>
-        {context => (
-          <$PrivateRoute sessionToken={context.sessionToken} {...props} />
-        )}
+        {({ sessionToken }) =>
+          sessionToken ? (
+            <PrivateComponent {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
       </Consumer>
     );
-    return <Route {...rest} render={render} />;
+    return <Route {...rest} render={$render} />;
   }
 }
