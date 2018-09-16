@@ -13,8 +13,8 @@ export default class PrivateRoute extends Component<PrivateRouteProps, {}> {
       pathname: "/login",
       state: { from }
     });
-    const $PrivateRoute = ({ sessionToken, ...props }: any) =>
-      sessionToken ? (
+    const $PrivateRoute = ({ token, ...props }: any) =>
+      token ? (
         <PrivateComponent {...props} />
       ) : (
         <Redirect to={destination(props.location)} />
@@ -22,7 +22,7 @@ export default class PrivateRoute extends Component<PrivateRouteProps, {}> {
     const render = (props: any) => (
       <Consumer>
         {context => (
-          <$PrivateRoute sessionToken={context.sessionToken} {...props} />
+          <$PrivateRoute token={context.token} {...props} />
         )}
       </Consumer>
     );

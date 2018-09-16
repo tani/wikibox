@@ -106,9 +106,9 @@ export default class Header extends Component<{}, HeaderState> {
         );
       }
     });
-    const $Header = ({ sessionToken }: any) => (
+    const $Header = ({ token }: any) => (
       <Navbar
-        color={sessionToken ? "success" : "primary"}
+        color={token ? "success" : "primary"}
         dark={true}
         expand="md"
       >
@@ -123,7 +123,7 @@ export default class Header extends Component<{}, HeaderState> {
     );
     return (
       <Consumer>
-        {({ sessionToken }: any) => <$Header sessionToken={sessionToken} />}
+        {({ token }: any) => <$Header token={token} />}
       </Consumer>
     );
   }

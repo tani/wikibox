@@ -15,7 +15,7 @@ exec ros -Q -- $0 "$@"
 (defun getparam (params key)
   (cdr (assoc key params :test #'string=)))
 
-(defvar *sessionTokens* '())
+(defvar *tokens* '())
 
 (defvar *accounts* '())
 
@@ -31,7 +31,7 @@ exec ros -Q -- $0 "$@"
   (lambda (params)
     (declare (ignorable params))
     (let ((filename (getparam params "filename"))
-          (sessionToken (getparam params "sessionToken")
+          (token (getparam params "token")
           (content (getparam params "content"))))
       (alexandria:write-file-with-stirng filename content))))
 
