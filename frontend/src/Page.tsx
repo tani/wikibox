@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
 import { Element, Link } from "react-scroll";
-import { Row } from "reactstrap";
+import { Row, Table } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import slugify from "slugify";
 import Api from "./api";
@@ -87,6 +87,9 @@ export default class Page extends Component<PageProps, PageState> {
             </Element>
           </Hn>
         );
+      },
+      table(p: any) {
+        return <Table>{p.children}</Table>;
       },
       math(p: any) {
         return <BlockMath math={p.value} />;
