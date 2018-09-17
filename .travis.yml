@@ -9,7 +9,7 @@ script:
   - make
 deploy:
   provider: pages
-  local-dir: ./docs/
+  local-dir: ./build/
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   on:
