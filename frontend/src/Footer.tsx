@@ -17,7 +17,7 @@ export default class Footer extends Component<{}, FooterState> {
   public componentDidMount() {
     (async () => {
       const api = new Api();
-      const response = await api.src("footer.md");
+      const response = await api.getData("footer.md");
       this.setState({ source: response || "" });
     })();
   }

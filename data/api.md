@@ -21,14 +21,14 @@ class Api {
     
     | Status |          body          |    Meaning     |
     | :----- | :--------------------- | :------------- |
-    | 200    | `token: string` | Authorized     |
+    | 200    | `token: string`        | Authorized     |
     | 401    | `null`                 | Not authorized |
 
 ```typescript
 interface Api {
-    login(username: string, password: string): Promise<string | null>;
+    postToken(username: string, password: string): Promise<string | null>;
 }
-Api.prototype.login = async function(username: string, password: string) {
+Api.prototype.postToken = async function(username: string, password: string) {
     const body = new URLSearchParams();
     body.append("username", username);
     body.append("password", password);
@@ -47,7 +47,7 @@ Api.prototype.login = async function(username: string, password: string) {
 };
 ```
 
-### Editing
+### postDataing
 - Request (`POST ./data/:filename`)
     
     |  Parameters  |   Type   |
@@ -58,16 +58,16 @@ Api.prototype.login = async function(username: string, password: string) {
 
 - Response
     
-    | Status |      Content      |   Meaning   |
-    | :----- | :---------------- | :---------- |
-    | 200    | `content: string` | Edited      |
-    | 401    | `null`            | Didn't edit |
+    | Status |      Content      |   Meaning             |
+    | :----- | :---------------- | :-------------------- |
+    | 200    | `content: string` | Update content        |
+    | 401    | `null`            | Didn't update content |
 
 ```typescript
 interface Api {
-    edit(filename: string, content: string): Promise<string | null>;
+    postData(filename: string, content: string): Promise<string | null>;
 }
-Api.prototype.edit = async function(filename: string, content: string) {
+Api.prototype.postData = async function(filename: string, content: string) {
     if (this.token === undefined) {
         return null;
     }
@@ -103,9 +103,9 @@ Api.prototype.edit = async function(filename: string, content: string) {
 
 ```typescript
 interface Api {
-    src(filename: string): Promise<string | null>;
+    getData(filename: string): Promise<string | null>;
 }
-Api.prototype.src = async function(filename: string) {
+Api.prototype.getData = async function(filename: string) {
     const response = await fetch(`./data/${filename}`);
     if (response.status === 200) {
         const text = await response.text();

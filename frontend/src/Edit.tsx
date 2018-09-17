@@ -39,7 +39,7 @@ export default class Edit extends Component<EditProps, EditState> {
   }
   public handleUploadClick(token?: string) {
     return async () => {
-      await new Api(token).edit(
+      await new Api(token).postData(
         this.state.filename,
         this.state.source
       );
@@ -48,7 +48,7 @@ export default class Edit extends Component<EditProps, EditState> {
   }
   public async handlePropsChange() {
     const api = new Api();
-    const response = await api.src(this.props.match.params.filename);
+    const response = await api.getData(this.props.match.params.filename);
     this.setState({ source: response || "" });
   }
   public handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {

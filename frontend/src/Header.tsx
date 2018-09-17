@@ -46,7 +46,7 @@ export default class Header extends Component<{}, HeaderState> {
   public componentDidMount() {
     (async () => {
       const api = new Api();
-      const response = await api.src("header.md");
+      const response = await api.getData("header.md");
       const div = document.createElement("div");
       div.innerHTML = await markdown(response || "");
       const h1 = fromNullable(div.querySelector("h1"))

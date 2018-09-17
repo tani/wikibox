@@ -27,7 +27,7 @@ export default class Page extends Component<PageProps, PageState> {
   }
   public async updateSource() {
     const api = new Api();
-    const response = await api.src(this.state.filename);
+    const response = await api.getData(this.state.filename);
     const div = document.createElement("div");
     div.innerHTML = await markdown(response || "");
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(

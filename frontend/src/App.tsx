@@ -24,7 +24,7 @@ export default class App extends Component<{}, AppState> {
   }
   public async login(username: string, password: string) {
     const api = new Api();
-    const response = await api.login(username, password);
+    const response = await api.postToken(username, password);
     if (response) {
       this.setState({ token: response });
     } else {
