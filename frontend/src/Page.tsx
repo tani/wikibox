@@ -1,4 +1,3 @@
-import { fromNullable } from "fp-ts/lib/Option";
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
@@ -8,7 +7,6 @@ import Col from "reactstrap/lib/Col";
 import slugify from "slugify";
 import Api from "./api";
 import markdown from "./markdown";
-const RemarkHighlightJs = require("remark-highlight.js");
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
 
@@ -103,7 +101,7 @@ export default class Page extends Component<PageProps, PageState> {
         <Col md="9">
           <ReactMarkdown
             source={this.state.source}
-            plugins={[RemarkMath, RemarkHighlightJs]}
+            plugins={[RemarkMath]}
             renderers={renderers}
           />
         </Col>

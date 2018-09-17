@@ -1,4 +1,3 @@
-import { fromNullable } from "fp-ts/lib/Option";
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import Api from "./api";
