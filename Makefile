@@ -1,43 +1,24 @@
 THEMES = cerulean cosmo cyborg darkly flatly journal litera lumen lux materia minty pulse sandstone simplex sketchy slate solar spacelab superhero united yeti
-FRONTEND = index.html bundle.js bundle.css
-BACKEND_PHP = $(shell ls -A backend/php/)
-BACKEND_JAVASCRIPT = $(shell ls -A backend/javascript/)
-BACKEND_COMMON-LISP = $(shell ls -A backend/common-lisp/)
+PLATFORMS = php javascript common-lisp html
+FRONTEND = data bundle.js bundle.css index.html
 
-all: $(foreach t, $(THEMES), build/$(t))
+all: $(foreach p, $(PLATFORMS), $(foreach t, $(THEMES), build/$(p)/$(t)))
 
-define build_theme
-build/$(1): build/$(1)/php build/$(1)/javascript build/$(1)/common-lisp
-
-build/$(1)/php: $(foreach f, $(BACKEND_PHP), backend/php/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f))
-	mkdir -p build/$(1)/php/
-	cp -f $$^ build/$(1)/php/
-	cp -rf data build/$(1)/php/data
-	cp -f README.md build/$(1)/php/data/index.md
-
-build/$(1)/javascript: $(foreach f, $(BACKEND_JAVASCRIPT), backend/javascript/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f)) 
-	mkdir -p build/$(1)/javascript/
-	cp -f $$^ build/$(1)/javascript/
-	cp -rf data build/$(1)/javascript/data
-	cp -f README.md build/$(1)/javascript/data/index.md
-
-build/$(1)/common-lisp: $(foreach f, $(BACKEND_COMMON-LISP), backend/common-lisp/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f)) 
-	mkdir -p build/$(1)/common-lisp/
-	cp -f $$^ build/$(1)/common-lisp/
-	cp -rf data build/$(1)/common-lisp/data
-	cp -f README.md build/$(1)/common-lisp/data/index.md
+define build_platform_theme
+build/$(1)/$(2): frontend/build/$(2) $(shell find backend/$(1) -type f)
+	mkdir -p build/$(1)/$(2)/
+	cp -rf $$^ build/$(1)/$(2)/
+	cp -rf README.md build/$(1)/$(2)/data/index.md
 endef
 
-$(foreach t, $(THEMES), $(eval $(call build_theme,$(t))))
-
-define frontend_build_theme
-frontend/build/$(1): $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f))
-
-$(foreach f, $(FRONTEND), frontend/build/$(1)/$(f)): frontend/node_modules $(shell find frontend/src/ -name '*.ts*')
-	cd frontend && THEME=$(1) npm run build && cd ..
-endef
+$(foreach p, $(PLATFORMS), $(foreach t, $(THEMES), $(eval $(call build_platform_theme,$(p),$(t)))))
 
 frontend/node_modules:
 	cd frontend && npm ci && cd ..
+
+define frontend_build_theme
+frontend/build/$(1): frontend/node_modules $(shell find frontend/ -type d -name node_modules -prune -o -type d -name build -prune -o -type f)
+	cd frontend && THEME=$(1) npm run build && cd ..
+endef
 
 $(foreach t, $(THEMES), $(eval $(call frontend_build_theme,$(t))))
