@@ -32,7 +32,8 @@ export default class App extends Component<{}, AppState> {
     }
   }
   public render() {
-    const Default = () => (<Redirect to="/page/index.md"/>);
+    const DefaultPage = () => (<Redirect to="/page/index.md"/>);
+    const DefaultEdit = () => (<Redirect to="/edit/index.md"/>)
     return (
       <Router>
         <Provider
@@ -40,8 +41,10 @@ export default class App extends Component<{}, AppState> {
         >
           <Header />
           <Container style={{ marginTop: 20 }}>
-            <Route exact={true} path="/" component={Default}/>
+            <Route exact={true} path="/" component={DefaultPage}/>
+            <Route exact={true} path="/page/" component={DefaultPage}/>
             <Route path="/page/:filename" component={Page} />
+            <Route exact={true} path="/edit/" component={DefaultEdit}/>
             <PrivateRoute path="/edit/:filename" component={Edit} />
             <Route path="/login" component={Login} />
             <Footer />

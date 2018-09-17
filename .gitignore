@@ -80,3 +80,5 @@ typings/
 
 build/
 frontend/build
+.vagrant/
+machines/

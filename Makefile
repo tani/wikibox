@@ -11,21 +11,21 @@ build/$(1): build/$(1)/php build/$(1)/javascript build/$(1)/common-lisp
 
 build/$(1)/php: $(foreach f, $(BACKEND_PHP), backend/php/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f))
 	mkdir -p build/$(1)/php/
-	cp $$^ build/$(1)/php/
-	cp data build/$(1)/php/data
-	cp README.md build/$(1)/php/data/index.md
+	cp -f $$^ build/$(1)/php/
+	cp -rf data build/$(1)/php/data
+	cp -f README.md build/$(1)/php/data/index.md
 
 build/$(1)/javascript: $(foreach f, $(BACKEND_JAVASCRIPT), backend/javascript/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f)) 
 	mkdir -p build/$(1)/javascript/
-	cp $$^ build/$(1)/javascript/
-	cp data build/$(1)/javascript/data
-	cp README.md build/$(1)/javascript/data/index.md
+	cp -f $$^ build/$(1)/javascript/
+	cp -rf data build/$(1)/javascript/data
+	cp -f README.md build/$(1)/javascript/data/index.md
 
 build/$(1)/common-lisp: $(foreach f, $(BACKEND_COMMON-LISP), backend/common-lisp/$(f)) $(foreach f, $(FRONTEND), frontend/build/$(1)/$(f)) 
 	mkdir -p build/$(1)/common-lisp/
-	cp $$^ build/$(1)/common-lisp/
-	cp data build/$(1)/common-lisp/data
-	cp README.md build/$(1)/common-lisp/data/index.md
+	cp -f $$^ build/$(1)/common-lisp/
+	cp -rf data build/$(1)/common-lisp/data
+	cp -f README.md build/$(1)/common-lisp/data/index.md
 endef
 
 $(foreach t, $(THEMES), $(eval $(call build_theme,$(t))))

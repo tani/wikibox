@@ -41,7 +41,7 @@ export default class Edit extends Component<EditProps, EditState> {
     return async () => {
       await new Api(token).edit(
         this.state.filename,
-        new Blob([this.state.source], { type: "text/plain" })
+        this.state.source
       );
       this.props.history.push(`/page/${this.state.filename}`);
     };
