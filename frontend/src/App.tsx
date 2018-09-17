@@ -12,23 +12,23 @@ import Page from "./Page";
 import PrivateRoute from "./PrivateRoute";
 
 interface AppState {
-  sessionToken?: string;
+  token?: string;
 }
 export default class App extends Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      sessionToken: undefined
+      token: undefined
     };
     this.login = this.login.bind(this);
   }
   public async login(username: string, password: string) {
     const api = new Api();
-    const response = await api.token(username, password);
+    const response = await api.login(username, password);
     if (response) {
-      this.setState({ sessionToken: response });
+      this.setState({ token: response });
     } else {
-      this.setState({ sessionToken: undefined });
+      this.setState({ token: undefined });
     }
   }
   public render() {
@@ -36,7 +36,7 @@ export default class App extends Component<{}, AppState> {
     return (
       <Router>
         <Provider
-          value={{ sessionToken: this.state.sessionToken, login: this.login }}
+          value={{ token: this.state.token, login: this.login }}
         >
           <Header />
           <Container style={{ marginTop: 20 }}>

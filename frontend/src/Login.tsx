@@ -51,8 +51,8 @@ export default class Login extends Component<LoginProps, LoginState> {
     });
   }
   public render() {
-    const $Login = ({ sessionToken, login }: any) => {
-      return sessionToken ? (
+    const $Login = ({ token, login }: any) => {
+      return token ? (
         <Redirect to={this.props.location.state.from} />
       ) : (
         <Input type="button" value="Login" onClick={this.handleSubmitClick(login)} />
@@ -94,7 +94,7 @@ export default class Login extends Component<LoginProps, LoginState> {
           <Consumer>
             {context => (
               <$Login
-                sessionToken={context.sessionToken}
+                token={context.token}
                 login={context.login}
               />
             )}

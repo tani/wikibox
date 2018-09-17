@@ -1,13 +1,13 @@
 <?php
-$passwords = json_decode(file_get_contents('passwords.json'), true);
+include 'config.php';
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-    if(hash_hmac('sha256', $_POST['password'], false) == $passwords[$_POST['username']]) {
-        $sessionToken = uniqid();
-        $tokens = json_decode(file_get_contents("tokens.json"));
-        array_push($tokens, $sessionToken);
-        file_put_contents("tokens.json", json_encode($tokens));
-        echo $sessionToken;
+    if(password_verify($_POST['password'], $USERS[$_POST['username']])) {
+        $token = uniqid();
+        $db = json_decode(file_get_contents(DATABASE));
+        $db[md5($_SERVER["REMOTE_ADDR"])] = ["token"=>md5($token), "time"=>time()];
+        file_put_contents(DATABASE, json_encode($db));
+        echo $token;
     } else {
         http_response_code(401);
         echo '';
@@ -16,9 +16,13 @@ switch($_SERVER['REQUEST_METHOD']) {
 
     case 'DELETE':
     parse_str(file_get_contents("php://input"), $params);
-    $tokens = json_decode(file_get_contents("tokens.json"));
-    $tokens = array_diff($tokens, [$params['sessionToken']]);
-    file_put_contents("tokens.json", json_encode($tokens));
+    $db = json_decode(file_get_contents(DATABASE));
+    if(md5($params["token"])==$db[md5($_SERVER["REMOTE_ADDR"])]) {
+        unset($db[md5($_SERVER["REMOTE_ADDR"])]);
+        file_put_contents(DATABASE, json_encode($db));
+    } else {
+        http_response_code(401);
+    }
     echo '';
     break;
 }

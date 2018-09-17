@@ -2,9 +2,9 @@
 
 ```typescript
 class Api {
-    public sessionToken?: string;
-    constructor(sessionToken?: string) {
-        this.sessionToken = sessionToken;
+    public token?: string;
+    constructor(token?: string) {
+        this.token = token;
     }
 }
 ```
@@ -21,14 +21,14 @@ class Api {
     
     | Status |          body          |    Meaning     |
     | :----- | :--------------------- | :------------- |
-    | 200    | `sessionToken: string` | Authorized     |
+    | 200    | `token: string` | Authorized     |
     | 401    | `null`                 | Not authorized |
 
 ```typescript
 interface Api {
-    token(username: string, password: string): Promise<string | null>;
+    login(username: string, password: string): Promise<string | null>;
 }
-Api.prototype.token = async function(username: string, password: string) {
+Api.prototype.login = async function(username: string, password: string) {
     const body = new FormData();
     body.append("username", username);
     body.append("password", password);
@@ -53,7 +53,7 @@ Api.prototype.token = async function(username: string, password: string) {
     |  Parameters  |   Type   |
     | :----------- | :------- |
     | filename     | `string` |
-    | sessionToken | `string` |
+    | token | `string` |
     | content      | `Blob`   |
 
 - Response
@@ -68,12 +68,12 @@ interface Api {
     edit(filename: string, content: Blob): Promise<string | null>;
 }
 Api.prototype.edit = async function(filename: string, content: Blob) {
-    if (this.sessionToken === undefined) {
+    if (this.token === undefined) {
         return null;
     }
     const body = new FormData();
     body.append("content", content);
-    body.append("sessionToken", this.sessionToken);
+    body.append("token", this.token);
     const response = await fetch(`./data/${filename}`, {
         body, method: "PUT",
     });

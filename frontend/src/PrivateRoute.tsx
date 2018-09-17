@@ -11,8 +11,8 @@ export default class PrivateRoute extends Component<PrivateRouteProps, {}> {
     const { component: PrivateComponent, ...rest } = this.props;
     const $render = (props: any) => (
       <Consumer>
-        {({ sessionToken }) =>
-          sessionToken ? (
+        {({ token }) =>
+          token ? (
             <PrivateComponent {...props} />
           ) : (
             <Redirect

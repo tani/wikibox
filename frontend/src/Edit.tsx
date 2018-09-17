@@ -37,9 +37,9 @@ export default class Edit extends Component<EditProps, EditState> {
   public handleSubmit(){
     return false;
   }
-  public handleUploadClick(sessionToken?: string) {
+  public handleUploadClick(token?: string) {
     return async () => {
-      await new Api(sessionToken).edit(
+      await new Api(token).edit(
         this.state.filename,
         new Blob([this.state.source], { type: "text/plain" })
       );
@@ -95,11 +95,11 @@ export default class Edit extends Component<EditProps, EditState> {
         </FormGroup>
         <FormGroup>
           <Consumer>
-            {({ sessionToken }: any) => (
+            {({ token }: any) => (
               <Input
                 type="button"
                 value="Upload"
-                onClick={this.handleUploadClick(sessionToken)}
+                onClick={this.handleUploadClick(token)}
               />
             )}
           </Consumer>
