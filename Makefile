@@ -9,7 +9,7 @@ build/$(1)/$(2): $(foreach f,$(FRONTEND),frontend/build/$(2)/$(f)) $(shell find 
 	mkdir -p build/$(1)/$(2)/
 	cp -rf $$^ build/$(1)/$(2)/
 	cp -rf README.md build/$(1)/$(2)/data/index.md
-	cd build/php/yeti && zip wikibox_$(1)_$(2).zip -r . && cd ../../..
+	cd build/$(1)/$(2) && zip wikibox_$(1)_$(2).zip -r . && cd ../../..
 endef
 
 $(foreach p, $(PLATFORMS), $(foreach t, $(THEMES), $(eval $(call build_platform_theme,$(p),$(t)))))
