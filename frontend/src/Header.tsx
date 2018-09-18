@@ -27,6 +27,33 @@ interface HeaderState {
   }>;
 }
 
+const isDropDownColorDark = [
+  "darkly",
+  "slate",
+  "superhero",
+  "solar",
+  "cyborg",
+  "yeti"
+].includes(process.env.NODE_ENV || "");
+
+const isDropdownColorLight = [
+  "cerulean",
+  "litera",
+  "materia",
+  "sandstone",
+  "cosmo",
+  "flatly",
+  "lumen",
+  "minty",
+  "simplex",
+  "united",
+  "journal",
+  "lux",
+  "pulse",
+  "sketchy",
+  "spacelab"
+].includes(process.env.NODE_ENV || "");
+
 export default class Header extends Component<{}, HeaderState> {
   constructor(props: {}) {
     super(props);
@@ -93,11 +120,11 @@ export default class Header extends Component<{}, HeaderState> {
       } else {
         const DropdownItems = item.subnavigation.map((subitem: any) => (
           <DropdownItem key={subitem.text}>
-            <NavLink href={subitem.href}>{subitem.text}</NavLink>
+            <NavLink href={subitem.href} className={isDropDownColorDark?'text-light':'text-dark'}>{subitem.text}</NavLink>
           </DropdownItem>
         ));
         return (
-          <UncontrolledDropdown key={item.text} inNavbar={true}>
+          <UncontrolledDropdown key={item.text} nav={true} inNavbar={true}>
             <DropdownToggle nav={true} caret={true}>
               {item.text}
             </DropdownToggle>
@@ -113,18 +140,12 @@ export default class Header extends Component<{}, HeaderState> {
         expand="md"
       >
         <NavbarToggler onClick={this.handleTogglerClick} />
-        <NavbarBrand href="./" className="text-light">
-          {this.state.title}
-        </NavbarBrand>
+        <NavbarBrand href="./">{this.state.title}</NavbarBrand>
         <Collapse navbar={true} isOpen={this.state.isOpen}>
           <Nav navbar={true}>{$HeaderItems}</Nav>
         </Collapse>
       </Navbar>
     );
-    return (
-      <Consumer>
-        {({ token }: any) => <$Header token={token} />}
-      </Consumer>
-    );
+    return <Consumer>{({ token }: any) => <$Header token={token} />}</Consumer>;
   }
 }
