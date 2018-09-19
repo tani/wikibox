@@ -6,7 +6,7 @@ cache:
   directories:
     - "$HOME/.npm"
 script:
-  - make
+  - NODE_ENV=production make
 addons:
   apt:
     update: true

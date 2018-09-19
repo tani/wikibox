@@ -4,6 +4,7 @@
 - [User Guide](#/page/user_guide.md/)
 - [Developer Guide](#/page/developer_guide.md/)
 - [Themes]()
+    - [default](../default/)
     - [cerulean](../cerulean/)
     - [cosmo](../cosmo/)
     - [cyborg](../cyborg/)
