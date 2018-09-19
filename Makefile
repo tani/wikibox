@@ -4,10 +4,11 @@ PLATFORMS = php javascript common-lisp html
 all: $(foreach p, $(PLATFORMS), build/$(p))
 
 define build_platform
-build/$(1): frontend/build $(shell find backend/$(1) -type f)
+build/$(1): frontend/build $(shell find backend/$(1))
 	mkdir -p $$@/
 	cp -rf frontend/build/* $$@/
-	echo default $(THEMES) | xargs -P 1 -I % cp -rf backend/$(1) $$@/%/
+	for t in $(THEMES); do sh -c "cp -f $(shell find backend/$(1) -type f) $$@/$$$$t/"; done
+	for t in $(THEMES); do sh -c "cd $$@/$$$$t/ && zip -r wikibox_$(1)_$$$$t.zip . && cd ../../"; done
 endef
 
 $(foreach p, $(PLATFORMS), $(eval $(call build_platform,$(p))))
