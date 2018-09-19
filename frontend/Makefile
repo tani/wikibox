@@ -3,7 +3,7 @@ THEMES = cerulean cosmo cyborg darkly flatly journal litera lumen lux materia mi
 all: $(foreach t, default $(THEMES), build/$(t))
 
 node_modules:
-	NODE_ENV=development npm install
+	NODE_ENV=development npm ci
 
 build/default: node_modules
 	npm run build
@@ -20,3 +20,6 @@ $(foreach t, $(THEMES), $(eval $(call build_theme,$(t))))
 
 clean:
 	rm -rf build
+
+dist-clean: clean
+	rm -rf node_modules

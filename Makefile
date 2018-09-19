@@ -21,4 +21,4 @@ clean:
 	rm -rf build/
 
 dist-clean: clean
-	cd frontend && make clean && cd ..
+	cd frontend && make dist-clean && cd ..
