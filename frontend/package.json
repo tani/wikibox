@@ -7,7 +7,7 @@
     "format": "prettier --write ./src/*",
     "prestart": "pcregrep -o -M '```typescript[\\s\\S]*?```' ../data/api.md | grep -v '```' > src/api.ts",
     "prebuild": "pcregrep -o -M '```typescript[\\s\\S]*?```' ../data/api.md | grep -v '```' > src/api.ts",
-    "build": "webpack --progress",
+    "build": "webpack",
     "start": "webpack-dev-server --hot --port=6789"
   },
   "repository": {
