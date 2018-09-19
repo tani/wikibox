@@ -1,8 +1,6 @@
 # WikiBox
 
 - [Home](#/page/index.md/)
-- [User Guide](#/page/user_guide.md/)
-- [Developer Guide](#/page/developer_guide.md/)
 - [Themes]()
     - [cerulean](../cerulean/)
     - [cosmo](../cosmo/)
@@ -25,3 +23,4 @@
     - [superhero](../superhero/)
     - [united](../united/)
     - [yeti](../yeti/)
+- [Edit](#/edit/)

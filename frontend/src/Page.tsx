@@ -65,16 +65,6 @@ export default class Page extends Component<PageProps, PageState> {
     const tocItemStyle = (hlevel: number) => ({
       paddingLeft: `${hlevel - 1}em`
     });
-    const tocItems = this.state.toc.map(item => (
-      <li style={tocItemStyle(item.hlevel)} key={item.text}>
-        <Link
-          to={slugify(item.text.toString())}
-          href={`#/page/${this.state.filename}`}
-        >
-          {item.text}
-        </Link>
-      </li>
-    ));
     const renderers = {
       heading(p: any) {
         const Hn = `h${p.level}`;
@@ -107,7 +97,16 @@ export default class Page extends Component<PageProps, PageState> {
         </Col>
         <Col md="3">
           <ul style={tocListStyle} className="d-none d-md-block">
-            {tocItems}
+            {this.state.toc.map(item => (
+              <li style={tocItemStyle(item.hlevel)} key={item.text}>
+                <Link
+                  to={slugify(item.text.toString())}
+                  href={`#/page/${this.state.filename}`}
+                >
+                  {item.text}
+                </Link>
+              </li>
+            ))}
           </ul>
         </Col>
       </Row>

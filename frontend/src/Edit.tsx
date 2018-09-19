@@ -13,7 +13,10 @@ import {
 } from "reactstrap";
 import Api from "./api";
 import { Consumer } from "./Context";
-interface EditProps extends RouteComponentProps<{ filename: string }> {}
+const { withLastLocation } = require("react-router-last-location");
+interface EditProps extends RouteComponentProps<{}> {
+  lastLocation: Location | null;
+}
 interface EditState {
   filename: string;
   source: string;
@@ -21,35 +24,23 @@ interface EditState {
   password: string;
 }
 
-export default class Edit extends Component<EditProps, EditState> {
+class Edit extends Component<EditProps, EditState> {
   constructor(props: EditProps) {
     super(props);
+    const filename = fromNullable(this.props.lastLocation)
+      .map($lastLocation => $lastLocation.pathname.replace(/\/\w+\//, ""))
+      .getOrElse("index.md");
     this.state = {
-      filename: this.props.match.params.filename,
+      filename,
       password: "",
       source: "",
       username: ""
     };
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
-    this.handleUploadClick = this.handleUploadClick.bind(this);
   }
-  public handleSubmit(){
+  public handleSubmit() {
     return false;
-  }
-  public handleUploadClick(token?: string) {
-    return async () => {
-      await new Api(token).postData(
-        this.state.filename,
-        this.state.source
-      );
-      this.props.history.push(`/page/${this.state.filename}`);
-    };
-  }
-  public async handlePropsChange() {
-    const api = new Api();
-    const response = await api.getData(this.props.match.params.filename);
-    this.setState({ source: response || "" });
   }
   public handleFilenameChange(event: ChangeEvent<HTMLInputElement>) {
     const filename = event.target.value;
@@ -63,11 +54,10 @@ export default class Edit extends Component<EditProps, EditState> {
       source
     });
   }
-  public componentDidMount() {
-    this.handlePropsChange();
-  }
-  public componentWillReceiveProps() {
-    this.handlePropsChange();
+  public async componentDidMount() {
+    const api = new Api();
+    const response = await api.getData(this.state.filename);
+    this.setState({ source: response || "" });
   }
   public render() {
     return (
@@ -95,16 +85,20 @@ export default class Edit extends Component<EditProps, EditState> {
         </FormGroup>
         <FormGroup>
           <Consumer>
-            {({ token }: any) => (
-              <Input
-                type="button"
-                value="Upload"
-                onClick={this.handleUploadClick(token)}
-              />
-            )}
+            {({ token }: any) => {
+              const onClick = async () => {
+                await new Api(token).postData(
+                  this.state.filename,
+                  this.state.source
+                );
+                this.props.history.push(`/page/${this.state.filename}`);
+              };
+              return <Input type="button" value="Upload" {...{ onClick }} />;
+            }}
           </Consumer>
         </FormGroup>
       </Form>
     );
   }
 }
+export default withLastLocation(Edit);
