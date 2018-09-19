@@ -140,11 +140,9 @@ export default class Header extends Component<{}, HeaderState> {
                             <DropdownItem key={subitem.text}>
                               <NavLink
                                 href={subitem.href}
-                                className={
-                                  isDropDownColorDark
-                                    ? "text-light"
-                                    : "text-dark"
-                                }
+                                style={{
+                                  color: window.getComputedStyle(window.document.body).color || ""
+                                }}
                               >
                                 {subitem.text}
                               </NavLink>
