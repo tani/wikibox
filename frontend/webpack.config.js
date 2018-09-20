@@ -42,6 +42,10 @@ module.exports = {
         to: "index.html"
       },
       {
+        from: `${__dirname}/node_modules/highlight.js/styles/atom-one-light.css`,
+        to: "lib/highlight.min.css"
+      },
+      {
         from: `${__dirname}/node_modules/bootstrap/dist/css/bootstrap.min.css`,
         to: "lib/bootstrap.min.css",
       },

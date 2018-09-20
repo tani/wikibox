@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactHighlight from "react-highlight";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
 import { Element, Link } from "react-scroll";
@@ -66,6 +67,13 @@ export default class Page extends Component<PageProps, PageState> {
       paddingLeft: `${hlevel - 1}em`
     });
     const renderers = {
+      code(p: any) {
+        return (
+          <ReactHighlight className={`language-${p.language}`}>
+          { p.value }
+          </ReactHighlight>
+        )
+      },
       heading(p: any) {
         const Hn = `h${p.level}`;
         return (
