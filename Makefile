@@ -19,7 +19,8 @@ frontend/build:
 .PHONY: clean
 
 clean:
-	rm -rf build/
+	rm -rf build
+	cd frontend && make clean && cd ..
 
 dist-clean: clean
 	cd frontend && make dist-clean && cd ..

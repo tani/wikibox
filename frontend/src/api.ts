@@ -11,9 +11,6 @@ Api.prototype.postToken = async function(username: string, password: string) {
     const body = new URLSearchParams();
     body.append("username", username);
     body.append("password", password);
-    if (process.env.NODE_ENV === "development") {
-        return "development";
-    }
     const response = await fetch(`./token`, {
         body, method: "POST",
     });

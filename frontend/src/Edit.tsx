@@ -28,7 +28,7 @@ class Edit extends Component<EditProps, EditState> {
   constructor(props: EditProps) {
     super(props);
     const filename = fromNullable(this.props.lastLocation)
-      .map($lastLocation => $lastLocation.pathname.replace(/\/\w+\//, ""))
+      .map($lastLocation => $lastLocation.pathname.replace(/^.*\/([^\/]+)\/?$/, "$1"))
       .getOrElse("index.md");
     this.state = {
       filename,
