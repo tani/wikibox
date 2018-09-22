@@ -1,0 +1,33 @@
+{
+  "name": "wikibox",
+  "version": "0.1.0",
+  "description": "A backend server for wikibox",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xtaniguchimasaya/wikibox.git"
+  },
+  "keywords": [
+    "wiki",
+    "markdown"
+  ],
+  "author": "TANIGUCHI Masaya",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/xtaniguchimasaya/wikibox/issues"
+  },
+  "homepage": "https://github.com/xtaniguchimasaya/wikibox#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/express": "^4.16.0",
+    "@types/node": "^10.10.2",
+    "express": "^4.16.3",
+    "typescript": "^3.0.3"
+  }
+}
