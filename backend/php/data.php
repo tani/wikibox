@@ -6,7 +6,7 @@ if(preg_match('#/(?P<filename>.*\.md)#', $_SERVER['PATH_INFO'], $matches)) {
     switch($_SERVER['REQUEST_METHOD']) {
         case 'POST':
         parse_str(file_get_contents("php://input"), $params);
-        if(md5($_POST['token']) == $db[$addr]["token"] && time() < $db[$addr]["time"]+LIMIT) {
+        if(password_verify($_POST['token'], $db[$addr]["token"]) && time() < $db[$addr]["time"]+LIMIT) {
             if(file_exists('data/'.$matches['filename'])) {
                 file_put_contents('data/'.$matches['filename'], $_POST['content']);
                 echo file_get_contents('data/'.$matches['filename']);
