@@ -9,7 +9,7 @@ class Api {
 }
 ```
 
-### Authorization
+## Get Token
 - Request (`POST ./token`)
     
     | Parameters |   Type   |
@@ -44,7 +44,7 @@ Api.prototype.postToken = async function(username: string, password: string) {
 };
 ```
 
-### postDataing
+## post Data
 - Request (`POST ./data/:filename`)
     
     |  Parameters  |   Type   |
@@ -83,7 +83,7 @@ Api.prototype.postData = async function(filename: string, content: string) {
 };
 ```
 
-#### Source
+## Get Data
 - Request (`GET ./data/:filename`)
     
     | Parameters |   Type   |
@@ -104,6 +104,39 @@ interface Api {
 }
 Api.prototype.getData = async function(filename: string) {
     const response = await fetch(`./data/${filename}`);
+    if (response.status === 200) {
+        const text = await response.text();
+        return text;
+    } else {
+        return null;
+    }
+};
+```
+
+## Get Hash 
+- Request (`POST ./hash`)
+    
+    | Parameters |   Type   |
+    | :--------- | :------- |
+    | data       | `string` |
+
+- Response  
+    
+    | Status |      Content       |       Meaning       |
+    | :----- | :----------------- | :------------------ |
+    | 200    | `dataHash: string` | hash of data        |
+    | 403    | `null`             | can't calculate     |
+
+```typescript
+interface Api {
+    postHash(data: string): Promise<string | null>;
+}
+Api.prototype.postHash = async function(data: string) {
+    const body = new URLSearchParams();
+    body.append("data", data);
+    const response = await fetch(`./hash`, {
+        body, method: "POST",
+    });
     if (response.status === 200) {
         const text = await response.text();
         return text;

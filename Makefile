@@ -7,7 +7,7 @@ define build_platform
 build/$(1): frontend/build $(shell find backend/$(1))
 	mkdir -p $$@/
 	cp -fr frontend/build/* $$@/
-	for t in default $(THEMES); do sh -c "cp -f $(shell find backend/$(1) -type f) $$@/$$$$t/"; done
+	for t in default $(THEMES); do sh -c "cp -f $(shell find backend/$(1) -maxdepth 1 -type f) $$@/$$$$t/"; done
 	for t in default $(THEMES); do sh -c "cd $$@/$$$$t/ && zip -qr wikibox_$(1)_$$$$t.zip . && cd ../../"; done
 endef
 
