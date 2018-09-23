@@ -6,7 +6,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     if(password_verify($_POST['password'], USERS[$_POST['username']])) {
         $token = uniqid('', true);
         $db = json_decode(file_get_contents(DATABASE), true);
-        $db[$addr] = ["token"=>md5($token), "time"=>time()];
+        $db[$addr] = ["token"=>password_hash($token, PASSWORD_DEFAULT), "time"=>time()];
         file_put_contents(DATABASE, json_encode($db));
         echo $token;
     } else {

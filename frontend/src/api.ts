@@ -53,4 +53,20 @@ Api.prototype.getData = async function(filename: string) {
         return null;
     }
 };
+interface Api {
+    postHash(data: string): Promise<string | null>;
+}
+Api.prototype.postHash = async function(data: string) {
+    const body = new URLSearchParams();
+    body.append("data", data);
+    const response = await fetch(`./hash`, {
+        body, method: "POST",
+    });
+    if (response.status === 200) {
+        const text = await response.text();
+        return text;
+    } else {
+        return null;
+    }
+};
 export default Api;
