@@ -5,4 +5,4 @@ deny from all
 </Files>
 RewriteEngine On
 RewriteCond %{REQUEST_METHOD} ^(POST|PUT|DELETE)$
-RewriteRule ^(token|data) $1.php [L]
+RewriteRule ^(token|data|hash) $1.php [L]
