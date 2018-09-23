@@ -2,11 +2,11 @@
 include 'config.php';
 $db = json_decode(file_get_contents(DATABASE), true);
 $addr = md5($_SERVER["REMOTE_ADDR"]);
-if(preg_match('#/(?P<filename>.*\.md)#', $_SERVER['PATH_INFO'], $matches)) {
+if(preg_match('#(?P<filename>[^/]*)$#', $_SERVER['REQUEST_URI'], $matches)) {
     switch($_SERVER['REQUEST_METHOD']) {
         case 'POST':
         parse_str(file_get_contents("php://input"), $params);
-        if(md5($_POST['token']) == $db[$addr]["token"] && time() < $db[$addr]["time"]+LIMIT) {
+        if(password_verify($_POST['token'], $db[$addr]["token"]) && time() < $db[$addr]["time"]+LIMIT) {
             if(file_exists('data/'.$matches['filename'])) {
                 file_put_contents('data/'.$matches['filename'], $_POST['content']);
                 echo file_get_contents('data/'.$matches['filename']);
