@@ -110,19 +110,20 @@ export default class Header extends Component<{}, HeaderState> {
     })();
   }
   public render() {
+    const goto = (href: string) => () => location.href = href;
     return (
       <Consumer>
         {({ token }: any) => (
           <Navbar color={token ? "success" : "primary"} dark={true} expand="md">
             <NavbarToggler onClick={this.handleTogglerClick} />
-            <NavbarBrand href="#/">{this.state.title}</NavbarBrand>
+            <NavbarBrand href="" onClick={goto("#/")}>{this.state.title}</NavbarBrand>
             <Collapse navbar={true} isOpen={this.state.isOpen}>
               <Nav navbar={true}>
                 {this.state.navigation.map(item => {
                   if (item.subnavigation.length === 0) {
                     return (
                       <NavItem key={item.text}>
-                        <NavLink href={item.href}>{item.text}</NavLink>
+                        <NavLink  onClick={goto(item.href)} style={{cursor: "pointer"}}>{item.text}</NavLink>
                       </NavItem>
                     );
                   } else {
@@ -139,9 +140,10 @@ export default class Header extends Component<{}, HeaderState> {
                           {item.subnavigation.map((subitem: any) => (
                             <DropdownItem key={subitem.text}>
                               <NavLink
-                                href={subitem.href}
+                                onClick={goto(subitem.href)}
                                 style={{
-                                  color: window.getComputedStyle(window.document.body).color || ""
+                                  color: window.getComputedStyle(window.document.body).color || "",
+                                  cursor: "pointer"
                                 }}
                               >
                                 {subitem.text}
