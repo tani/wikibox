@@ -83,8 +83,8 @@ export default class Header extends Component<{}, HeaderState> {
   }
   public render() {
     const goto = (href: string) => () => {
-      location.href = href;
-      location.reload();
+      location.assign(href);
+      setTimeout(()=>location.reload(), 500);
     };
     return (
       <Navbar color="primary" dark={true} expand="md">
