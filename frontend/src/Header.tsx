@@ -26,33 +26,6 @@ interface HeaderState {
   }>;
 }
 
-const isDropDownColorDark = [
-  "darkly",
-  "slate",
-  "superhero",
-  "solar",
-  "cyborg",
-  "yeti"
-].includes(process.env.NODE_ENV || "");
-
-const isDropdownColorLight = [
-  "cerulean",
-  "litera",
-  "materia",
-  "sandstone",
-  "cosmo",
-  "flatly",
-  "lumen",
-  "minty",
-  "simplex",
-  "united",
-  "journal",
-  "lux",
-  "pulse",
-  "sketchy",
-  "spacelab"
-].includes(process.env.NODE_ENV || "");
-
 export default class Header extends Component<{}, HeaderState> {
   constructor(props: {}) {
     super(props);

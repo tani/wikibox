@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, Route, Switch } from "react-router";
+import { Redirect, Route } from "react-router";
 import { HashRouter as Router } from "react-router-dom";
 import { Container } from "reactstrap";
 import Edit from "./Edit";
