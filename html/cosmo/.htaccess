@@ -1,0 +1,5 @@
+Options -Indexes
+DirectoryIndex index.html
+<FilesMatch "^\.htaccess$">
+  deny from all
+</FilesMatch>

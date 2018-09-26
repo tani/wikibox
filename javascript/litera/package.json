@@ -1,0 +1,31 @@
+{
+  "name": "wikibox",
+  "version": "0.1.0",
+  "description": "A backend server for wikibox",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xtaniguchimasaya/wikibox.git"
+  },
+  "keywords": [
+    "wiki",
+    "markdown"
+  ],
+  "author": "TANIGUCHI Masaya",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/xtaniguchimasaya/wikibox/issues"
+  },
+  "homepage": "https://github.com/xtaniguchimasaya/wikibox#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {}
+}

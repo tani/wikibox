@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^\.htaccess$|\.css$|\.js$|\.json$|\.html$">
+  deny from all
+</FilesMatch>

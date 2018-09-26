@@ -1,0 +1,8 @@
+Options -Indexes
+DirectoryIndex index.html
+<Files ~ ".(htaccess|json)$">
+deny from all
+</Files>
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} ^(POST|PUT|DELETE)$
+RewriteRule ^(token|data|hash) $1.php [L]
