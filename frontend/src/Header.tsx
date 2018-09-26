@@ -110,7 +110,10 @@ export default class Header extends Component<{}, HeaderState> {
     })();
   }
   public render() {
-    const goto = (href: string) => () => location.href = href;
+    const goto = (href: string) => () => {
+      location.href = href;
+      location.reload();
+    };
     return (
       <Consumer>
         {({ token }: any) => (
