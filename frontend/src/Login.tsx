@@ -9,15 +9,19 @@ import {
   InputGroupAddon,
   InputGroupText
 } from "reactstrap";
-import { Consumer } from "./Context";
+import Api from "./api";
+
+interface LoginProps {
+  onLogin: (token: string | null) => void;
+}
 
 interface LoginState {
   username: string;
   password: string;
 }
 
-export default class Login extends Component<{}, LoginState> {
-  constructor(props: {}) {
+export default class Login extends Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
     this.state = {
       password: "",
@@ -25,6 +29,7 @@ export default class Login extends Component<{}, LoginState> {
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   public handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const username = event.target.value;
@@ -37,6 +42,9 @@ export default class Login extends Component<{}, LoginState> {
     this.setState({
       password
     });
+  }
+  public async handleClick() {
+    this.props.onLogin( await new Api().postToken(this.state.username, this.state.password ));
   }
   public render() {
     return (
@@ -72,12 +80,7 @@ export default class Login extends Component<{}, LoginState> {
           </InputGroup>
         </FormGroup>
         <FormGroup>
-          <Consumer>
-            {({getToken}) => {
-              const onClick=()=>getToken(this.state.username, this.state.password);
-              return <Input type="button" value="Login" { ...{ onClick }} />
-            }}
-          </Consumer>
+          <Input type="button" value="Login" onClick={this.handleClick} />
         </FormGroup>
       </Form>
     );

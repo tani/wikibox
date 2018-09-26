@@ -12,11 +12,14 @@ import {
   InputGroupText
 } from "reactstrap";
 import Api from "./api";
-import { Consumer } from "./Context";
+
 const { withLastLocation } = require("react-router-last-location");
+
 interface EditProps extends RouteComponentProps<{}> {
   lastLocation: Location | null;
+  token: string;
 }
+
 interface EditState {
   filename: string;
   source: string;
@@ -38,6 +41,7 @@ class Edit extends Component<EditProps, EditState> {
     };
     this.handleFilenameChange = this.handleFilenameChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   public handleSubmit() {
     return false;
@@ -53,6 +57,13 @@ class Edit extends Component<EditProps, EditState> {
     this.setState({
       source
     });
+  }
+  public async handleClick() {
+    await new Api(this.props.token).postData(
+      this.state.filename,
+      this.state.source
+    );
+    this.props.history.push(`/page/${this.state.filename}`)
   }
   public async componentDidMount() {
     const api = new Api();
@@ -84,18 +95,7 @@ class Edit extends Component<EditProps, EditState> {
           />
         </FormGroup>
         <FormGroup>
-          <Consumer>
-            {({ token }: any) => {
-              const onClick = async () => {
-                await new Api(token).postData(
-                  this.state.filename,
-                  this.state.source
-                );
-                this.props.history.push(`/page/${this.state.filename}`);
-              };
-              return <Input type="button" value="Upload" {...{ onClick }} />;
-            }}
-          </Consumer>
+          <Input type="button" value="Upload" onClick={this.handleClick} />;
         </FormGroup>
       </Form>
     );

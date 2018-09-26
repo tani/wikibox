@@ -21,3 +21,5 @@ if(preg_match('#(?P<filename>[^/]*)$#', $_SERVER['REQUEST_URI'], $matches)) {
 } else {
     http_response_code(404);
 }
+
+?>
