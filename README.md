@@ -1,6 +1,5 @@
 # WikiBox 
-[![Build Status](https://travis-ci.org/xtaniguchimasaya/wikibox.svg?branch=master)](https://travis-ci.org/xtaniguchimasaya/wikibox)
-[![Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-yellowgreen.svg)](https://xtaniguchimasaya.github.io/wikibox/html/default/)
+[![Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-yellowgreen.svg)](https://ta2gch.github.io/wikibox/cosmo/)
 
 WikiBox works on the client environment, and it is extendable because of powered by React ecosystem.
 WikiBox is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using React and Bootstrap 4 to be faster and beautiful. Of course LaTeX syntaxed equations are also upgraded to KaTeX.
@@ -10,7 +9,7 @@ WikiBox is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery 
 - LaTeX Syntax (KaTeX)
 - Markdown Syntax (Remark)
 - Code Highlighting (Highlight.js)
-- Beautiful Themes (Bootswatch) - 21 + 1 themes are available now!
+- Beautiful Themes (Bootswatch) - 21 themes are available now!
 - Generating Table of Contents
 
 ## Overview
