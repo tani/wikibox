@@ -2,7 +2,6 @@
 
 - [Home](#/index.md/)
 - [Themes]()
-    - [default](../default/)
     - [cerulean](../cerulean/)
     - [cosmo](../cosmo/)
     - [cyborg](../cyborg/)
