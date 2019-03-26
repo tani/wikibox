@@ -75,13 +75,12 @@ export default class Page extends Component<PageProps, PageState> {
         )
       },
       heading(p: any) {
-        const Hn = `h${p.level}`;
         return (
-          <Hn>
+          <p className={`h${p.level}`}>
             <Element name={slugify(p.children.toString())}>
               {p.children}
             </Element>
-          </Hn>
+          </p>
         );
       },
       table(p: any) {

@@ -1,26 +1,37 @@
-THEMES = cerulean cosmo cyborg darkly flatly journal litera lumen lux materia minty pulse sandstone simplex sketchy slate solar spacelab superhero united yeti
-PLATFORMS = php javascript common-lisp html
+DARKTHEMES = darkly slate superhero solar cyborg yeti
+LIGHTTHEMES = cerulean litera materia sandstone cosmo flatly lumen minty simplex united journal lux pulse sketchy spacelab
 
-all: $(foreach p, $(PLATFORMS), build/$(p))
+all: $(foreach t, default $(DARKTHEMES) $(LIGHTTHEMES), build/$(t))
 
-define build_platform
-build/$(1): frontend/build $(shell find backend/$(1))
-	mkdir -p $$@/
-	cp -fr frontend/build/* $$@/
-	for t in default $(THEMES); do sh -c "cp -f $(shell find backend/$(1) -maxdepth 1 -type f) $$@/$$$$t/"; done
-	for t in default $(THEMES); do sh -c "cd $$@/$$$$t/ && zip -qr wikibox_$(1)_$$$$t.zip . && cd ../../"; done
+node_modules:
+	NODE_ENV=development npm install
+
+build/default: node_modules
+	npm run build
+	npx cleancss -o $@/lib/highlight.min.css node_modules/highlight.js/styles/atom-one-light.css
+
+
+define build_darktheme
+build/$(1): build/default
+	cp -rf $$^ $$@
+	cp -rf node_modules/bootswatch/dist/$(1)/*.min.css $$@/lib/
+	npx cleancss -o build/$(1)/lib/highlight.min.css node_modules/highlight.js/styles/atom-one-dark.css
 endef
 
-$(foreach p, $(PLATFORMS), $(eval $(call build_platform,$(p))))
+define build_lighttheme
+build/$(1): build/default
+	cp -rf $$^ $$@
+	cp -rf node_modules/bootswatch/dist/$(1)/*.min.css $$@/lib/
+	npx cleancss -o build/$(1)/lib/highlight.min.css node_modules/highlight.js/styles/atom-one-light.css
+endef
 
-frontend/build:
-	cd frontend && make && cd ..
+$(foreach t, $(DARKTHEMES), $(eval $(call build_darktheme,$(t))))
+$(foreach t, $(LIGHTTHEMES), $(eval $(call build_lighttheme,$(t))))
 
 .PHONY: clean
 
 clean:
 	rm -rf build
-	cd frontend && make clean && cd ..
 
 dist-clean: clean
-	cd frontend && make dist-clean && cd ..
+	rm -rf node_modules

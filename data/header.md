@@ -25,4 +25,3 @@
     - [united](../united/)
     - [yeti](../yeti/)
 - [API](#/page/api.md)
-- [Edit](#/edit/)

@@ -25,7 +25,7 @@ module.exports = {
               presets: [
                 "@babel/preset-typescript",
                 "@babel/preset-react",
-                ["@babel/preset-env", { useBuiltIns: "usage", modules: false }]
+                "@babel/preset-env"
               ],
               plugins: ["@babel/plugin-proposal-class-properties"]
             }
@@ -62,11 +62,11 @@ module.exports = {
         ignore: ["*.js", "*.mjs", "*.css", "*.md"]
       },
       {
-        from: `${__dirname}/../data/**/*`,
+        from: `${__dirname}/data/**/*`,
         to: "data/[1]",
         test: /data\/(.*)/
       },
-      { from: `${__dirname}/../README.md`, to: "data/index.md" }
+      { from: `${__dirname}/README.md`, to: "data/index.md" }
     ])
   ],
   devtool: process.env.NODE_ENV === "production" ? "none" : "source-map",
