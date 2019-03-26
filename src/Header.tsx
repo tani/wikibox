@@ -13,7 +13,6 @@ import {
   NavLink,
   UncontrolledDropdown
 } from "reactstrap";
-import Api from "./api";
 import markdown from "./markdown";
 
 interface HeaderState {
@@ -44,10 +43,11 @@ export default class Header extends Component<{}, HeaderState> {
   }
   public componentDidMount() {
     (async () => {
-      const api = new Api();
-      const response = await api.getData("header.md");
+      const response = await fetch("./header.md");
       const div = document.createElement("div");
-      div.innerHTML = await markdown(response || "");
+      div.innerHTML = await markdown(
+        response.status === 200 ? await response.text() : ""
+      );
       const h1 = fromNullable(div.querySelector("h1"))
         .map($h1 => $h1.innerHTML)
         .getOrElse("");
@@ -84,7 +84,7 @@ export default class Header extends Component<{}, HeaderState> {
   public render() {
     const goto = (href: string) => () => {
       location.assign(href);
-      setTimeout(()=>location.reload(), 500);
+      setTimeout(() => location.reload(), 500);
     };
     return (
       <Navbar color="primary" dark={true} expand="md">

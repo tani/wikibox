@@ -1,6 +1,6 @@
 # WikiBox
 
-- [Home](#/page/index.md/)
+- [Home](#/index.md/)
 - [Themes]()
     - [default](../default/)
     - [cerulean](../cerulean/)
@@ -24,4 +24,3 @@
     - [superhero](../superhero/)
     - [united](../united/)
     - [yeti](../yeti/)
-- [API](#/page/api.md)

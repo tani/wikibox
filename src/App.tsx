@@ -9,7 +9,7 @@ const { LastLocationProvider } = require("react-router-last-location");
 
 export default class App extends Component<{}, {}> {
   public render() {
-    const DefaultPage = () => <Redirect to="/page/index.md/" />;
+    const DefaultPage = () => <Redirect to="/index.md/" />;
     return (
       <div>
         <Header />
@@ -17,8 +17,7 @@ export default class App extends Component<{}, {}> {
           <Router>
             <LastLocationProvider>
               <Route exact={true} path="/" component={DefaultPage} />
-              <Route exact={true} path="/page/" component={DefaultPage} />
-              <Route path="/page/:filename/" component={Page} />
+              <Route path="/:filename/" component={Page} />
             </LastLocationProvider>
           </Router>
           <Footer />

@@ -1,78 +1,81 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+//const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
+const lighttheme = "cerulean litera materia sandstone cosmo flatly lumen minty simplex united journal lux pulse sketchy spacelab".split(
+  " "
+);
+const darktheme = "darkly slate superhero solar cyborg yeti".split(" ");
 
-module.exports = {
-  mode: process.env.NODE_ENV || "development",
-  entry: {
-    "index": "./src/index.tsx"
-  },
-  output: {
-    path: `${__dirname}/build/default/`,
-    filename: "lib/[name].min.js"
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"]
-  },
-  module: {
-    rules: [
-      {
-        test: /\.[tj]sx?$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              presets: [
-                "@babel/preset-typescript",
-                "@babel/preset-react",
-                "@babel/preset-env"
-              ],
-              plugins: ["@babel/plugin-proposal-class-properties"]
+const createConfig = THEME => {
+  const BRIGHTNESS = lighttheme.includes(THEME) ? "light" : "dark";
+  return {
+    mode: process.env.NODE_ENV,
+    entry: {
+      index: "./src/index.tsx"
+    },
+    output: {
+      path: `${__dirname}/build/${THEME}/`,
+      filename: "[name].min.js"
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", ".js", ".json"]
+    },
+    module: {
+      rules: [
+        {
+          test: /\.[tj]sx?$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                presets: [
+                  "@babel/preset-typescript",
+                  "@babel/preset-react",
+                  "@babel/preset-env"
+                ],
+                plugins: [
+                  "@babel/plugin-proposal-class-properties",
+                  ["global-define", { THEME, BRIGHTNESS }]
+                ]
+              }
             }
-          }
-        ]
-      }
-    ]
-  },
-  plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: `${__dirname}/src/index.html`,
-        to: "index.html"
-      },
-      {
-        from: `${__dirname}/node_modules/highlight.js/styles/atom-one-light.css`,
-        to: "lib/highlight.min.css"
-      },
-      {
-        from: `${__dirname}/node_modules/bootstrap/dist/css/bootstrap.min.css`,
-        to: "lib/bootstrap.min.css",
-      },
-      {
-        from: `${__dirname}/node_modules/katex/dist/**/*.min.css*`,
-        to: "lib/[1]",
-        test: /dist\/(.*)/,
-        ignore: ["**/contrib/**/*"]
-      },
-      {
-        from: `${__dirname}/node_modules/katex/dist/**/*`,
-        to: "lib/[1]",
-        test: /dist\/(.*)/,
-        ignore: ["*.js", "*.mjs", "*.css", "*.md"]
-      },
-      {
-        from: `${__dirname}/data/**/*`,
-        to: "data/[1]",
-        test: /data\/(.*)/
-      },
-      { from: `${__dirname}/README.md`, to: "data/index.md" }
-    ])
-  ],
-  devtool: process.env.NODE_ENV === "production" ? "none" : "source-map",
-  devServer: {
-    contentBase: `${__dirname}/build/`,
-    hot: true,
-    inline: true
-  }
+          ]
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"]
+        },
+        {
+          test: /\.(otf|ttf|woff|woff2)$/,
+          use: ["url-loader"]
+        }
+      ]
+    },
+    plugins: [
+      //new ForkTsCheckerWebpackPlugin(),
+      new CopyWebpackPlugin([
+        { from: `${__dirname}/README.md`, to: "index.md" },
+        { from: `${__dirname}/header.md`, to: "header.md" },
+        { from: `${__dirname}/footer.md`, to: "footer.md" }
+      ]),
+      new HtmlWebpackPlugin({
+        inlineSource: ".(js|css)$",
+        template: `${__dirname}/src/index.html`
+      }),
+      new HtmlWebpackInlineSourcePlugin()
+    ],
+    devtool: process.env.NODE_ENV === "production" ? "none" : "source-map",
+    devServer: {
+      contentBase: `${__dirname}/build/`,
+      hot: true,
+      inline: true
+    }
+  };
 };
+
+module.exports =
+  process.env.NODE_ENV == "development"
+    ? createConfig(lighttheme[0])
+    : [...darktheme, ...lighttheme].map(createConfig);

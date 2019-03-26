@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
-import Api from "./api";
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
 
@@ -16,9 +15,10 @@ export default class Footer extends Component<{}, FooterState> {
   }
   public componentDidMount() {
     (async () => {
-      const api = new Api();
-      const response = await api.getData("footer.md");
-      this.setState({ source: response || "" });
+      const response = await fetch("./footer.md");
+      this.setState({
+        source: response.status === 200 ? await response.text() : ""
+      });
     })();
   }
   public render() {

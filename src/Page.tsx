@@ -27,10 +27,10 @@ export default class Page extends Component<PageProps, PageState> {
     };
   }
   public async updateSource() {
-    const api = new Api();
-    const response = await api.getData(this.state.filename);
+    const response = await fetch(`./${this.state.filename}`);
+    const source = response.status === 200 ? await response.text() : "";
     const div = document.createElement("div");
-    div.innerHTML = await markdown(response || "");
+    div.innerHTML = await markdown(source);
     const toc = Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
       h => ({
         hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
@@ -38,10 +38,7 @@ export default class Page extends Component<PageProps, PageState> {
         text: h.innerHTML
       })
     );
-    this.setState({
-      source: response || "",
-      toc
-    });
+    this.setState({ source, toc });
   }
   public componentDidMount() {
     const filename = this.props.match.params.filename;
@@ -70,17 +67,17 @@ export default class Page extends Component<PageProps, PageState> {
       code(p: any) {
         return (
           <ReactHighlight className={`language-${p.language}`}>
-          { p.value }
+            {p.value}
           </ReactHighlight>
-        )
+        );
       },
       heading(p: any) {
         return (
-          <p className={`h${p.level}`}>
+          <div className={`h${p.level}`}>
             <Element name={slugify(p.children.toString())}>
               {p.children}
             </Element>
-          </p>
+          </div>
         );
       },
       table(p: any) {
