@@ -10,13 +10,14 @@ const darktheme = "darkly slate superhero solar cyborg yeti".split(" ");
 const createConfig = THEME => {
   const BRIGHTNESS = lighttheme.includes(THEME) ? "light" : "dark";
   return {
+    name: THEME,
     mode: process.env.NODE_ENV,
     entry: {
       index: "./src/index.tsx"
     },
     output: {
       path: `${__dirname}/build/${THEME}/`,
-      filename: "[name].min.js"
+      filename: "index.min.js"
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"]
@@ -56,6 +57,9 @@ const createConfig = THEME => {
                   return !url.match(/\.woff2$/)
                 }
               }
+            },
+            {
+              loader: "clean-css-loader"
             }
           ]
         },

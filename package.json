@@ -69,6 +69,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-global-define": "^1.0.3",
     "clean-css-cli": "^4.2.1",
+    "clean-css-loader": "^1.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",
