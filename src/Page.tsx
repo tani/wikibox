@@ -6,7 +6,6 @@ import { Element, Link } from "react-scroll";
 import { Row, Table } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import slugify from "slugify";
-import Api from "./api";
 import markdown from "./markdown";
 const RemarkMath = require("remark-math");
 const { InlineMath, BlockMath } = require("react-katex");
