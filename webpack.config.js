@@ -48,13 +48,13 @@ const createConfig = THEME => {
           test: /\.css$/,
           use: [
             {
-              loader:"style-loader"
+              loader: "style-loader"
             },
             {
               loader: "css-loader",
               options: {
                 url(url) {
-                  return !url.match(/\.woff2$/)
+                  return !url.match(/\.woff2$/);
                 }
               }
             },
