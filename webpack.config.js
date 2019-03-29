@@ -1,6 +1,6 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-//const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const lighttheme = "cerulean litera materia sandstone cosmo flatly lumen minty simplex united journal lux pulse sketchy spacelab".split(
   " "
@@ -32,13 +32,21 @@ const createConfig = THEME => {
               loader: "babel-loader",
               options: {
                 presets: [
-                  "@babel/preset-typescript",
-                  "@babel/preset-react",
-                  "@babel/preset-env"
+                  "@babel/typescript",
+                  "@babel/react",
+                  "@babel/env"
                 ],
-                plugins: [
-                  "@babel/plugin-proposal-class-properties",
-                  ["global-define", { THEME, BRIGHTNESS }]
+              }
+            },
+            {
+              loader: "eslint-loader"
+            },
+            {
+              loader: "string-replace-loader",
+              options: {
+                multiple: [
+                  { search: "%THEME%", replace: THEME },
+                  { search: "%BRIGHTNESS%", replace: BRIGHTNESS }
                 ]
               }
             }
@@ -70,7 +78,7 @@ const createConfig = THEME => {
       ]
     },
     plugins: [
-      //new ForkTsCheckerWebpackPlugin(),
+      ...(process.env.NODE_ENV==="development" ? [new ForkTsCheckerWebpackPlugin()] : []),
       new CopyWebpackPlugin([
         { from: `${__dirname}/README.md`, to: "index.md" },
         { from: `${__dirname}/header.md`, to: "header.md" },

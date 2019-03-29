@@ -1,53 +1,23 @@
 import { fromNullable } from "fp-ts/lib/Option";
-import React, { Component } from "react";
-import {
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown
-} from "reactstrap";
+import React from "react";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import slugify from "slugify";
 import markdown from "./markdown";
 
-interface HeaderState {
-  isOpen: boolean;
-  title: string;
-  navigation: Array<{
-    href: string;
-    text: string;
-    subnavigation: Array<{ href: string; text: string }>;
-  }>;
-}
-
-export default class Header extends Component<{}, HeaderState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      isOpen: false,
-      navigation: [],
-      title: ""
-    };
-    this.handleTogglerClick = this.handleTogglerClick.bind(this);
-  }
-  public handleTogglerClick() {
-    const isOpen = !this.state.isOpen;
-    this.setState({
-      isOpen
-    });
-  }
-  public componentDidMount() {
+export default () => {
+  const [state, dispatch] = React.useState({
+    navigation: [
+      { href: "", text: "", subnavigation: [{ href: "", text: "" }] }
+    ],
+    title: ""
+  });
+  React.useEffect(() => {
     (async () => {
       const response = await fetch("./header.md");
       const div = document.createElement("div");
-      div.innerHTML = await markdown(
-        response.status === 200 ? await response.text() : ""
-      );
+      if (response.status === 200) {
+        div.innerHTML = await markdown(await response.text());
+      }
       const h1 = fromNullable(div.querySelector("h1"))
         .map($h1 => $h1.innerHTML)
         .getOrElse("");
@@ -75,71 +45,47 @@ export default class Header extends Component<{}, HeaderState> {
           })
         )
         .getOrElse([]);
-      this.setState({
+      dispatch({
         navigation,
         title
       });
     })();
-  }
-  public render() {
-    const goto = (href: string) => () => {
-      location.assign(href);
-      setTimeout(() => location.reload(), 500);
-    };
-    return (
-      <Navbar color="primary" dark={true} expand="md">
-        <NavbarToggler onClick={this.handleTogglerClick} />
-        <NavbarBrand href="" onClick={goto("#/")}>
-          {this.state.title}
-        </NavbarBrand>
-        <Collapse navbar={true} isOpen={this.state.isOpen}>
-          <Nav navbar={true}>
-            {this.state.navigation.map(item => {
-              if (item.subnavigation.length === 0) {
-                return (
-                  <NavItem key={item.text}>
-                    <NavLink
-                      onClick={goto(item.href)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {item.text}
-                    </NavLink>
-                  </NavItem>
-                );
-              } else {
-                return (
-                  <UncontrolledDropdown
-                    key={item.text}
-                    nav={true}
-                    inNavbar={true}
-                  >
-                    <DropdownToggle nav={true} caret={true}>
-                      {item.text}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {item.subnavigation.map((subitem: any) => (
-                        <DropdownItem key={subitem.text}>
-                          <NavLink
-                            onClick={goto(subitem.href)}
-                            style={{
-                              color:
-                                window.getComputedStyle(window.document.body)
-                                  .color || "",
-                              cursor: "pointer"
-                            }}
-                          >
-                            {subitem.text}
-                          </NavLink>
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                );
-              }
-            })}
-          </Nav>
-        </Collapse>
-      </Navbar>
-    );
-  }
-}
+  }, [state.navigation, state.title]);
+  return (
+    <Navbar bg="primary" variant="dark" expand="md">
+      <Navbar.Toggle area-controls="collapse" />
+      <Navbar.Brand href="#/">{state.title}</Navbar.Brand>
+      <Navbar.Collapse id="collapse">
+        <Nav>
+          {state.navigation.map(item => {
+            if (item.subnavigation.length === 0) {
+              return (
+                <Nav.Link
+                  key={item.text}
+                  href={item.href}
+                  style={{ cursor: "pointer" }}
+                >
+                  {item.text}
+                </Nav.Link>
+              );
+            } else {
+              return (
+                <NavDropdown
+                  title={item.text}
+                  id={slugify(item.text)}
+                  key={item.text}
+                >
+                  {item.subnavigation.map(subitem => (
+                    <NavDropdown.Item key={subitem.text} href={subitem.href}>
+                      {subitem.text}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
+              );
+            }
+          })}
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+};
