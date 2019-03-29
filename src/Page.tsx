@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactHighlight from "react-highlight";
 import ReactMarkdown from "react-markdown";
 import { RouteComponentProps } from "react-router";
-import { Element, Link } from "react-scroll";
+import Scroll from "react-scroll";
 import { Row, Table } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import slugify from "slugify";
 import markdown from "./markdown";
 const RemarkMath = require("remark-math");
-const { InlineMath, BlockMath } = require("react-katex");
+const KaTeX = require("react-katex");
 
 const tocListStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
@@ -20,10 +20,10 @@ const tocListStyle = {
   top: 20
 };
 const TableOfContent = (props: { source: string, filename: string }) => {
-  const [state, dispatch] = useState({
+  const [state, dispatch] = React.useState({
     toc: [{hlevel: 0, href: "", text: ""}]
   });
-  useEffect(()=>{
+  React.useEffect(()=>{
     (async () => {
       const div = document.createElement("div");
       div.innerHTML = await markdown(props.source);
@@ -41,12 +41,12 @@ const TableOfContent = (props: { source: string, filename: string }) => {
     <ul style={tocListStyle} className="d-none d-md-block">
       {state.toc.map(item => (
         <li style={{paddingLeft: `${item.hlevel-1}em`}} key={item.text}>
-          <Link
+          <Scroll.Link
             to={slugify(item.text.toString())}
             href={`#/page/${props.filename}`}
           >
             {item.text}
-          </Link>
+          </Scroll.Link>
         </li>
       ))}
     </ul>
@@ -60,16 +60,16 @@ const renderers = {
   ),
   heading: (p: any) => (
       <div className={`h${p.level}`}>
-        <Element name={slugify(p.children.toString())}>{p.children}</Element>
+        <Scroll.Element name={slugify(p.children.toString())}>{p.children}</Scroll.Element>
       </div>
     ),
   table: (p: any) => (<Table>{p.children}</Table>),
-  math: (p: any) => (<BlockMath math={p.value} />),
-  inlineMath: (p: any) => <InlineMath math={p.value} />
+  math: (p: any) => (<KaTeX.BlockMath math={p.value} />),
+  inlineMath: (p: any) => <KaTeX.InlineMath math={p.value} />
 };
 export default (props: RouteComponentProps<{filename: string}>) => {
-  const [state, dispatch] = useState({ source: "" });
-  useEffect(() => {
+  const [state, dispatch] = React.useState({ source: "" });
+  React.useEffect(() => {
     (async () => {
       const response = await fetch(`./${props.match.params.filename}`);
       const source = response.status === 200 ? await response.text() : "";

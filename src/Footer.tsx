@@ -1,41 +1,31 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 const RemarkMath = require("remark-math");
-const { InlineMath, BlockMath } = require("react-katex");
+const KaTeX = require("react-katex");
 
-interface FooterState {
-  source: string;
-}
-export default class Footer extends Component<{}, FooterState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      source: ""
-    };
+const renderers = {
+  inlineMath(p: { value: any }) {
+    return <KaTeX.InlineMath math={p.value} />;
+  },
+  math(p: { value: any }) {
+    return <KaTeX.BlockMath math={p.value} />;
   }
-  public componentDidMount() {
+};
+export default () => {
+  const [state, dispatch] = React.useState({ source: "" });
+  React.useEffect(() => {
     (async () => {
       const response = await fetch("./footer.md");
-      this.setState({
-        source: response.status === 200 ? await response.text() : ""
-      });
-    })();
-  }
-  public render() {
-    const renderers = {
-      inlineMath(p: { value: any }) {
-        return <InlineMath math={p.value} />;
-      },
-      math(p: { value: any }) {
-        return <BlockMath math={p.value} />;
+      if(response.status == 200) {
+        dispatch({ source: await response.text() });
       }
-    };
-    return (
-      <ReactMarkdown
-        source={this.state.source}
-        plugins={[RemarkMath]}
-        renderers={renderers}
-      />
-    );
-  }
+    })();
+  });
+  return (
+    <ReactMarkdown
+      source={state.source}
+      plugins={[RemarkMath]}
+      renderers={renderers}
+    />
+  );
 }
