@@ -1,14 +1,11 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
-const lighttheme = "cerulean litera materia sandstone cosmo flatly lumen minty simplex united journal lux pulse sketchy spacelab".split(
-  " "
-);
-const darktheme = "darkly slate superhero solar cyborg yeti".split(" ");
-
+const themes = "cerulean litera materia sandstone cosmo flatly lumen minty simplex united journal lux pulse sketchy spacelab darkly slate superhero solar cyborg yeti".split(" ");
+const dev = (then, otherwise = []) =>
+  process.env.NODE_ENV === "development" ? then : otherwise;
 const createConfig = THEME => {
-  const BRIGHTNESS = lighttheme.includes(THEME) ? "light" : "dark";
   return {
     name: THEME,
     mode: process.env.NODE_ENV,
@@ -29,24 +26,18 @@ const createConfig = THEME => {
           exclude: /node_modules/,
           use: [
             {
-              loader: "babel-loader",
-              options: {
-                presets: [
-                  "@babel/typescript",
-                  "@babel/react",
-                  "@babel/env"
-                ],
+              loader: "babel-loader"
+            },
+            ...dev([
+              {
+                loader: "eslint-loader"
               }
-            },
-            {
-              loader: "eslint-loader"
-            },
+            ]),
             {
               loader: "string-replace-loader",
               options: {
                 multiple: [
                   { search: "%THEME%", replace: THEME },
-                  { search: "%BRIGHTNESS%", replace: BRIGHTNESS }
                 ]
               }
             }
@@ -65,9 +56,6 @@ const createConfig = THEME => {
                   return !url.match(/\.woff2$/);
                 }
               }
-            },
-            {
-              loader: "clean-css-loader"
             }
           ]
         },
@@ -78,11 +66,11 @@ const createConfig = THEME => {
       ]
     },
     plugins: [
-      ...(process.env.NODE_ENV==="development" ? [new ForkTsCheckerWebpackPlugin()] : []),
+      ...dev([new ForkTsCheckerWebpackPlugin()]),
       new CopyWebpackPlugin([
-        { from: `${__dirname}/README.md`, to: "index.md" },
-        { from: `${__dirname}/header.md`, to: "header.md" },
-        { from: `${__dirname}/footer.md`, to: "footer.md" }
+        { from: `${__dirname}/main.html`, to: "main.html" },
+        { from: `${__dirname}/header.html`, to: "header.html" },
+        { from: `${__dirname}/footer.html`, to: "footer.html" }
       ]),
       new HtmlWebpackPlugin({
         inlineSource: ".(js|css)$",
@@ -90,7 +78,7 @@ const createConfig = THEME => {
       }),
       new HtmlWebpackInlineSourcePlugin()
     ],
-    devtool: process.env.NODE_ENV === "production" ? "none" : "source-map",
+    devtool: dev("source-map", "none"),
     devServer: {
       contentBase: `${__dirname}/build/`,
       hot: true,
@@ -99,7 +87,7 @@ const createConfig = THEME => {
   };
 };
 
-module.exports =
-  process.env.NODE_ENV == "development"
-    ? createConfig(lighttheme[0])
-    : [...darktheme, ...lighttheme].map(createConfig);
+module.exports = dev(
+  createConfig(themes[0]),
+  themes.map(createConfig)
+);

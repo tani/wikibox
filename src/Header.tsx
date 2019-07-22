@@ -1,9 +1,7 @@
-import { fromNullable } from "fp-ts/lib/Option";
 import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import slugify from "slugify";
-import markdown from "./markdown";
-
+import { load } from "cheerio";
 export default () => {
   const [state, dispatch] = React.useState({
     navigation: [
@@ -13,41 +11,27 @@ export default () => {
   });
   React.useEffect(() => {
     (async () => {
-      const response = await fetch("./header.md");
-      const div = document.createElement("div");
-      if (response.status === 200) {
-        div.innerHTML = await markdown(await response.text());
+      const response = await fetch("./header.html");
+      const $ = load(await response.text());
+      const title = document.querySelector("title");
+      if (title) {
+        title.innerHTML = $("h1").text();
       }
-      const h1 = fromNullable(div.querySelector("h1"))
-        .map($h1 => $h1.innerHTML)
-        .getOrElse("");
-      const title = fromNullable(document.querySelector("title"))
-        .map($title => ($title.innerHTML = h1))
-        .getOrElse("");
-      const navigation = fromNullable(div.querySelector("ul"))
-        .map(ul =>
-          Array.from(ul.children).map(child => {
-            const subnavigation = Array.from(child.querySelectorAll("li")).map(
-              subitem => {
-                const b = fromNullable(subitem.querySelector("a"));
-                return {
-                  href: b.map($b => $b.href).getOrElse(""),
-                  text: b.map($b => $b.innerHTML).getOrElse("")
-                };
-              }
-            );
-            const a = fromNullable(child.querySelector("a"));
-            return {
-              href: a.map($a => $a.href).getOrElse(""),
-              subnavigation,
-              text: a.map($a => $a.innerHTML).getOrElse("")
-            };
-          })
-        )
-        .getOrElse([]);
+      const navigation = $("> li", $("ul")[0])
+        .toArray()
+        .map(child => ({
+          href: $("> a", child).attr("href"),
+          subnavigation: $("li", child)
+            .toArray()
+            .map(subitem => ({
+              href: $("a", subitem).attr("href"),
+              text: $("a", subitem).text()
+            })),
+          text: $("> a", child).text()
+        }));
       dispatch({
         navigation,
-        title
+        title: $("h1").text()
       });
     })();
   }, [state.navigation, state.title]);
