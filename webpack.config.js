@@ -68,9 +68,9 @@ const createConfig = THEME => {
     plugins: [
       ...dev([new ForkTsCheckerWebpackPlugin()]),
       new CopyWebpackPlugin([
-        { from: `${__dirname}/main.html`, to: "main.html" },
-        { from: `${__dirname}/header.html`, to: "header.html" },
-        { from: `${__dirname}/footer.html`, to: "footer.html" }
+        { from: `${__dirname}/src/main.html`, to: "main.html" },
+        { from: `${__dirname}/src/header.html`, to: "header.html" },
+        { from: `${__dirname}/src/footer.html`, to: "footer.html" }
       ]),
       new HtmlWebpackPlugin({
         inlineSource: ".(js|css)$",

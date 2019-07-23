@@ -1,8 +1,9 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { RouteComponentProps } from "react-router";
-import Scroll from "react-scroll";
 import slugify from "slugify";
+import { load } from "cheerio";
+
 const tocListStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
   listStyle: "none",
@@ -17,18 +18,20 @@ const TableOfContents = (props: {
   filename: string;
 }): ReturnType<React.FC> => {
   const [state, dispatch] = React.useState({
-    toc: [{ hlevel: 0, href: "", text: "" }]
+    toc: [{ hlevel: 0, text: "" }]
   });
   React.useEffect(() => {
     (async () => {
       const div = document.createElement("div");
       div.innerHTML = props.source;
+      const $ = load(props.source);
       dispatch({
-        toc: Array.from(div.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(h => ({
-          hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
-          href: slugify(h.innerHTML),
-          text: h.innerHTML
-        }))
+        toc: $("h1,h2,h3,h4,h5,h6")
+          .toArray()
+          .map(h => ({
+            hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
+            text: $(h).text()
+          }))
       });
     })();
   }, [props.filename, props.source]);
@@ -36,12 +39,7 @@ const TableOfContents = (props: {
     <ul style={tocListStyle} className="d-none d-md-block">
       {state.toc.map(item => (
         <li style={{ paddingLeft: `${item.hlevel - 1}em` }} key={item.text}>
-          <Scroll.Link
-            to={slugify(item.text.toString())}
-            href={`#/page/${props.filename}`}
-          >
-            {item.text}
-          </Scroll.Link>
+          <a href={`#/page/${props.filename}`}>{item.text}</a>
         </li>
       ))}
     </ul>
@@ -54,8 +52,12 @@ const Page = (
   React.useEffect(() => {
     (async () => {
       const response = await fetch(`./${props.match.params.filename}`);
+      const $ = load(await response.text());
+      $("h1,h2,h3,h4,h5").each((_, element) => {
+        $(element).attr("id", slugify($(element).text()));
+      });
       if (response.status === 200) {
-        dispatch({ source: await response.text() });
+        dispatch({ source: $.html() });
       }
     })();
   }, [props.match.params.filename]);
