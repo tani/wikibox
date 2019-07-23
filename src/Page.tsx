@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { RouteComponentProps } from "react-router";
 import slugify from "slugify";
 import { load } from "cheerio";
-
+import { HashLink } from "react-router-hash-link";
 const tocListStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
   listStyle: "none",
@@ -28,9 +28,9 @@ const TableOfContents = (props: {
       dispatch({
         toc: $("h1,h2,h3,h4,h5,h6")
           .toArray()
-          .map(h => ({
-            hlevel: parseInt(h.tagName.replace(/[a-zA-Z]/, ""), 10),
-            text: $(h).text()
+          .map(element => ({
+            hlevel: parseInt(element.tagName.replace(/[a-zA-Z]/, ""), 10),
+            text: $(element).text()
           }))
       });
     })();
@@ -39,7 +39,9 @@ const TableOfContents = (props: {
     <ul style={tocListStyle} className="d-none d-md-block">
       {state.toc.map(item => (
         <li style={{ paddingLeft: `${item.hlevel - 1}em` }} key={item.text}>
-          <a href={`#/page/${props.filename}`}>{item.text}</a>
+          <HashLink to={`/${props.filename}#${slugify(item.text)}`}>
+            {item.text}
+          </HashLink>
         </li>
       ))}
     </ul>

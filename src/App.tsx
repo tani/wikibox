@@ -14,9 +14,9 @@ const App = (): ReturnType<React.FC> => (
         <Route
           exact={true}
           path="/"
-          component={() => <Redirect to="/main.html/" />}
+          component={() => <Redirect to="/main.html" />}
         />
-        <Route path="/:filename/" component={Page} />
+        <Route path="/:filename" component={Page} />
       </Container>
     </Router>
     <Footer />

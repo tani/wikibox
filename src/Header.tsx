@@ -17,17 +17,17 @@ export default () => {
       if (title) {
         title.innerHTML = $("h1").text();
       }
-      const navigation = $("> li", $("ul")[0])
+      const navigation = $("menu > li")
         .toArray()
-        .map(child => ({
-          href: $("> a", child).attr("href"),
-          subnavigation: $("li", child)
+        .map(element => ({
+          href: $("> a", element).attr("href"),
+          subnavigation: $("li", element)
             .toArray()
-            .map(subitem => ({
-              href: $("a", subitem).attr("href"),
-              text: $("a", subitem).text()
+            .map(element1 => ({
+              href: $("> a", element1).attr("href"),
+              text: $("> a", element1).text()
             })),
-          text: $("> a", child).text()
+          text: $("> a", element).text()
         }));
       dispatch({
         navigation,
