@@ -13,17 +13,12 @@ const tocListStyle = {
   position: "sticky" as "sticky",
   top: 20
 };
-const TableOfContents = (props: {
-  source: string;
-  filename: string;
-}): ReturnType<React.FC> => {
+const TableOfContents = (props: { source: string; filename: string }) => {
   const [state, dispatch] = React.useState({
     toc: [{ hlevel: 0, text: "" }]
   });
   React.useEffect(() => {
     (async () => {
-      const div = document.createElement("div");
-      div.innerHTML = props.source;
       const $ = load(props.source);
       dispatch({
         toc: $("h1,h2,h3,h4,h5,h6")
@@ -47,9 +42,7 @@ const TableOfContents = (props: {
     </ul>
   );
 };
-const Page = (
-  props: RouteComponentProps<{ filename: string }>
-): ReturnType<React.FC> => {
+const Page = (props: RouteComponentProps<{ filename: string }>) => {
   const [state, dispatch] = React.useState({ source: "" });
   React.useEffect(() => {
     (async () => {

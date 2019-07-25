@@ -6,10 +6,10 @@
     "lint": "eslint --fix ./src/*",
     "format": "prettier --write ./*.{js,ts,tsx} ./src/*.{js,ts,tsx}",
     "clean": "rm -rf build/",
-    "build": "NODE_ENV=production parallel-webpack",
-    "postbuild": "find build -name '*.js' -exec rm {} \\;",
-    "build:dev": "NODE_ENV=development parallel-webpack",
-    "postbuild:dev": "find build -name '*.js' -exec rm {} \\;",
+    "build": "NODE_ENV=production webpack",
+    "postbuild": "find build -name '*.js*' -exec rm {} \\;",
+    "build:dev": "NODE_ENV=development webpack",
+    "postbuild:dev": "find build -name '*.js*' -exec rm {} \\;",
     "start": "NODE_ENV=development webpack-dev-server --hot --port=6789"
   },
   "repository": {

@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Page from "./Page";
 
-const App = (): ReturnType<React.FC> => (
+const App = () => (
   <React.Fragment>
     <Header />
     <Router>

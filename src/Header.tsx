@@ -4,9 +4,7 @@ import slugify from "slugify";
 import { load } from "cheerio";
 export default () => {
   const [state, dispatch] = React.useState({
-    navigation: [
-      { href: "", text: "", subnavigation: [{ href: "", text: "" }] }
-    ],
+    navigation: [{ href: "", text: "", dropdown: [{ href: "", text: "" }] }],
     title: ""
   });
   React.useEffect(() => {
@@ -21,7 +19,7 @@ export default () => {
         .toArray()
         .map(element => ({
           href: $("> a", element).attr("href"),
-          subnavigation: $("li", element)
+          dropdown: $("li", element)
             .toArray()
             .map(element1 => ({
               href: $("> a", element1).attr("href"),
@@ -41,33 +39,37 @@ export default () => {
       <Navbar.Brand href="#/">{state.title}</Navbar.Brand>
       <Navbar.Collapse id="collapse">
         <Nav>
-          {state.navigation.map(item => {
-            if (item.subnavigation.length === 0) {
-              return (
-                <Nav.Link
-                  key={item.text}
-                  href={item.href}
-                  style={{ cursor: "pointer" }}
-                >
-                  {item.text}
-                </Nav.Link>
-              );
-            } else {
-              return (
-                <NavDropdown
-                  title={item.text}
-                  id={slugify(item.text)}
-                  key={item.text}
-                >
-                  {item.subnavigation.map(subitem => (
-                    <NavDropdown.Item key={subitem.text} href={subitem.href}>
-                      {subitem.text}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
-              );
+          {state.navigation.map(
+            (item): ReturnType<React.FC> => {
+              if (item.dropdown.length === 0) {
+                return (
+                  <Nav.Link
+                    key={item.text}
+                    href={item.href}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {item.text}
+                  </Nav.Link>
+                );
+              } else {
+                return (
+                  <NavDropdown
+                    title={item.text}
+                    id={slugify(item.text)}
+                    key={item.text}
+                  >
+                    {item.dropdown.map(
+                      (item1): ReturnType<React.FC> => (
+                        <NavDropdown.Item key={item1.text} href={item1.href}>
+                          {item1.text}
+                        </NavDropdown.Item>
+                      )
+                    )}
+                  </NavDropdown>
+                );
+              }
             }
-          })}
+          )}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

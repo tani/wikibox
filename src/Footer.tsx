@@ -1,4 +1,5 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 export default () => {
   const [state, dispatch] = React.useState({ source: "" });
   React.useEffect(() => {
@@ -9,5 +10,9 @@ export default () => {
       }
     })();
   }, [state.source]);
-  return <div dangerouslySetInnerHTML={{ __html: state.source }} />;
+  return (
+    <Container>
+      <div dangerouslySetInnerHTML={{ __html: state.source }} />
+    </Container>
+  );
 };
