@@ -32,7 +32,7 @@ export default () => {
         title: $("h1").text()
       });
     })();
-  }, [state.navigation, state.title]);
+  }, []);
   return (
     <Navbar bg="primary" variant="dark" expand="md">
       <Navbar.Toggle area-controls="collapse" />

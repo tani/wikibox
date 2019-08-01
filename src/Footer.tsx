@@ -9,7 +9,7 @@ export default () => {
         dispatch({ source: await response.text() });
       }
     })();
-  }, [state.source]);
+  }, []);
   return (
     <Container>
       <div dangerouslySetInnerHTML={{ __html: state.source }} />
