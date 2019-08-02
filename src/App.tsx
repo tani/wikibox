@@ -16,7 +16,7 @@ const App = () => (
           path="/"
           component={() => <Redirect to="/main.html" />}
         />
-        <Route path="/:filename" component={Page} />
+        <Route path="/:filename(.+)" component={Page} />
       </Container>
     </Router>
     <Footer />

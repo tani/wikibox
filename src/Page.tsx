@@ -14,25 +14,16 @@ const tocListStyle = {
   top: 20
 };
 const TableOfContents = (props: { source: string; filename: string }) => {
-  const [state, dispatch] = React.useState({
-    toc: [{ hlevel: 0, text: "" }]
-  });
-  React.useEffect(() => {
-    (async () => {
-      const $ = load(props.source);
-      dispatch({
-        toc: $("h1,h2,h3,h4,h5,h6")
-          .toArray()
-          .map(element => ({
-            hlevel: parseInt(element.tagName.replace(/[a-zA-Z]/, ""), 10),
-            text: $(element).text()
-          }))
-      });
-    })();
-  }, [props.filename, props.source]);
+  const $ = load(props.source);
+  const toc = $("h1,h2,h3,h4,h5,h6")
+    .toArray()
+    .map(element => ({
+      hlevel: parseInt(element.tagName.replace(/[a-zA-Z]/, ""), 10),
+      text: $(element).text()
+    }));
   return (
     <ul style={tocListStyle} className="d-none d-md-block">
-      {state.toc.map(item => (
+      {toc.map(item => (
         <li style={{ paddingLeft: `${item.hlevel - 1}em` }} key={item.text}>
           <HashLink to={`/${props.filename}#${slugify(item.text)}`}>
             {item.text}
