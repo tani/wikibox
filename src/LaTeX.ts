@@ -1,8 +1,10 @@
 import { wrap } from "comlink";
+
 interface IRenderer {
   styleSheet: string;
   render(math: string, display: boolean): string;
 }
+
 const renderer = wrap<IRenderer>(new Worker("./LaTeX.worker", { type: 'module' }));
 const style = document.createElement("style");
 document.head.appendChild(style);
@@ -13,8 +15,9 @@ document.head.appendChild(style);
 class DisplayMath extends HTMLDivElement {
   public constructor() {
     super();
+    const shadow = this.attachShadow({mode: "closed"});
     (async () => {
-      this.innerHTML = await renderer.render(this.innerHTML, true);
+      shadow.innerHTML = await renderer.render(this.innerHTML, true);
     })();
   }
 }
@@ -24,8 +27,9 @@ customElements.define("display-math", DisplayMath, { extends: "div" });
 class InlineMath extends HTMLSpanElement {
   public constructor() {
     super();
+    const shadow = this.attachShadow({mode: "closed"});
     (async () => {
-      this.innerHTML = await renderer.render(this.innerHTML, false);
+      shadow.innerHTML = await renderer.render(this.innerHTML, false);
     })();
   }
 }

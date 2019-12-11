@@ -8,13 +8,13 @@ import { AllPackages } from "mathjax-full/js/input/tex/AllPackages";
 const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 const tex = new TeX({ packages: AllPackages });
-const svg = new SVG({ fontCache: "local" });
+const svg = new SVG({ fontCache: "none" });
 const html = mathjax.document("", { InputJax: tex, OutputJax: svg });
 expose({
-    get styleSheet(): string {
-        return adaptor.textContent(svg.styleSheet(html) as any);
-    },
     render(math: string, display: boolean): string {
-        return adaptor.outerHTML(html.convert(math, { display }));
+        return `
+          <style>${adaptor.textContent(svg.styleSheet(html) as any)}</style>
+          ${adaptor.outerHTML(html.convert(math, { display }))}
+        `;
     }
 })
