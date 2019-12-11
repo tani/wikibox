@@ -7,7 +7,7 @@ import Header from "./Header";
 import Page from "./Page";
 
 const App = () => (
-  <React.Fragment>
+  <>
     <Header />
     <Router>
       <Container style={{ marginTop: 20 }}>
@@ -20,7 +20,7 @@ const App = () => (
       </Container>
     </Router>
     <Footer />
-  </React.Fragment>
+  </>
 );
 
 export default App;

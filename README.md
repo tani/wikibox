@@ -6,7 +6,7 @@ WikiBox is inspired by [MDWiki](https://mdwiki.info/). MDWiki works with jQuery 
 
 ## Features
 
-- LaTeX Syntax (KaTeX)
+- LaTeX Syntax (MathJaX)
 - Markdown Syntax (Remark)
 - Code Highlighting (Highlight.js)
 - Beautiful Themes (Bootswatch) - 21 themes are available now!

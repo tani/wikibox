@@ -1,5 +1,5 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-
+const WorkerPlugin = require("worker-plugin");
 module.exports = {
   name: "default",
   mode: process.env.NODE_ENV,
@@ -7,8 +7,8 @@ module.exports = {
     index: "./src/index.tsx"
   },
   output: {
-    path: `${__dirname}/build/default/lib`,
-    filename: "index.min.js"
+    path: `${__dirname}/build/default/`,
+    filename: "lib/[name].min.js"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
@@ -21,9 +21,6 @@ module.exports = {
         use: [
           {
             loader: "babel-loader"
-          },
-          {
-            loader: "eslint-loader"
           }
         ]
       },
@@ -31,26 +28,18 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          }
-        ]
-      },
-      {
-        test: /\.(ttf|otf|woff2?)$/,
-        use: [
-          {
-            loader: "file-loader"
+            loader: "raw-loader"
           }
         ]
       }
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin()
+    new WorkerPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      eslint: true,
+      reportFiles: ["src/**/*.{ts,tsx}"]
+    })
   ],
   devtool: "source-map"
 };
-

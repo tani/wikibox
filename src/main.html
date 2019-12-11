@@ -4,13 +4,51 @@
 WikiBox is inspired by <a href="https://mdwiki.info/">MDWiki</a>. MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using React and Bootstrap 4 to be faster and beautiful. Of course LaTeX syntaxed equations are also upgraded to KaTeX.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li>LaTeX Syntax (KaTeX)</li>
+<li>LaTeX Syntax (MathJaX)</li>
 <li>Markdown Syntax (Remark)</li>
 <li>Code Highlighting (Highlight.js)</li>
 <li>Beautiful Themes (Bootswatch) - 21 themes are available now!</li>
 <li>Generating Table of Contents</li>
 </ul>
+<div is="display-math">1+2</div>
 <h2 id="overview">Overview</h2>
 <p>This system is made with two parts completely separated. The frontend also have rendering engine which treats markdown and LaTeX syntax, code highlighting. The frontend just communicates the backend to get auth-tokens and markdown sources. The backend just do authentification and authorization and send sources or update sources. Now we trying to make many backends implemented various languages to run on a lot of environment. First of all I prepare PHP backend. I have plan to make Common Lisp backend and JavaScript backend. And I notice you that it is avalable on Github Pages standalone. Our demo site has no backend just run with apache, we call this mode HTML backend.</p>
 <h2 id="copyright">Copyright</h2>
 <p>WikiBox has started to develop since 2018 and been written by TANIGUCHI Masaya under the GPLv3.</p>
+<div is="source-code" language="javascript" theme="github">
+    import hljs from "highlight.js/lib/highlight";
+    import importAll from "import-all.macro";
+    const styles = importAll.deferred("../node_modules/highlight.js/styles/*.css");
+    const languages = importAll.deferred(
+      "../node_modules/highlight.js/lib/languages/*.js"
+    );
+    
+    class SourceCode extends HTMLDivElement {
+      constructor() {
+        super();
+        const theme = this.getAttribute("theme");
+        const language = this.getAttribute("language") || "";
+        (async () => {
+          hljs.registerLanguage(
+            language,
+            (
+              await languages[
+                `../node_modules/highlight.js/lib/languages/${language}.js`
+              ]()
+            ).default
+          );
+          const shadow = this.attachShadow({ mode: "closed" });
+          const style = document.createElement("style");
+          style.innerHTML = (
+            await styles[`../node_modules/highlight.js/styles/${theme}.css`]()
+          ).default;
+          shadow.appendChild(style);
+          this.innerHTML = `<pre><code>${
+            hljs.highlight(language, this.innerHTML || "").value
+          }</code></pre>`;
+        })();
+      }
+    }
+    
+    customElements.define("source-code", SourceCode, { extends: "div" });
+</div>

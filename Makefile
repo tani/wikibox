@@ -7,7 +7,7 @@ clean:
 
 build/default:
 	npm run build
-	cp node_modules/bootstrap/dist/css/bootstrap.min.css build/default/lib/
+	cp node_modules/bootstrap/dist/css/bootstrap.min.* build/default/lib/
 	cp src/*.html build/default/
 
 build: build/default

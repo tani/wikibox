@@ -2,6 +2,7 @@ import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import slugify from "slugify";
 import { load } from "cheerio";
+
 export default () => {
   const [state, dispatch] = React.useState({
     navigation: [{ href: "", text: "", dropdown: [{ href: "", text: "" }] }],
@@ -12,17 +13,15 @@ export default () => {
       const response = await fetch("./header.html");
       const $ = load(await response.text());
       const title = document.querySelector("title");
-      if (title) {
-        title.innerHTML = $("h1").text();
-      }
+      if (title) title.innerHTML = $("h1").text();
       const navigation = $("menu > li")
         .toArray()
         .map(element => ({
-          href: $("> a", element).attr("href"),
+          href: $("> a", element).attr("href") || "",
           dropdown: $("li", element)
             .toArray()
             .map(element1 => ({
-              href: $("> a", element1).attr("href"),
+              href: $("> a", element1).attr("href") || "",
               text: $("> a", element1).text()
             })),
           text: $("> a", element).text()

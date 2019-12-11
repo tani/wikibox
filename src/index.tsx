@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
 import App from "./App";
-import "katex/dist/katex.min.css";
-import "latex-elements";
-import "code-elements";
+import("./LaTeX");
+import("./SourceCode");
 render(<App />, document.getElementById("root"));
