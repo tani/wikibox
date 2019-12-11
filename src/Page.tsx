@@ -1,9 +1,10 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
 import { RouteComponentProps } from "react-router";
 import slugify from "slugify";
-import { load } from "cheerio";
 import { HashLink } from "react-router-hash-link";
+
 const tocListStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
   listStyle: "none",
@@ -14,12 +15,12 @@ const tocListStyle = {
   top: 20
 };
 const TableOfContents = (props: { source: string; filename: string }) => {
-  const $ = load(props.source);
-  const toc = $("h1,h2,h3,h4,h5,h6")
-    .toArray()
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(props.source, "text/html")
+  const toc = Array.from(doc.querySelectorAll("h1,h2,h3,h4,h5,h6"))
     .map(element => ({
       hlevel: parseInt(element.tagName.replace(/[a-zA-Z]/, ""), 10),
-      text: $(element).text()
+      text: element.innerHTML
     }));
   return (
     <ul style={tocListStyle} className="d-none d-md-block">
@@ -33,17 +34,20 @@ const TableOfContents = (props: { source: string; filename: string }) => {
     </ul>
   );
 };
+
 const Page = (props: RouteComponentProps<{ filename: string }>) => {
   const [state, dispatch] = React.useState({ source: "" });
   React.useEffect(() => {
     (async () => {
+      const parser = new DOMParser();
       const response = await fetch(`./${props.match.params.filename}`);
-      const $ = load(await response.text());
-      $("h1,h2,h3,h4,h5").each((_, element) => {
-        $(element).attr("id", slugify($(element).text()));
-      });
       if (response.status === 200) {
-        dispatch({ source: $.html() });
+        const source = await response.text();
+        const doc = parser.parseFromString(source, "text/html");
+        doc.querySelectorAll("h1,h2,h3,h4,h5").forEach((element) => {
+          element.setAttribute("id", slugify(element.innerHTML));
+        });
+        dispatch({ source });
       }
     })();
   }, [props.match.params.filename]);

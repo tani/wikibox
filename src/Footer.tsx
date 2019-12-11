@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import Container from "react-bootstrap/esm/Container";
 export default () => {
   const [state, dispatch] = React.useState({ source: "" });
   React.useEffect(() => {

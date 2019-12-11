@@ -11,16 +11,19 @@ module.exports = {
     filename: "lib/[name].min.js"
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js"]
   },
   module: {
     rules: [
       {
-        test: /\.[tj]sx?$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader"
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true
+            }
           }
         ]
       },

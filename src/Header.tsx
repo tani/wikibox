@@ -1,7 +1,8 @@
 import React from "react";
-import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import Nav from "react-bootstrap/esm/Nav";
+import Navbar from "react-bootstrap/esm/Navbar";
+import NavDropdown from "react-bootstrap/esm/NavDropdown";
 import slugify from "slugify";
-import { load } from "cheerio";
 
 export default () => {
   const [state, dispatch] = React.useState({
@@ -11,25 +12,28 @@ export default () => {
   React.useEffect(() => {
     (async () => {
       const response = await fetch("./header.html");
-      const $ = load(await response.text());
-      const title = document.querySelector("title");
-      if (title) title.innerHTML = $("h1").text();
-      const navigation = $("menu > li")
-        .toArray()
-        .map(element => ({
-          href: $("> a", element).attr("href") || "",
-          dropdown: $("li", element)
-            .toArray()
-            .map(element1 => ({
-              href: $("> a", element1).attr("href") || "",
-              text: $("> a", element1).text()
-            })),
-          text: $("> a", element).text()
-        }));
-      dispatch({
-        navigation,
-        title: $("h1").text()
-      });
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(await response.text(), "text/html");
+      if (response.status === 200) {
+        const title = document.querySelector("title");
+        if (title) {
+          title.innerHTML = doc.querySelector("h1")?.innerHTML || "";
+        }
+        const navigation = Array.from(doc.querySelectorAll("menu > li"))
+          .map(element => ({
+            href: element.querySelector("a")?.getAttribute("href") || "",
+            dropdown: Array.from(element.querySelectorAll("li"))
+              .map(element1 => ({
+                href: element1.querySelector("a")?.getAttribute("href") || "",
+                text: element1.querySelector("a")?.innerHTML || ""
+              })),
+            text: element.querySelector("a")?.innerHTML || ""
+          }));
+        dispatch({
+          navigation,
+          title: doc.querySelector("h1")?.innerHTML || ""
+        });
+      }
     })();
   }, []);
   return (
