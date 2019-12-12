@@ -4,14 +4,14 @@ import Navbar from "react-bootstrap/esm/Navbar";
 import NavDropdown from "react-bootstrap/esm/NavDropdown";
 import slugify from "slugify";
 
-export default () => {
+export default (props: { filename: string }) => {
   const [state, dispatch] = React.useState({
     navigation: [{ href: "", text: "", dropdown: [{ href: "", text: "" }] }],
     title: ""
   });
   React.useEffect(() => {
     (async () => {
-      const response = await fetch("./header.html");
+      const response = await fetch(props.filename);
       const parser = new DOMParser();
       const doc = parser.parseFromString(await response.text(), "text/html");
       if (response.status === 200) {

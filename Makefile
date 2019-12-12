@@ -8,7 +8,7 @@ clean:
 build/default:
 	npm run build
 	cp node_modules/bootstrap/dist/css/bootstrap.min.* build/default/lib/
-	cp src/*.html build/default/
+	cp -r src/index.html src/page build/default/
 
 build: build/default
 	for theme in $(shell ls node_modules/bootswatch/dist); do \
