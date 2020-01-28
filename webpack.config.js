@@ -9,8 +9,7 @@ module.exports = {
     index: "./src/index.tsx"
   },
   output: {
-    path: `${__dirname}/build/default/`,
-    filename: "lib/[name].min.js"
+    filename: "[name].min.js"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],

@@ -5,8 +5,8 @@
   "scripts": {
     "lint": "eslint --fix ./src/*.{js,ts,tsx}",
     "format": "prettier --write ./*.{js,ts,tsx} ./src/*.{js,ts,tsx}",
-    "clean": "rm -rf build/",
-    "build": "webpack"
+    "clean": "rimraf dist/ **/*~",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,8 @@
     "bootstrap": "^4.4.1",
     "bootswatch": "^4.4.1",
     "comlink": "^4.2.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
     "highlight.js": "^9.18.0",
     "mathjax-full": "^3.0.0",
     "react": "^16.12.0",
@@ -52,13 +54,15 @@
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "fork-ts-checker-webpack-plugin": "^4.0.3",
+    "merge-stream": "^2.0.0",
     "pnp-webpack-plugin": "^1.6.0",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
+    "rimraf": "^3.0.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
+    "webpack-stream": "^5.2.1",
     "worker-plugin": "^3.2.0"
   }
 }
