@@ -1,5 +1,7 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const WorkerPlugin = require("worker-plugin");
+const PnpWebpackPlugin = require("pnp-webpack-plugin");
+
 module.exports = {
   name: "default",
   mode: process.env.NODE_ENV,
@@ -11,7 +13,8 @@ module.exports = {
     filename: "lib/[name].min.js"
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js"],
+    plugins: [PnpWebpackPlugin]
   },
   module: {
     rules: [
@@ -36,6 +39,9 @@ module.exports = {
         ]
       }
     ]
+  },
+  resolveLoader: {
+    plugins: [PnpWebpackPlugin.moduleLoader(module)]
   },
   plugins: [
     new WorkerPlugin(),

@@ -52,6 +52,7 @@
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "fork-ts-checker-webpack-plugin": "^4.0.3",
+    "pnp-webpack-plugin": "^1.6.0",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
     "ts-loader": "^6.2.1",

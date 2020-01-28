@@ -82,3 +82,7 @@ build/
 frontend/build
 .vagrant/
 machines/
+
+# yarn v2
+.pnp.js
+.yarn/
