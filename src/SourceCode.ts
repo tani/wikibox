@@ -1,8 +1,10 @@
 import { wrap } from "comlink";
-interface IRenderer {
+interface Renderer {
   render(code: string, language: string, theme: string): string;
 }
-const renderer = wrap<IRenderer>(new Worker("./SourceCode.worker", { type: "module" }));
+const renderer = wrap<Renderer>(
+  new Worker("./SourceCode.worker", { type: "module" })
+);
 
 class SourceCode extends HTMLDivElement {
   constructor() {

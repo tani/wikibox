@@ -13,7 +13,9 @@ const App = () => (
       <Router>
         <Switch>
           <Route
-            exact path="/" component={() => <Redirect to="page/main.html" />}
+            exact
+            path="/"
+            component={() => <Redirect to="page/main.html" />}
           />
           <Route path="/:filename(.+)" component={Page} />
         </Switch>

@@ -1,11 +1,13 @@
 import { wrap } from "comlink";
 
-interface IRenderer {
+interface Renderer {
   styleSheet: string;
   render(math: string, display: boolean): string;
 }
 
-const renderer = wrap<IRenderer>(new Worker("./LaTeX.worker", { type: 'module' }));
+const renderer = wrap<Renderer>(
+  new Worker("./LaTeX.worker", { type: "module" })
+);
 const style = document.createElement("style");
 document.head.appendChild(style);
 (async () => {
@@ -15,7 +17,7 @@ document.head.appendChild(style);
 class DisplayMath extends HTMLDivElement {
   public constructor() {
     super();
-    const shadow = this.attachShadow({mode: "closed"});
+    const shadow = this.attachShadow({ mode: "closed" });
     (async () => {
       shadow.innerHTML = await renderer.render(this.innerHTML, true);
     })();
@@ -27,7 +29,7 @@ customElements.define("display-math", DisplayMath, { extends: "div" });
 class InlineMath extends HTMLSpanElement {
   public constructor() {
     super();
-    const shadow = this.attachShadow({mode: "closed"});
+    const shadow = this.attachShadow({ mode: "closed" });
     (async () => {
       shadow.innerHTML = await renderer.render(this.innerHTML, false);
     })();
