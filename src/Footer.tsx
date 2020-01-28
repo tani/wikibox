@@ -10,7 +10,7 @@ export default (props: { filename: string }) => {
         dispatch({ source: await response.text() });
       }
     })();
-  }, []);
+  }, [props.filename]);
   return (
     <Container>
       <div dangerouslySetInnerHTML={{ __html: state.source }} />

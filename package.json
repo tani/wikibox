@@ -1,6 +1,6 @@
 {
   "name": "wikibox",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
     "lint": "eslint --fix ./src/*.{js,ts,tsx}",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ta2gch/wikibox.git"
+    "url": "git+https://github.com/bibliobibulus/wikibox.git"
   },
   "keywords": [
     "markdown",
@@ -19,45 +19,45 @@
   "author": "TANIGUCHI Masaya",
   "license": "GPL-3.0+",
   "bugs": {
-    "url": "https://github.com/ta2gch/wikibox/issues"
+    "url": "https://github.com/bibliobibulus/wikibox/issues"
   },
-  "homepage": "https://github.com/ta2gch/wikibox#readme",
+  "homepage": "https://github.com/bibliobibulus/wikibox#readme",
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "bootswatch": "^4.3.1",
+    "bootstrap": "^4.4.1",
+    "bootswatch": "^4.4.1",
     "comlink": "^4.2.0",
-    "highlight.js": "^9.16.2",
+    "highlight.js": "^9.18.0",
     "mathjax-full": "^3.0.0",
-    "react": "^16.8.5",
-    "react-bootstrap": "^1.0.0-beta.6",
-    "react-dom": "^16.8.5",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
+    "react": "^16.12.0",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
     "react-router-hash-link": "^1.2.2",
-    "slugify": "^1.3.4"
+    "slugify": "^1.3.6"
   },
   "devDependencies": {
     "@types/highlight.js": "^9.12.3",
-    "@types/node": "^10.14.4",
-    "@types/react": "^16.8.8",
-    "@types/react-dom": "^16.8.3",
-    "@types/react-router": "^4.4.5",
-    "@types/react-router-dom": "^4.3.1",
+    "@types/node": "^13.5.0",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
     "@types/react-router-hash-link": "^1.2.1",
-    "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "@typescript-eslint/parser": "^1.12.0",
-    "eslint": "^5.15.3",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.6.0",
-    "fork-ts-checker-webpack-plugin": "^0.4.15",
-    "prettier": "^1.16.4",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "fork-ts-checker-webpack-plugin": "^4.0.3",
+    "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.3.4000",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
     "worker-plugin": "^3.2.0"
   }
 }

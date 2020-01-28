@@ -19,23 +19,25 @@ export default (props: { filename: string }) => {
         if (title) {
           title.innerHTML = doc.querySelector("h1")?.innerHTML || "";
         }
-        const navigation = Array.from(doc.querySelectorAll("menu > li"))
-          .map(element => ({
+        const navigation = Array.from(doc.querySelectorAll("menu > li")).map(
+          element => ({
             href: element.querySelector("a")?.getAttribute("href") || "",
-            dropdown: Array.from(element.querySelectorAll("li"))
-              .map(element1 => ({
+            dropdown: Array.from(element.querySelectorAll("li")).map(
+              element1 => ({
                 href: element1.querySelector("a")?.getAttribute("href") || "",
                 text: element1.querySelector("a")?.innerHTML || ""
-              })),
+              })
+            ),
             text: element.querySelector("a")?.innerHTML || ""
-          }));
+          })
+        );
         dispatch({
           navigation,
           title: doc.querySelector("h1")?.innerHTML || ""
         });
       }
     })();
-  }, []);
+  }, [props.filename]);
   return (
     <Navbar bg="primary" variant="dark" expand="md">
       <Navbar.Toggle area-controls="collapse" />

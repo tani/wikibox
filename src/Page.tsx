@@ -16,12 +16,13 @@ const tocListStyle = {
 };
 const TableOfContents = (props: { source: string; filename: string }) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(props.source, "text/html")
-  const toc = Array.from(doc.querySelectorAll("h1,h2,h3,h4,h5,h6"))
-    .map(element => ({
+  const doc = parser.parseFromString(props.source, "text/html");
+  const toc = Array.from(doc.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(
+    element => ({
       hlevel: parseInt(element.tagName.replace(/[a-zA-Z]/, ""), 10),
       text: element.innerHTML
-    }));
+    })
+  );
   return (
     <ul style={tocListStyle} className="d-none d-md-block">
       {toc.map(item => (
@@ -44,7 +45,7 @@ const Page = (props: RouteComponentProps<{ filename: string }>) => {
       if (response.status === 200) {
         const source = await response.text();
         const doc = parser.parseFromString(source, "text/html");
-        doc.querySelectorAll("h1,h2,h3,h4,h5").forEach((element) => {
+        doc.querySelectorAll("h1,h2,h3,h4,h5").forEach(element => {
           element.setAttribute("id", slugify(element.innerHTML));
         });
         dispatch({ source });

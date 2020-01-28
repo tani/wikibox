@@ -11,10 +11,10 @@ const tex = new TeX({ packages: AllPackages });
 const svg = new SVG({ fontCache: "none" });
 const html = mathjax.document("", { InputJax: tex, OutputJax: svg });
 expose({
-    render(math: string, display: boolean): string {
-        return `
+  render(math: string, display: boolean): string {
+    return `
           <style>${adaptor.textContent(svg.styleSheet(html) as any)}</style>
           ${adaptor.outerHTML(html.convert(math, { display }))}
         `;
-    }
-})
+  }
+});
