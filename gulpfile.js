@@ -1,6 +1,7 @@
 const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const merge = require("merge-stream");
+const zip = require("gulp-zip");
 
 gulp.task("bootstrap", () => {
   const js = webpack(
@@ -15,8 +16,11 @@ gulp.task("bootstrap", () => {
   ) .pipe(gulp.dest("./dist/default"));
   const page = gulp.src(
     "./src/page/*"
-  ).pipe(gulp.dest("./dist/default/page"))
-  return merge(js, css, html);
+  ).pipe(gulp.dest("./dist/default/page"));
+  const pack = gulp.src(`./dist/default/**/*`, { base: "./dist/default" })
+        .pipe(zip("default.zip"))
+        .pipe(gulp.dest("./dist/package"));
+  return merge(js, css, html, pack);
 });
 
 const themes = ["cerulean", "darkly", "litera", "materia", "sandstone", "slate", "superhero", "cosmo", "flatly", "lumen", "minty", "simplex", "solar", "united", "cyborg", "journal", "lux", "pulse", "sketchy", "spacelab", "yeti"];
@@ -27,7 +31,10 @@ for(const theme of themes) {
           .pipe(gulp.dest(`./dist/${theme}`));
     const stylesheet = gulp.src(require.resolve(`bootswatch/dist/${theme}/bootstrap.min.css`))
           .pipe(gulp.dest(`./dist/${theme}/lib`))
-    return merge(template, stylesheet);
+    const pack = gulp.src(`./dist/${theme}/**/*`, { base: `./dist/${theme}` })
+          .pipe(zip(`${theme}.zip`))
+          .pipe(gulp.dest("./dist/package"));
+    return merge(template, stylesheet, pack);
     
   });
 }
