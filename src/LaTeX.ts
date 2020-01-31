@@ -17,9 +17,10 @@ document.head.appendChild(style);
 class DisplayMath extends HTMLDivElement {
   public constructor() {
     super();
+    const math = this.getAttribute("math") || "";
     const shadow = this.attachShadow({ mode: "closed" });
     (async () => {
-      shadow.innerHTML = await renderer.render(this.innerHTML, true);
+      shadow.innerHTML = await renderer.render(math, true);
     })();
   }
 }
@@ -29,9 +30,10 @@ customElements.define("display-math", DisplayMath, { extends: "div" });
 class InlineMath extends HTMLSpanElement {
   public constructor() {
     super();
+    const math = this.getAttribute("math") || "";
     const shadow = this.attachShadow({ mode: "closed" });
     (async () => {
-      shadow.innerHTML = await renderer.render(this.innerHTML, false);
+      shadow.innerHTML = await renderer.render(math, false);
     })();
   }
 }

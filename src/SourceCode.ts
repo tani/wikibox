@@ -11,9 +11,10 @@ class SourceCode extends HTMLDivElement {
     super();
     const theme = this.getAttribute("theme") || "";
     const language = this.getAttribute("language") || "";
+    const code = this.getAttribute("code") || "";
     const shadow = this.attachShadow({ mode: "closed" });
     (async () => {
-      shadow.innerHTML = await renderer.render(this.innerHTML, language, theme);
+      shadow.innerHTML = await renderer.render(code, language, theme);
     })();
   }
 }

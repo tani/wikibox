@@ -43,7 +43,9 @@ module.exports = {
     plugins: [PnpWebpackPlugin.moduleLoader(module)]
   },
   plugins: [
-    new WorkerPlugin(),
+    new WorkerPlugin({
+      globalObject: 'self'
+    }),
     new ForkTsCheckerWebpackPlugin({
       eslint: true,
       reportFiles: ["src/**/*.{ts,tsx}"]

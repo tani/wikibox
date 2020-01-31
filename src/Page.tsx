@@ -4,6 +4,8 @@ import Row from "react-bootstrap/esm/Row";
 import { RouteComponentProps } from "react-router";
 import slugify from "slugify";
 import { HashLink } from "react-router-hash-link";
+import marked from "marked";
+import { promisify } from "util";
 
 const tocListStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
@@ -14,6 +16,7 @@ const tocListStyle = {
   position: "sticky" as "sticky",
   top: 20
 };
+
 const TableOfContents = (props: { source: string; filename: string }) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(props.source, "text/html");
@@ -41,9 +44,32 @@ const Page = (props: RouteComponentProps<{ filename: string }>) => {
   React.useEffect(() => {
     (async () => {
       const parser = new DOMParser();
+      const renderer = new marked.Renderer();
+      renderer.code = (code: string, languageAndTheme: string) => {
+        const language = languageAndTheme.replace(/,.*/, "");
+        const theme = languageAndTheme.replace(/.*,/, "");
+        const div = document.createElement("div");
+        div.setAttribute("is", "source-code");
+        div.setAttribute("language", language);
+        div.setAttribute("theme", theme);
+        div.setAttribute("code", code);
+        return div.outerHTML;
+      };
       const response = await fetch(`./${props.match.params.filename}`);
       if (response.status === 200) {
-        const source = await response.text();
+        const markdown = await response.text();
+        const replaced = markdown
+          .replace(
+            /\\\(([\s\S]*?)\\\)/,
+            '<span is="inline-math" math="$1"></span>'
+          )
+          .replace(
+            /\\\[([\s\S]*?)\\\]/,
+            '<div is="display-math" math="$1"></div>'
+          );
+        const source = await promisify<string, any, string>(marked)(replaced, {
+          renderer
+        });
         const doc = parser.parseFromString(source, "text/html");
         doc.querySelectorAll("h1,h2,h3,h4,h5").forEach(element => {
           element.setAttribute("id", slugify(element.innerHTML));

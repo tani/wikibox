@@ -1,5 +1,12 @@
 # WikiBox 
-WikiBox is inspired by [MDWiki](https://mdwiki.info/), which is a static site generator without any building steps. MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using React and Bootstrap 4 to be faster and beautiful. Of course LaTeX syntaxed equations are also upgraded to MathJax v3.
+WikiBox is inspired by [MDWiki](https://github.com/Dynalon/mdwiki/), which is a static site generator without any building steps. MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using React and Bootstrap 4 to be faster and beautiful. Of course LaTeX syntaxed equations are also upgraded to MathJax v3.
+\(1+1=2\)
+
+```cpp,github
+void main(){
+  puts("Hello, workd!")
+}
+```
 
 ## Features
 
