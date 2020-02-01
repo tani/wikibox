@@ -46,8 +46,8 @@ const Page = (props: RouteComponentProps<{ filename: string }>) => {
       const parser = new DOMParser();
       const renderer = new marked.Renderer();
       renderer.code = (code: string, languageAndTheme: string) => {
-        const language = languageAndTheme.replace(/,.*/, "");
-        const theme = languageAndTheme.replace(/.*,/, "");
+        const language = languageAndTheme.replace(/\s.*/, "");
+        const theme = languageAndTheme.replace(/.*\s/, "");
         const div = document.createElement("div");
         div.setAttribute("is", "source-code");
         div.setAttribute("language", language);
