@@ -1,6 +1,4 @@
 import React from "react";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
 import { RouteComponentProps } from "react-router";
 import slugify from "slugify";
 import { HashLink } from "react-router-hash-link";
@@ -79,17 +77,17 @@ const Page = (props: RouteComponentProps<{ filename: string }>) => {
     })();
   }, [props.match.params.filename]);
   return (
-    <Row>
-      <Col md="9">
+    <div className="row">
+      <div className="col-md-9">
         <div dangerouslySetInnerHTML={{ __html: state.source }} />
-      </Col>
-      <Col md="3">
+      </div>
+      <div className="col-md-3">
         <TableOfContents
           source={state.source}
           filename={props.match.params.filename}
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

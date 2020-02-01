@@ -1,7 +1,4 @@
 import React from "react";
-import Nav from "react-bootstrap/esm/Nav";
-import Navbar from "react-bootstrap/esm/Navbar";
-import NavDropdown from "react-bootstrap/esm/NavDropdown";
 import slugify from "slugify";
 
 export default (props: { filename: string }) => {
@@ -39,44 +36,66 @@ export default (props: { filename: string }) => {
     })();
   }, [props.filename]);
   return (
-    <Navbar bg="primary" variant="dark" expand="md">
-      <Navbar.Toggle area-controls="collapse" />
-      <Navbar.Brand href="#/">{state.title}</Navbar.Brand>
-      <Navbar.Collapse id="collapse">
-        <Nav>
-          {state.navigation.map(
-            (item): ReturnType<React.FC> => {
-              if (item.dropdown.length === 0) {
-                return (
-                  <Nav.Link
-                    key={item.text}
-                    href={item.href}
-                    style={{ cursor: "pointer" }}
+    <nav className="navbar navbar-expand-md navbar-dark bg-primary">
+      <a className="navbar-brand" href="#/">
+        {state.title}
+      </a>
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapse"
+        aria-controls="collapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="collapse">
+        <ul className="navbar-nav mr-auto">
+          {state.navigation.map(item => {
+            if (item.dropdown.length === 0) {
+              return (
+                <li className="nav-item" key={item.text}>
+                  <a className="nav-link" href={item.href}>
+                    {item.text}
+                  </a>
+                </li>
+              );
+            } else {
+              return (
+                <li className="nav-item dropdown" key={slugify(item.text)}>
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id={slugify(item.text)}
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
                   >
                     {item.text}
-                  </Nav.Link>
-                );
-              } else {
-                return (
-                  <NavDropdown
-                    title={item.text}
-                    id={slugify(item.text)}
-                    key={item.text}
+                  </a>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
                   >
-                    {item.dropdown.map(
-                      (item1): ReturnType<React.FC> => (
-                        <NavDropdown.Item key={item1.text} href={item1.href}>
-                          {item1.text}
-                        </NavDropdown.Item>
-                      )
-                    )}
-                  </NavDropdown>
-                );
-              }
+                    {item.dropdown.map(item1 => (
+                      <a
+                        className="dropdown-item"
+                        key={item1.text}
+                        href={item1.href}
+                      >
+                        {item1.text}
+                      </a>
+                    ))}
+                  </div>
+                </li>
+              );
             }
-          )}
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+          })}
+        </ul>
+      </div>
+    </nav>
   );
 };

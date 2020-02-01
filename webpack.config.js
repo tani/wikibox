@@ -8,14 +8,15 @@ module.exports = {
     index: "./src/index.tsx"
   },
   output: {
-    filename: "[name].min.js"
+    filename: "[name].bundle.js"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    alias:  {
-      'react': 'preact/compat',
-      'react-dom': 'preact/compat'
-    }
+    alias: process.env.NODE_ENV == "production" ? {
+      jquery: "jquery/dist/jquery.slim.js",
+      react: "preact/compat",
+      "react-dom": "preact/compat"
+    } : {}
   },
   module: {
     rules: [
@@ -43,7 +44,7 @@ module.exports = {
   },
   plugins: [
     new WorkerPlugin({
-      globalObject: 'self'
+      globalObject: "self"
     }),
     new ForkTsCheckerWebpackPlugin({
       eslint: true,

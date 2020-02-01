@@ -1,5 +1,4 @@
 import React from "react";
-import Container from "react-bootstrap/esm/Container";
 
 export default (props: { filename: string }) => {
   const [state, dispatch] = React.useState({ source: "" });
@@ -12,8 +11,9 @@ export default (props: { filename: string }) => {
     })();
   }, [props.filename]);
   return (
-    <Container>
-      <div dangerouslySetInnerHTML={{ __html: state.source }} />
-    </Container>
+    <div
+      className="container"
+      dangerouslySetInnerHTML={{ __html: state.source }}
+    />
   );
 };

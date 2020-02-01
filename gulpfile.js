@@ -3,13 +3,18 @@ const webpack = require("webpack-stream");
 const merge = require("merge-stream");
 const archive = require("gulp-zip");
 const rename = require("gulp-rename");
+const cleanCSS = require("gulp-clean-css");
+const sourcemaps = require("gulp-sourcemaps");
 
 gulp.task("bootstrap", () => {
   const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
     gulp.dest("./dist/default")
   );
   const css = gulp
-    .src(require.resolve("bootstrap/dist/css/bootstrap.min.css"))
+    .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
+    .pipe(sourcemaps.init())
+    .pipe(cleanCSS())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest("./dist/default"));
   const md = gulp
     .src("./README.md")
@@ -60,7 +65,10 @@ for (const theme of themes) {
       .src("./dist/default/**/*.md")
       .pipe(gulp.dest(`./dist/${theme}`));
     const css = gulp
-      .src(require.resolve(`bootswatch/dist/${theme}/bootstrap.min.css`))
+      .src(require.resolve(`bootswatch/dist/${theme}/bootstrap.css`))
+      .pipe(sourcemaps.init())
+      .pipe(cleanCSS())
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest(`./dist/${theme}`));
     const zip = gulp
       .src(`./dist/${theme}/**/*`, { base: `./dist/${theme}` })
