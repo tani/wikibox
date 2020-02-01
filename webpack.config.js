@@ -13,11 +13,14 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    alias: process.env.NODE_ENV == "production" ? {
-      jquery: "jquery/dist/jquery.slim.js",
-      react: "preact/compat",
-      "react-dom": "preact/compat"
-    } : {}
+    alias:
+      process.env.NODE_ENV == "production"
+        ? {
+            jquery: "jquery/dist/jquery.slim.js",
+            react: "preact/compat",
+            "react-dom": "preact/compat"
+          }
+        : {}
   },
   module: {
     rules: [

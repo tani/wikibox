@@ -6,8 +6,8 @@ import Header from "./Header";
 import Page from "./Page";
 
 const App = () => (
-  <React.Fragment>
-    <Header filename="page/header.html" />
+  <React.Suspense fallback={<div></div>}>
+    <Header />
     <div className="container" style={{ marginTop: 20 }}>
       <Router>
         <Switch>
@@ -20,8 +20,8 @@ const App = () => (
         </Switch>
       </Router>
     </div>
-    <Footer filename="page/footer.html" />
-  </React.Fragment>
+    <Footer />
+  </React.Suspense>
 );
 
 export default App;
