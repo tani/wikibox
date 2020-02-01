@@ -18,7 +18,7 @@ gulp.task("bootstrap", () => {
     .pipe(gulp.dest("./dist/default"));
   const md = gulp
     .src("./README.md")
-    .pipe(rename("main.md"))
+    .pipe(rename("index.md"))
     .pipe(gulp.dest("./dist/default/page"));
   const html = gulp.src("./src/index.html").pipe(gulp.dest("./dist/default"));
   const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/default/page"));
