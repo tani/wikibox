@@ -1,6 +1,5 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const WorkerPlugin = require("worker-plugin");
-const PnpWebpackPlugin = require("pnp-webpack-plugin");
 
 module.exports = {
   name: "default",
@@ -13,7 +12,10 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    plugins: [PnpWebpackPlugin]
+    alias:  {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat'
+    }
   },
   module: {
     rules: [
@@ -38,9 +40,6 @@ module.exports = {
         ]
       }
     ]
-  },
-  resolveLoader: {
-    plugins: [PnpWebpackPlugin.moduleLoader(module)]
   },
   plugins: [
     new WorkerPlugin({
