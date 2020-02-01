@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const merge = require("merge-stream");
-const archive = require("gulp-zip");
+const zip = require("gulp-zip");
 const rename = require("gulp-rename");
 const cleanCSS = require("gulp-clean-css");
 const sourcemaps = require("gulp-sourcemaps");
@@ -14,7 +14,7 @@ gulp.task("bootstrap", () => {
     .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("./dist/default/lib"));
   const md = gulp
     .src("./README.md")
@@ -22,11 +22,11 @@ gulp.task("bootstrap", () => {
     .pipe(gulp.dest("./dist/default/page"));
   const html = gulp.src("./src/index.html").pipe(gulp.dest("./dist/default"));
   const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/default/page"));
-  const zip = gulp
+  const archive = gulp
     .src(`./dist/default/**/*`, { base: "./dist/default" })
-    .pipe(archive("default.zip"))
+    .pipe(zip("default.zip"))
     .pipe(gulp.dest("./dist/package"));
-  return merge(js, css, html, md, page, zip);
+  return merge(js, css, html, md, page, archive);
 });
 
 const themes = [
@@ -68,13 +68,13 @@ for (const theme of themes) {
       .src(require.resolve(`bootswatch/dist/${theme}/bootstrap.css`))
       .pipe(sourcemaps.init())
       .pipe(cleanCSS())
-      .pipe(sourcemaps.write())
+      .pipe(sourcemaps.write("."))
       .pipe(gulp.dest(`./dist/${theme}/lib`));
-    const zip = gulp
+    const archive = gulp
       .src(`./dist/${theme}/**/*`, { base: `./dist/${theme}` })
-      .pipe(archive(`${theme}.zip`))
+      .pipe(zip(`${theme}.zip`))
       .pipe(gulp.dest("./dist/package"));
-    return merge(js, html, md, css, zip);
+    return merge(js, html, md, css, archive);
   });
 }
 
