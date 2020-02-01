@@ -27,8 +27,14 @@ const TableOfContents = (props: { source: string; filename: string }) => {
   return (
     <ul style={tocListStyle} className="d-none d-md-block">
       {toc.map(item => (
-        <li style={{ paddingLeft: `${item.hlevel - 1}em` }} key={item.text}>
-          <HashLink to={`/${props.filename}#${slugify(item.text)}`}>
+        <li
+          style={{ paddingLeft: `${item.hlevel - 1}em` }}
+          key={slugify(item.text.toLowerCase())}
+        >
+          <HashLink
+            smooth
+            to={`/${props.filename}#${slugify(item.text.toLowerCase())}`}
+          >
             {item.text}
           </HashLink>
         </li>
@@ -70,7 +76,7 @@ const Page = (props: RouteComponentProps<{ filename: string }>) => {
         });
         const doc = parser.parseFromString(source, "text/html");
         doc.querySelectorAll("h1,h2,h3,h4,h5").forEach(element => {
-          element.setAttribute("id", slugify(element.innerHTML));
+          element.setAttribute("id", slugify(element.innerHTML.toLowerCase()));
         });
         dispatch({ source });
       }

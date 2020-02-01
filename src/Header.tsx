@@ -64,11 +64,14 @@ export default (props: { filename: string }) => {
               );
             } else {
               return (
-                <li className="nav-item dropdown" key={slugify(item.text)}>
+                <li
+                  className="nav-item dropdown"
+                  key={slugify(item.text.toLowerCase())}
+                >
                   <a
                     className="nav-link dropdown-toggle"
                     href="#"
-                    id={slugify(item.text)}
+                    id={slugify(item.text.toLowerCase())}
                     role="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
