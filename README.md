@@ -4,10 +4,12 @@ WikiBox is inspired by [MDWiki](https://github.com/Dynalon/mdwiki/), which is a 
 ## Features
 
 - LaTeX Syntax (MathJaX v3)
+- Markdown (Marked)
 - Code Highlighting (Highlight.js)
 - Beautiful Themes (Bootswatch) - 21 themes are available now!
 - Generating Table of Contents
 
 ## Copyright
 
-WikiBox has started to develop since 2018 and been written by TANIGUCHI Masaya under the GPLv3.
+Copyright (c) 2020 Bibliobibulus All rights reserved. 
+Wikibox is a free software licensed under GPLv3.
