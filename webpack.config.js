@@ -8,6 +8,7 @@ module.exports = {
     index: "./src/index.tsx"
   },
   output: {
+    publicPath: "lib/",
     filename: "[name].bundle.js"
   },
   resolve: {

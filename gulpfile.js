@@ -8,14 +8,14 @@ const sourcemaps = require("gulp-sourcemaps");
 
 gulp.task("bootstrap", () => {
   const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
-    gulp.dest("./dist/default")
+    gulp.dest("./dist/default/lib")
   );
   const css = gulp
     .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest("./dist/default"));
+    .pipe(gulp.dest("./dist/default/lib"));
   const md = gulp
     .src("./README.md")
     .pipe(rename("index.md"))
@@ -69,7 +69,7 @@ for (const theme of themes) {
       .pipe(sourcemaps.init())
       .pipe(cleanCSS())
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest(`./dist/${theme}`));
+      .pipe(gulp.dest(`./dist/${theme}/lib`));
     const zip = gulp
       .src(`./dist/${theme}/**/*`, { base: `./dist/${theme}` })
       .pipe(archive(`${theme}.zip`))
