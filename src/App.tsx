@@ -11,6 +11,7 @@ const App = () => (
     <div className="container" style={{ marginTop: 20 }}>
       <Router history={createHashHistory()}>
         <Page path="/page/:filename"></Page>
+        <Page default filename="page/index.md"></Page>
       </Router>
     </div>
     <Footer filename="page/footer.html" />
