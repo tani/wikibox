@@ -1,11 +1,20 @@
-import React from "react";
+import { h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
-export default React.lazy(async () => {
-  const response = await fetch("page/footer.html");
-  const source = await response.text();
-  const Footer = () => (
-    <div className="container" dangerouslySetInnerHTML={{ __html: source }} />
+export default (props: { filename: string }) => {
+  const [state, dispatch] = useState({ source: "" });
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(props.filename);
+      if (response.status === 200) {
+        dispatch({ source: await response.text() });
+      }
+    })();
+  }, [props.filename]);
+  return (
+    <div
+      className="container"
+      dangerouslySetInnerHTML={{ __html: state.source }}
+    />
   );
-  Footer.displayName = "Footer";
-  return { default: Footer };
-});
+};

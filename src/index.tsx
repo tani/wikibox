@@ -1,7 +1,6 @@
-import React from "react";
-import { render } from "react-dom";
+import { h, render } from "preact";
 import App from "./App";
-render(<App />, document.getElementById("root"));
+render(<App />, document.body);
 import("bootstrap");
 import("./LaTeX");
 import("./SourceCode");

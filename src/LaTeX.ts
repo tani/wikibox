@@ -1,7 +1,6 @@
 import { wrap } from "comlink";
 
 interface Renderer {
-  styleSheet: string;
   render(math: string, display: boolean): string;
 }
 

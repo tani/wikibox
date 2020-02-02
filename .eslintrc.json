@@ -5,7 +5,8 @@
   },
   "settings": {
     "react": {
-      "version": "detect"
+      "pragma": "h",
+      "version": "latest"
     }
   },
   "extends": [

@@ -1,27 +1,20 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router";
-import { HashRouter as Router } from "react-router-dom";
+import { h } from "preact";
+import { Router } from "preact-router";
 import Footer from "./Footer";
 import Header from "./Header";
 import Page from "./Page";
+import { createHashHistory } from "history";
 
 const App = () => (
-  <React.Suspense fallback={<div></div>}>
-    <Header />
+  <div>
+    <Header filename="page/header.html" />
     <div className="container" style={{ marginTop: 20 }}>
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            component={() => <Redirect to="page/index.md" />}
-          />
-          <Route path="/:filename(.+)" component={Page} />
-        </Switch>
+      <Router history={createHashHistory()}>
+        <Page path="/page/:filename"></Page>
       </Router>
     </div>
-    <Footer />
-  </React.Suspense>
+    <Footer filename="page/footer.html" />
+  </div>
 );
 
 export default App;

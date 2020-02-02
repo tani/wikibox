@@ -1,6 +1,5 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const WorkerPlugin = require("worker-plugin");
-
 module.exports = {
   name: "default",
   mode: process.env.NODE_ENV,
@@ -13,14 +12,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    alias:
-      process.env.NODE_ENV == "production"
-        ? {
-            jquery: "jquery/dist/jquery.slim.js",
-            react: "preact/compat",
-            "react-dom": "preact/compat"
-          }
-        : {}
+    alias: {
+      jquery: "jquery/dist/jquery.slim.js"
+    }
   },
   module: {
     rules: [
