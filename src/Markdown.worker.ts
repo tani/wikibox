@@ -14,9 +14,9 @@ expose({
     renderer.code = (code: string, languageAndTheme: string): string => {
       const language = languageAndTheme.replace(/\s.*/, "");
       const theme = languageAndTheme.replace(/.*\s/, "");
-      return `<div is="source-code" language="${language}" theme="${theme}">${encode(
-        code
-      )}</div>`;
+      return `<div is="source-code" language="${language}" theme="${theme}">
+                ${encode(code)}
+              </div>`;
     };
     renderer.heading = (
       text: string,
@@ -24,8 +24,9 @@ expose({
       raw: string,
       slugger: Slugger
     ): string => {
-      toc.push({ level, text, slug: slugger.slug(raw) });
-      return `<h${level} id="${slugger.slug(raw)}">${text}</h${level}>`;
+      const slug = slugger.slug(raw);
+      toc.push({ level, text, slug });
+      return `<h${level} id="${slug}">${text}</h${level}>`;
     };
     const replaced = markdown
       .replace(
