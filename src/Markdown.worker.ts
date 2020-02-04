@@ -3,18 +3,21 @@ import marked, { Renderer, Slugger } from "marked";
 
 type Toc = { level: number; text: string; slug: string }[];
 
+function encode(rawStr: string) {
+  return rawStr.replace(
+    /[\s\S]/g,
+    i => "&#" + i.charCodeAt(0) + ";"
+  );
+}
+
 expose({
   render(markdown: string): { result: string; toc: Toc } {
     const renderer = new Renderer();
     const toc: Toc = [];
-    renderer.code = (rawCode: string, languageAndTheme: string): string => {
+    renderer.code = (code: string, languageAndTheme: string): string => {
       const language = languageAndTheme.replace(/\s.*/, "");
       const theme = languageAndTheme.replace(/.*\s/, "");
-      const code = rawCode.replace(
-        /[\s\S]/g,
-        i => "&#" + i.charCodeAt(0) + ";"
-      );
-      return `<div is="source-code" language="${language}" theme="${theme}" code="${code}"></div>`;
+      return `<div is="source-code" language="${language}" theme="${theme}">${encode(code)}</div>`;
     };
     renderer.heading = (
       text: string,
@@ -26,8 +29,8 @@ expose({
       return `<h${level} id="${slugger.slug(raw)}">${text}</h${level}>`;
     };
     const replaced = markdown
-      .replace(/\\\(([\s\S]*?)\\\)/, '<span is="inline-math" math="$1"></span>')
-      .replace(/\\\[([\s\S]*?)\\\]/, '<div is="display-math" math="$1"></div>');
+      .replace(/\\\(([\s\S]*?)\\\)/, (_, math) => `<span is="inline-math">${encode(math)}</span>`)
+      .replace(/\\\[([\s\S]*?)\\\]/, (_, math) => `<div is="display-math">${encode(math)}</div>`)
     const result = marked(replaced, { renderer });
     return { result, toc };
   }

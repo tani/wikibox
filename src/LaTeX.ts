@@ -14,7 +14,7 @@ class DisplayMath extends HTMLDivElement {
     this.initialize();
   }
   private async initialize() {
-    const math = this.getAttribute("math") || "";
+    const math = this.innerHTML;
     const shadow = this.attachShadow({ mode: "closed" });
     shadow.innerHTML = await renderer.render(math, true);
   }
@@ -28,7 +28,7 @@ class InlineMath extends HTMLSpanElement {
     this.initialize();
   }
   private async initialize() {
-    const math = this.getAttribute("math") || "";
+    const math = this.innerHTML;
     const shadow = this.attachShadow({ mode: "closed" });
     shadow.innerHTML = await renderer.render(math, false);
   }
