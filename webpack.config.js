@@ -2,7 +2,7 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const WorkerPlugin = require("worker-plugin");
 module.exports = {
   name: "default",
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV || "development",
   entry: {
     index: "./src/index.tsx"
   },

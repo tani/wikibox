@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { RoutableProps } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 import { wrap } from "comlink";
 
@@ -38,10 +39,16 @@ const TableOfContents = ({ toc }: { toc: Toc }) => {
 interface Renderer {
   render(markdown: string): { result: string; toc: Toc };
 }
+
 const renderer = wrap<Renderer>(
   new Worker("./Markdown.worker", { type: "module" })
 );
-const Page = ({ filename }: any) => {
+
+interface PageProps extends RoutableProps {
+  filename?: string;
+}
+
+const Page = ({ filename }: PageProps) => {
   const [state, dispatch] = useState<{ result: string; toc: Toc }>({
     result: "",
     toc: []

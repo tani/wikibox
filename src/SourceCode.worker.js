@@ -1,7 +1,7 @@
 const hljs = require("highlight.js/lib/highlight");
 const { expose } = require("comlink");
 
-const resource: { [path: string]: any } = {};
+const resource = {};
 
 resource[
   "highlight.js/styles/a11y-dark.css"
@@ -828,7 +828,7 @@ resource[
 ] = require("highlight.js/lib/languages/zephir.js");
 
 expose({
-  render(code: string, language: string, theme: string): string {
+  render(code, language, theme) {
     hljs.registerLanguage(
       language,
       resource[`highlight.js/lib/languages/${language}.js`]
