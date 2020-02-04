@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { Router } from "preact-router";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -7,7 +7,7 @@ import Redirect from "./Redirect";
 import { createHashHistory } from "history";
 
 const App = () => (
-  <div>
+  <Fragment>
     <Header filename="page/header.html" />
     <div className="container" style={{ marginTop: 20 }}>
       <Router history={createHashHistory()}>
@@ -16,7 +16,7 @@ const App = () => (
       </Router>
     </div>
     <Footer filename="page/footer.html" />
-  </div>
+  </Fragment>
 );
 
 export default App;
