@@ -8,7 +8,7 @@ import { createHashHistory } from "history";
 
 const App = () => html`
     <${Header} filename="page/header.html" />
-    <div class="container" style="marginTop: 20;">
+    <div class="container" style=${{ marginTop: 20 }}>
       <${Router} history=${createHashHistory()}>
         <${Page} path="/page/:filename" />
         <${Redirect} default to="/page/index.md" />
