@@ -1,4 +1,6 @@
-import { html, useEffect } from "htm/preact/standalone";
+import { html } from "htm/preact";
+import { useEffect } from "preact/hooks";
+
 import { route } from "preact-router";
 
 export default ({ to }) => {

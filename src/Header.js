@@ -1,4 +1,5 @@
-import { html, useEffect, useState } from "htm/preact/standalone";
+import { html } from "htm/preact";
+import { useEffect, useState } from "preact/hooks";
 
 export default ({ filename }) => {
   const [state, dispatch] = useState({
@@ -11,25 +12,23 @@ export default ({ filename }) => {
       .then(text => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/html");
-        const title = document.querySelector("title");
-        if (title) {
-          title.innerHTML = doc.querySelector("h1")?.innerHTML || "";
-        }
+        const title = document.getElementsByTagName("title")[0];
+        title.innerHTML = doc.getElementsByTagName("h1")[0]?.innerHTML || "";
         const navigation = Array.from(doc.querySelectorAll("menu > li")).map(
           element => ({
-            href: element.querySelector("a")?.getAttribute("href") || "",
-            dropdown: Array.from(element.querySelectorAll("li")).map(
+            href: element.getElementsByTagName("a")[0]?.getAttribute("href") || "",
+            dropdown: Array.from(element.getElementsByTagName("li")).map(
               element1 => ({
-                href: element1.querySelector("a")?.getAttribute("href") || "",
-                text: element1.querySelector("a")?.innerHTML || ""
+                href: element1.getElementsByTagName("a")[0]?.getAttribute("href") || "",
+                text: element1.getElementsByTagName("a")[0]?.innerHTML || ""
               })
             ),
-            text: element.querySelector("a")?.innerHTML || ""
+            text: element.getElementsByTagName("a")[0]?.innerHTML || ""
           })
         );
         dispatch({
           navigation,
-          title: doc.querySelector("h1")?.innerHTML || ""
+          title: doc.getElementsByTagName("h1")[0]?.innerHTML || ""
         });
       });
   }, [filename]);
@@ -38,15 +37,13 @@ export default ({ filename }) => {
       <a class="navbar-brand" href="#/">
         ${state.title}
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#collapse"
-        aria-controls="collapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapse"
+              aria-controls="collapse"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="collapse">
@@ -62,27 +59,21 @@ export default ({ filename }) => {
               `
               : html`
                 <li class="nav-item dropdown" key={item.text}>
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
+                  <a class="nav-link dropdown-toggle"
+                     href="#"
+                     role="button"
+                     data-toggle="dropdown"
+                     aria-haspopup="true"
+                     aria-expanded="false">
                     ${item.text}
                   </a>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="navbarDropdown"
-                  >
+                  <div class="dropdown-menu"
+                       aria-labelledby="navbarDropdown">
                     ${item.dropdown.map(
                       item1 => html`
-                      <a
-                        class="dropdown-item"
-                        key=${item1.text}
-                        href=${item1.href}
-                      >
+                      <a class="dropdown-item"
+                         key=${item1.text}
+                         href=${item1.href}>
                         ${item1.text}
                       </a>
                     `

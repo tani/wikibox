@@ -1,4 +1,5 @@
-import { html, useEffect, useState } from "htm/preact/standalone";
+import { html } from "htm/preact";
+import { useEffect, useState } from "preact/hooks";
 
 export default ({ filename }) => {
   const [state, dispatch] = useState({ source: "" });

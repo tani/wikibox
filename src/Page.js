@@ -1,7 +1,8 @@
-import { html, useEffect, useState } from "htm/preact/standalone";
+import { html } from "htm/preact";
+import { useEffect, useState } from "preact/hooks";
 import { wrap } from "comlink";
 
-const tocListStyle = {
+const TableOfContentsStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
   listStyle: "none",
   paddingBottom: 5,
@@ -11,28 +12,24 @@ const tocListStyle = {
   top: 20
 };
 
-const TableOfContents = ({ toc }) => {
-  return html`
-    <ul style=${tocListStyle} class="d-none d-md-block">
-      ${toc.map(
-        item => html`
+const scrollTo = (id) => {
+  document
+    .getElementById(item.slug)
+    ?.scrollIntoView({ behavior: "smooth" });
+}
+
+const TableOfContents = ({ toc }) => html`
+    <ul style=${TableOfContentsStyle} class="d-none d-md-block">
+      ${toc.map(item => html`
         <li style=${{ paddingLeft: `${item.level - 1}em` }} key=${item.text}>
-          <a
-            href="javascript:void(0)"
-            onClick=${() => {
-              document
-                .getElementById(item.slug)
-                ?.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
+          <a href="javascript:void(0)"
+             onClick=${() => scrollTo(item.slug)}>
             ${item.text}
           </a>
         </li>
-      `
-      )}
+      `)}
     </ul>
   `;
-};
 
 const renderer = wrap(new Worker("./Markdown.worker", { type: "module" }));
 
@@ -50,7 +47,7 @@ const Page = ({ filename }) => {
   return html`
     <div class="row">
       <div class="col-md-9">
-        <div dangerouslySetInnerHTML=${{ __html: state.result }} />
+        <div dangerouslySetInnerHTML=${{ __html: state.result }}/>
       </div>
       <div class="col-md-3">
         <${TableOfContents} toc=${state.toc} />

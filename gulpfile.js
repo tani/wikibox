@@ -6,6 +6,10 @@ const rename = require("gulp-rename");
 const cleanCSS = require("gulp-clean-css");
 const sourcemaps = require("gulp-sourcemaps");
 
+gulp.task("watch", () => {
+  gulp.watch(["./src/**/*.js"], gulp.series("default"));
+});
+
 gulp.task("bootstrap", () => {
   const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
     gulp.dest("./dist/default/lib")

@@ -1,4 +1,4 @@
-import { html } from "htm/preact/standalone";
+import { html } from "htm/preact";
 import { Router } from "preact-router";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -12,7 +12,7 @@ const App = () => html`
       <${Router} history=${createHashHistory()}>
         <${Page} path="/page/:filename" />
         <${Redirect} default to="/page/index.md" />
-      <//>
+      </${Router}>
     </div>
     <${Footer} filename="page/footer.html" />
 `;
