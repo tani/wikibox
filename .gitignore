@@ -89,3 +89,4 @@ machines/
 .yarn/
 dist/
 .DS_Store
+pnpm-lock.yaml
