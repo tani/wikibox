@@ -1,4 +1,5 @@
-import { html, render } from "htm/preact";
+import { html } from "htm/preact";
+import { render } from "preact";
 
 import App from "./App";
 render(

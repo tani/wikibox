@@ -1,4 +1,4 @@
-import { html } from "htm/preact";
+import { html } from "htm/preact"
 import { useEffect, useState } from "preact/hooks";
 
 export default ({ filename }) => {

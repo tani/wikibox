@@ -1,4 +1,4 @@
-import { html } from "htm/preact";
+import { html } from "htm/preact"
 import { Router } from "preact-router";
 import Footer from "./Footer";
 import Header from "./Header";

@@ -22,6 +22,9 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
+            plugins: [["htm", {
+              import: "preact"
+            }]],
             presets: [["@babel/env", {
               targets: {
                 esmodules: true
@@ -29,6 +32,10 @@ module.exports = {
             }]]
           }
         }
+      },
+      {
+        test: /htm\/preact/,
+        use: "null-loader"
       },
       {
         test: /\.css$/,
@@ -45,5 +52,5 @@ module.exports = {
       globalObject: "self"
     })
   ],
-  devtool: "source-map"
+  devtool: process.env.NODE_ENV === "production" ? "source-map" : "eval"
 };
