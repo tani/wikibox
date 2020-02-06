@@ -14,8 +14,8 @@ const html = mathjax.document("", { InputJax: tex, OutputJax: svg });
 expose({
   render(math, display) {
     return `
-          <style>${adaptor.textContent(svg.styleSheet(html))}</style>
-          ${adaptor.outerHTML(html.convert(math, { display }))}
-        `;
+      <style>${adaptor.textContent(svg.styleSheet(html))}</style>
+      ${adaptor.outerHTML(html.convert(math, { display }))}
+    `;
   }
 });

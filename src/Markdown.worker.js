@@ -1,29 +1,22 @@
 import { expose } from "comlink";
-import marked, { Renderer, Slugger } from "marked";
+import marked, { Renderer } from "marked";
 
-type Toc = { level: number; text: string; slug: string }[];
-
-function encode(rawStr: string) {
+function encode(rawStr) {
   return rawStr.replace(/[\s\S]/g, i => "&#" + i.charCodeAt(0) + ";");
 }
 
 expose({
-  render(markdown: string): { result: string; toc: Toc } {
+  render(markdown) {
     const renderer = new Renderer();
-    const toc: Toc = [];
-    renderer.code = (code: string, languageAndTheme: string): string => {
+    const toc = [];
+    renderer.code = (code, languageAndTheme) => {
       const language = languageAndTheme.replace(/\s.*/, "");
       const theme = languageAndTheme.replace(/.*\s/, "");
       return `<div is="source-code" language="${language}" theme="${theme}">
                 ${encode(code)}
               </div>`;
     };
-    renderer.heading = (
-      text: string,
-      level: number,
-      raw: string,
-      slugger: Slugger
-    ): string => {
+    renderer.heading = (text, level, raw, slugger) => {
       const slug = slugger.slug(raw);
       toc.push({ level, text, slug });
       return `<h${level} id="${slug}">${text}</h${level}>`;

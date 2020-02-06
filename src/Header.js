@@ -1,17 +1,16 @@
-import { h } from "preact";
-import { useEffect, useState } from "preact/hooks";
+import { html, useEffect, useState } from "htm/preact/standalone";
 
-export default (props: { filename: string }) => {
+export default ({ filename }) => {
   const [state, dispatch] = useState({
     navigation: [{ href: "", text: "", dropdown: [{ href: "", text: "" }] }],
     title: ""
   });
   useEffect(() => {
-    (async () => {
-      const response = await fetch(props.filename);
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(await response.text(), "text/html");
-      if (response.status === 200) {
+    fetch(filename)
+      .then(response => response.text())
+      .then(text => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
         const title = document.querySelector("title");
         if (title) {
           title.innerHTML = doc.querySelector("h1")?.innerHTML || "";
@@ -32,16 +31,15 @@ export default (props: { filename: string }) => {
           navigation,
           title: doc.querySelector("h1")?.innerHTML || ""
         });
-      }
-    })();
-  }, [props.filename]);
-  return (
-    <nav className="navbar navbar-expand-md navbar-dark bg-primary">
-      <a className="navbar-brand" href="#/">
-        {state.title}
+      });
+  }, [filename]);
+  return html`
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+      <a class="navbar-brand" href="#/">
+        ${state.title}
       </a>
       <button
-        className="navbar-toggler"
+        class="navbar-toggler"
         type="button"
         data-toggle="collapse"
         data-target="#collapse"
@@ -49,52 +47,52 @@ export default (props: { filename: string }) => {
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span className="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="collapse">
-        <ul className="navbar-nav mr-auto">
-          {state.navigation.map(item => {
-            if (item.dropdown.length === 0) {
-              return (
-                <li className="nav-item" key={item.text}>
-                  <a className="nav-link" href={item.href}>
-                    {item.text}
+      <div class="collapse navbar-collapse" id="collapse">
+        <ul class="navbar-nav mr-auto">
+          ${state.navigation.map(item =>
+            item.dropdown.length === 0
+              ? html`
+                <li class="nav-item" key=${item.text}>
+                  <a class="nav-link" href=${item.href}>
+                    ${item.text}
                   </a>
                 </li>
-              );
-            } else {
-              return (
-                <li className="nav-item dropdown" key={item.text}>
+              `
+              : html`
+                <li class="nav-item dropdown" key={item.text}>
                   <a
-                    className="nav-link dropdown-toggle"
+                    class="nav-link dropdown-toggle"
                     href="#"
                     role="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    {item.text}
+                    ${item.text}
                   </a>
                   <div
-                    className="dropdown-menu"
+                    class="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
-                    {item.dropdown.map(item1 => (
+                    ${item.dropdown.map(
+                      item1 => html`
                       <a
-                        className="dropdown-item"
-                        key={item1.text}
-                        href={item1.href}
+                        class="dropdown-item"
+                        key=${item1.text}
+                        href=${item1.href}
                       >
-                        {item1.text}
+                        ${item1.text}
                       </a>
-                    ))}
+                    `
+                    )}
                   </div>
                 </li>
-              );
-            }
-          })}
+              `
+          )}
         </ul>
       </div>
     </nav>
-  );
+  `;
 };

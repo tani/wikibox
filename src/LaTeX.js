@@ -1,19 +1,13 @@
 import { wrap } from "comlink";
 
-interface Renderer {
-  render(math: string, display: boolean): string;
-}
-
-const renderer = wrap<Renderer>(
-  new Worker("./LaTeX.worker", { type: "module" })
-);
+const renderer = wrap(new Worker("./LaTeX.worker", { type: "module" }));
 
 class DisplayMath extends HTMLDivElement {
-  public constructor() {
+  constructor() {
     super();
     this.initialize();
   }
-  private async initialize() {
+  async initialize() {
     const math = this.innerHTML;
     const shadow = this.attachShadow({ mode: "closed" });
     shadow.innerHTML = await renderer.render(math, true);
@@ -23,11 +17,11 @@ class DisplayMath extends HTMLDivElement {
 customElements.define("display-math", DisplayMath, { extends: "div" });
 
 class InlineMath extends HTMLSpanElement {
-  public constructor() {
+  constructor() {
     super();
     this.initialize();
   }
-  private async initialize() {
+  async initialize() {
     const math = this.innerHTML;
     const shadow = this.attachShadow({ mode: "closed" });
     shadow.innerHTML = await renderer.render(math, false);
