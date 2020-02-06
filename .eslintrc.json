@@ -1,7 +1,6 @@
 {
   "env": {
-    "browser": true,
-    "node": true
+    "browser": true
   },
   "settings": {
     "react": {
@@ -12,19 +11,9 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "prettier/react",
-    "prettier/@typescript-eslint"
-  ],
-  "plugins": [
-    "react-hooks"
+    "plugin:prettier/recommended"
   ],
   "rules": {
-    "max-len": ["warn", 120],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-var-requires": "off"
+    "max-len": ["warn", 120]
   }
 }
