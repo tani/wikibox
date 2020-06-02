@@ -1,6 +1,6 @@
 {
   "name": "wikibox",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Modern and Simple CMS works on the browser, which inspired by MDWiki",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.tsx --fix ./src",
