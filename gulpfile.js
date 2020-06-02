@@ -27,6 +27,7 @@ gulp.task("default", () => {
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
     .pipe(sourcemaps.write("."))
+    .pipe(rename("highlight.css"))
     .pipe(gulp.dest("./dist/default/lib"));
   const md = gulp
     .src("./README.md")
