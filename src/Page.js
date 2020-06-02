@@ -1,6 +1,15 @@
-import { html } from "htm/preact"
+import { html } from "htm/preact";
 import { useEffect, useState } from "preact/hooks";
-import { wrap } from "comlink";
+import { createElement } from "preact";
+
+import unified from "unified";
+import remarkParse from "remark-parse";
+import remark2rehype from "remark-rehype";
+import remarkMath from "remark-math";
+import rehypeMathJax from "rehype-mathjax";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import rehypeReact from "rehype-react";
 
 const TableOfContentsStyle = {
   borderLeft: "solid 1px rgba(32,32,32,0.2)",
@@ -14,7 +23,7 @@ const TableOfContentsStyle = {
 
 const scrollTo = (id) => {
   document
-    .getElementById(item.slug)
+    .getElementById(id)
     ?.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -31,23 +40,45 @@ const TableOfContents = ({ toc }) => html`
     </ul>
   `;
 
-const renderer = wrap(new Worker("./Markdown.worker", { type: "module" }));
+const processor = unified()
+  .use(remarkParse)
+  .use(remarkMath)
+  .use(remark2rehype)
+  .use(rehypeMathJax)
+  .use(rehypeHighlight)
+  .use(rehypeSlug)
+  .use(rehypeReact, { createElement });
+
+const vdom2toc = (vdom) => {
+  const toc = [];
+  for(const v of vdom.props.children) {
+    for(let level = 1; level < 6; level++) {
+      if (v?.type === `h${level}`) {
+        toc.push({ level: level, slug: v.props.id, text: v.props.children})
+      }
+    }
+  }
+  return toc;
+};
 
 const Page = ({ filename }) => {
   const [state, dispatch] = useState({
-    result: "",
+    result: html`<div />`,
     toc: []
   });
   useEffect(() => {
     fetch(`./page/${filename}`)
       .then(response => response.text())
-      .then(text => renderer.render(text))
-      .then(({ result, toc }) => dispatch({ result, toc }));
+      .then((text) => {
+          processor.process(text, (err, {result}) => {
+            if (err) throw err;
+            dispatch({ result, toc: vdom2toc(result) });
+          });
+      });
   }, [filename]);
   return html`
     <div class="row">
-      <div class="col-md-9">
-        <div dangerouslySetInnerHTML=${{ __html: state.result }}/>
+      <div class="col-md-9" children=${[state.result]}>
       </div>
       <div class="col-md-3">
         <${TableOfContents} toc=${state.toc} />
