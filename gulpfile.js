@@ -10,12 +10,20 @@ gulp.task("watch", () => {
   gulp.watch(["./src/**/*.js"], gulp.series("default"));
 });
 
-gulp.task("bootstrap", () => {
+gulp.task("default", () => {
   const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
     gulp.dest("./dist/default/lib")
   );
-  const css = gulp
+  const woff = gulp.src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
+    .pipe(gulp.dest("./dist/default/lib"))
+  const bsCss = gulp
     .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
+    .pipe(sourcemaps.init())
+    .pipe(cleanCSS())
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest("./dist/default/lib"));
+  const hlCss = gulp
+    .src(require.resolve("highlight.js/styles/default.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
     .pipe(sourcemaps.write("."))
@@ -30,56 +38,5 @@ gulp.task("bootstrap", () => {
     .src(`./dist/default/**/*`, { base: "./dist/default" })
     .pipe(zip("default.zip"))
     .pipe(gulp.dest("./dist/package"));
-  return merge(js, css, html, md, page, archive);
+  return merge(js, woff, bsCss, hlCss, html, md, page, archive);
 });
-
-const themes = [
-  "cerulean",
-  "darkly",
-  "litera",
-  "materia",
-  "sandstone",
-  "slate",
-  "superhero",
-  "cosmo",
-  "flatly",
-  "lumen",
-  "minty",
-  "simplex",
-  "solar",
-  "united",
-  "cyborg",
-  "journal",
-  "lux",
-  "pulse",
-  "sketchy",
-  "spacelab",
-  "yeti"
-];
-
-for (const theme of themes) {
-  gulp.task(theme, () => {
-    const js = gulp
-      .src(["./dist/default/**/*.js", "./dist/default/**/*.js.map"])
-      .pipe(gulp.dest(`./dist/${theme}`));
-    const html = gulp
-      .src("./dist/default/**/*.html")
-      .pipe(gulp.dest(`./dist/${theme}`));
-    const md = gulp
-      .src("./dist/default/**/*.md")
-      .pipe(gulp.dest(`./dist/${theme}`));
-    const css = gulp
-      .src(require.resolve(`bootswatch/dist/${theme}/bootstrap.css`))
-      .pipe(sourcemaps.init())
-      .pipe(cleanCSS())
-      .pipe(sourcemaps.write("."))
-      .pipe(gulp.dest(`./dist/${theme}/lib`));
-    const archive = gulp
-      .src(`./dist/${theme}/**/*`, { base: `./dist/${theme}` })
-      .pipe(zip(`${theme}.zip`))
-      .pipe(gulp.dest("./dist/package"));
-    return merge(js, html, md, css, archive);
-  });
-}
-
-gulp.task("default", gulp.series("bootstrap", gulp.parallel(...themes)));

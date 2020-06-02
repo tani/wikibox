@@ -6,7 +6,7 @@ import unified from "unified";
 import remarkParse from "remark-parse";
 import remark2rehype from "remark-rehype";
 import remarkMath from "remark-math";
-import rehypeMathJax from "rehype-mathjax";
+import rehypeMathJax from "rehype-mathjax/chtml";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeReact from "rehype-react";
@@ -44,7 +44,7 @@ const processor = unified()
   .use(remarkParse)
   .use(remarkMath)
   .use(remark2rehype)
-  .use(rehypeMathJax)
+  .use(rehypeMathJax, {fontURL: "lib"})
   .use(rehypeHighlight)
   .use(rehypeSlug)
   .use(rehypeReact, { createElement });
@@ -70,9 +70,9 @@ const Page = ({ filename }) => {
     fetch(`./page/${filename}`)
       .then(response => response.text())
       .then((text) => {
-          processor.process(text, (err, {result}) => {
+          processor.process(text, (err, file) => {
             if (err) throw err;
-            dispatch({ result, toc: vdom2toc(result) });
+            dispatch({ result: file.result, toc: vdom2toc(file.result) });
           });
       });
   }, [filename]);

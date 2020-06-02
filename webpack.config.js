@@ -12,7 +12,8 @@ module.exports = {
   resolve: {
     alias: {
       jquery: "jquery/dist/jquery.slim.js"
-    }
+    },
+    mainFields: ["main"]
   },
   module: {
     rules: [
@@ -26,9 +27,7 @@ module.exports = {
               import: "preact"
             }]],
             presets: [["@babel/env", {
-              targets: {
-                esmodules: true
-              }
+              modules: false
             }]]
           }
         }
