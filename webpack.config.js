@@ -1,4 +1,3 @@
-const WorkerPlugin = require("worker-plugin");
 module.exports = {
   name: "default",
   mode: process.env.NODE_ENV || "development",
@@ -46,10 +45,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new WorkerPlugin({
-      globalObject: "self"
-    })
-  ],
   devtool: process.env.NODE_ENV === "production" ? "source-map" : "eval"
 };

@@ -19,6 +19,7 @@
  */
 import { html } from "htm/preact"
 import { useEffect, useState } from "preact/hooks";
+import Helmet from "preact-helmet";
 
 export default ({ filename }) => {
   const [state, dispatch] = useState({
@@ -31,8 +32,7 @@ export default ({ filename }) => {
       .then(text => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/html");
-        const title = document.getElementsByTagName("title")[0];
-        title.innerHTML = doc.getElementsByTagName("h1")[0]?.innerHTML || "";
+        const title = doc.getElementsByTagName("h1")[0]?.innerHTML || "";
         const navigation = Array.from(doc.querySelectorAll("menu > li")).map(
           element => ({
             href: element.getElementsByTagName("a")[0]?.getAttribute("href") || "",
@@ -45,13 +45,11 @@ export default ({ filename }) => {
             text: element.getElementsByTagName("a")[0]?.innerHTML || ""
           })
         );
-        dispatch({
-          navigation,
-          title: doc.getElementsByTagName("h1")[0]?.innerHTML || ""
-        });
+        dispatch({navigation, title});
       });
   }, [filename]);
   return html`
+    <${Helmet} title=${state.title} />
     <nav class="navbar navbar-expand-md navbar-dark bg-primary">
       <a class="navbar-brand" href="#/">
         ${state.title}
