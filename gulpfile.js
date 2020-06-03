@@ -21,13 +21,13 @@ gulp.task("default", () => {
     .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
-    .pipe(sourcemaps.write("."))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest("./dist/default/lib"));
   const hlCss = gulp
     .src(require.resolve("highlight.js/styles/default.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
-    .pipe(sourcemaps.write("."))
+    .pipe(sourcemaps.write())
     .pipe(rename("highlight.css"))
     .pipe(gulp.dest("./dist/default/lib"));
   const md = gulp
