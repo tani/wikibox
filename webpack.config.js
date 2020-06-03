@@ -2,17 +2,17 @@ module.exports = {
   name: "default",
   mode: process.env.NODE_ENV || "development",
   entry: {
-    index: "./src/index.js"
+    index: "./src/index.js",
   },
   output: {
     publicPath: "lib/",
-    filename: "[name].bundle.js"
+    filename: "[name].bundle.js",
   },
   resolve: {
     alias: {
-      jquery: "jquery/dist/jquery.slim.js"
+      jquery: "jquery/dist/jquery.slim.js",
     },
-    mainFields: ["main"]
+    mainFields: ["main"],
   },
   module: {
     rules: [
@@ -22,28 +22,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            plugins: [["htm", {
-              import: "preact"
-            }]],
-            presets: [["@babel/env", {
-              modules: false
-            }]]
-          }
-        }
+            presets: ["@babel/env"],
+          },
+        },
       },
-      {
-        test: /htm\/preact/,
-        use: "null-loader"
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: "raw-loader"
-          }
-        ]
-      }
-    ]
+    ],
   },
-  devtool: process.env.NODE_ENV === "production" ? "source-map" : "eval"
+  devtool: process.env.NODE_ENV === "production" ? "source-map" : "eval",
 };
