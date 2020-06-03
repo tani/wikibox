@@ -17,7 +17,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { html } from "htm/preact"
+import { html } from "htm/preact";
 import { useEffect } from "preact/hooks";
 import { route } from "preact-router";
 
@@ -25,7 +25,5 @@ export default ({ to }) => {
   useEffect(() => {
     route(to);
   }, [to]);
-  return html`
-    <p>Redirect</p>
-  `;
+  return html` <p>Redirect</p> `;
 };

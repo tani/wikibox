@@ -37,43 +37,42 @@ const TableOfContentsStyle = {
   paddingLeft: 20,
   paddingTop: 5,
   position: "sticky",
-  top: 20
+  top: 20,
 };
 
 const scrollTo = (id) => {
-  document
-    .getElementById(id)
-    ?.scrollIntoView({ behavior: "smooth" });
-}
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+};
 
 const TableOfContents = ({ toc }) => html`
-    <ul style=${TableOfContentsStyle} class="d-none d-md-block">
-      ${toc.map(item => html`
+  <ul style=${TableOfContentsStyle} class="d-none d-md-block">
+    ${toc.map(
+      (item) => html`
         <li style=${{ paddingLeft: `${item.level - 1}em` }} key=${item.text}>
-          <a href="javascript:void(0)"
-             onClick=${() => scrollTo(item.slug)}>
+          <a href="javascript:void(0)" onClick=${() => scrollTo(item.slug)}>
             ${item.text}
           </a>
         </li>
-      `)}
-    </ul>
-  `;
+      `
+    )}
+  </ul>
+`;
 
 const processor = unified()
   .use(remarkParse)
   .use(remarkMath)
   .use(remark2rehype)
-  .use(rehypeMathJax, {fontURL: "lib"})
+  .use(rehypeMathJax, { fontURL: "lib" })
   .use(rehypeHighlight)
   .use(rehypeSlug)
   .use(rehypeReact, { createElement });
 
 const vdom2toc = (vdom) => {
   const toc = [];
-  for(const v of vdom.props.children) {
-    for(let level = 1; level < 6; level++) {
+  for (const v of vdom.props.children) {
+    for (let level = 1; level < 6; level++) {
       if (v?.type === `h${level}`) {
-        toc.push({ level: level, slug: v.props.id, text: v.props.children})
+        toc.push({ level: level, slug: v.props.id, text: v.props.children });
       }
     }
   }
@@ -83,22 +82,21 @@ const vdom2toc = (vdom) => {
 const Page = ({ filename }) => {
   const [state, dispatch] = useState({
     result: html`<div />`,
-    toc: []
+    toc: [],
   });
   useEffect(() => {
     fetch(`./page/${filename}`)
-      .then(response => response.text())
+      .then((response) => response.text())
       .then((text) => {
-          processor.process(text, (err, file) => {
-            if (err) throw err;
-            dispatch({ result: file.result, toc: vdom2toc(file.result) });
-          });
+        processor.process(text, (err, file) => {
+          if (err) throw err;
+          dispatch({ result: file.result, toc: vdom2toc(file.result) });
+        });
       });
   }, [filename]);
   return html`
     <div class="row">
-      <div class="col-md-9" children=${[state.result]}>
-      </div>
+      <div class="col-md-9" children=${[state.result]}></div>
       <div class="col-md-3">
         <${TableOfContents} toc=${state.toc} />
       </div>

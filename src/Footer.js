@@ -17,17 +17,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { html } from "htm/preact"
+import { html } from "htm/preact";
 import { useEffect, useState } from "preact/hooks";
 
 export default ({ filename }) => {
   const [state, dispatch] = useState({ source: "" });
   useEffect(() => {
     fetch(filename)
-      .then(response => response.text())
-      .then(source => dispatch({ source }));
+      .then((response) => response.text())
+      .then((source) => dispatch({ source }));
   }, [filename]);
   return html`
-    <div class="container" dangerouslySetInnerHTML="${{ __html: state.source }}" />
+    <div
+      class="container"
+      dangerouslySetInnerHTML="${{ __html: state.source }}"
+    />
   `;
 };

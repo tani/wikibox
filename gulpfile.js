@@ -14,8 +14,9 @@ gulp.task("default", () => {
   const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
     gulp.dest("./dist/default/lib")
   );
-  const woff = gulp.src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
-    .pipe(gulp.dest("./dist/default/lib"))
+  const woff = gulp
+    .src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
+    .pipe(gulp.dest("./dist/default/lib"));
   const bsCss = gulp
     .src(require.resolve("bootstrap/dist/css/bootstrap.css"))
     .pipe(sourcemaps.init())
@@ -37,7 +38,7 @@ gulp.task("default", () => {
   const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/default/page"));
   const archive = gulp
     .src(`./dist/default/**/*`, { base: "./dist/default" })
-    .pipe(zip("default.zip"))
+    .pipe(zip("default.zip", { compress: false }))
     .pipe(gulp.dest("./dist/package"));
   return merge(js, woff, bsCss, hlCss, html, md, page, archive);
 });
