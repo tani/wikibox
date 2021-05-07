@@ -7,7 +7,7 @@ WikiBox is inspired by [MDWiki](https://github.com/Dynalon/mdwiki/), which is a 
 - LaTeX Syntax (MathJaX v3).
 - Markdown (Remark).
 - Code Highlighting (Highlight.js).
-- Beautiful Themes (Bootswatch) - 24 themes are available now!
+- Beautiful Themes (Bootswatch) - 25+1 themes are available now!
 - Generating Table of Contents.
 
 ## Copyright
