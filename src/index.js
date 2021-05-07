@@ -20,6 +20,6 @@
 import { html } from "htm/preact";
 import { render } from "preact";
 import App from "./App";
-import "bootstrap";
+import "bootstrap/dist/js/bootstrap.bundle";
 
 render(html`<${App} />`, document.body);

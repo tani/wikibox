@@ -9,10 +9,7 @@ module.exports = {
     filename: "[name].bundle.js",
   },
   resolve: {
-    alias: {
-      jquery: "jquery/dist/jquery.slim.js",
-    },
-    mainFields: ["main"],
+    mainFields: ["browser", "main"]
   },
   module: {
     rules: [
