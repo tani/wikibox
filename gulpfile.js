@@ -1,9 +1,9 @@
 const gulp = require("gulp");
-const webpack = require("webpack-stream");
 const merge = require("merge-stream");
 const zip = require("gulp-zip");
 const rename = require("gulp-rename");
 const cleanCSS = require("gulp-clean-css");
+const esbuld = require("gulp-esbuild");
 const sourcemaps = require("gulp-sourcemaps");
 
 gulp.task("watch", () => {
@@ -11,9 +11,15 @@ gulp.task("watch", () => {
 });
 
 gulp.task("default", () => {
-  const js = webpack(require("./webpack.config.js"), require("webpack")).pipe(
-    gulp.dest("./dist/default/lib")
-  );
+  const js = gulp
+    .src("./src/index.js")
+    .pipe(esbuld({
+      bundle: true,
+      minify: true,
+      sourcemap: true,
+      outfile: "index.bundle.js"
+    }))
+    .pipe(gulp.dest("./dist/default/lib"))
   const woff = gulp
     .src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
     .pipe(gulp.dest("./dist/default/lib"));
