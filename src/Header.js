@@ -1,7 +1,7 @@
 /**
  *                                WikiBox
     ==================================================================== 
-    - Homepage https://github.com/nzt/wikibox
+    - Homepage https://github.com/tani/wikibox
     - Copyright (c) 2020 TANIGUCHI Masaya All Right Reserved.
 
     This program is free software: you can redistribute it and/or modify
