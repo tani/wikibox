@@ -17,10 +17,13 @@ for(const theme of themes) {
     const js = gulp
       .src("./src/index.js")
       .pipe(esbuld({
+        define: {
+          global: "window"
+        },
+        sourcemap: true,
         bundle: true,
         minify: true,
-        sourcemap: true,
-        outfile: "index.bundle.js"
+        outfile: "index.bundle.min.js"
       }))
       .pipe(gulp.dest(`./dist/${theme}/lib`))
     const woff = gulp
@@ -31,13 +34,14 @@ for(const theme of themes) {
       .pipe(sourcemaps.init())
       .pipe(cleanCSS())
       .pipe(sourcemaps.write())
+      .pipe(rename("bootstrap.min.css"))
       .pipe(gulp.dest(`./dist/${theme}/lib`));
     const hlCss = gulp
       .src(require.resolve("highlight.js/styles/default.css"))
       .pipe(sourcemaps.init())
       .pipe(cleanCSS())
       .pipe(sourcemaps.write())
-      .pipe(rename("highlight.css"))
+      .pipe(rename("highlight.min.css"))
       .pipe(gulp.dest(`./dist/${theme}/lib`));
     const md = gulp
       .src("./README.md")
@@ -61,10 +65,13 @@ gulp.task("default", () => {
   const js = gulp
     .src("./src/index.js")
     .pipe(esbuld({
+      define: {
+        global: "window"
+      },
+      sourcemap: true,
       bundle: true,
       minify: true,
-      sourcemap: true,
-      outfile: "index.bundle.js"
+      outfile: "index.bundle.min.js"
     }))
     .pipe(gulp.dest("./dist/default/lib"))
   const woff = gulp
@@ -75,13 +82,14 @@ gulp.task("default", () => {
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
     .pipe(sourcemaps.write())
+    .pipe(rename("bootstrap.min.css"))
     .pipe(gulp.dest("./dist/default/lib"));
   const hlCss = gulp
     .src(require.resolve("highlight.js/styles/default.css"))
     .pipe(sourcemaps.init())
     .pipe(cleanCSS())
     .pipe(sourcemaps.write())
-    .pipe(rename("highlight.css"))
+    .pipe(rename("highlight.min.css"))
     .pipe(gulp.dest("./dist/default/lib"));
   const md = gulp
     .src("./README.md")

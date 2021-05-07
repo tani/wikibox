@@ -20,6 +20,7 @@
 import { html } from "htm/preact";
 import { useEffect, useState } from "preact/hooks";
 import Helmet from "preact-helmet";
+import { Dropdown, Collapse } from "bootstrap";
 
 export default ({ filename }) => {
   const [state, dispatch] = useState({
@@ -48,9 +49,17 @@ export default ({ filename }) => {
             text: element.getElementsByTagName("a")[0]?.innerHTML || "",
           })
         );
-        dispatch({ navigation, title });
+        dispatch({ ...state, navigation, title });
       });
   }, [filename]);
+
+  useEffect(() => {
+    setTimeout(()=>{
+      Array.from(document.querySelectorAll(".dropdown-toggle")).forEach(e=>new Dropdown(e));
+      Array.from(document.querySelectorAll(".collapse")).forEach(e=>new Collapse(e));
+    }, 1000)
+  }, [state.navigation, state.title]);
+
   return html`
     <${Helmet} title=${state.title} />
     <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-primary">
@@ -60,8 +69,8 @@ export default ({ filename }) => {
       <button
         class="navbar-toggler"
         type="button"
-        data-toggle="collapse"
-        data-target="#collapse"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapse"
         aria-controls="collapse"
         aria-expanded="false"
         aria-label="Toggle navigation"
@@ -80,12 +89,12 @@ export default ({ filename }) => {
                   </li>
                 `
               : html`
-                  <li class="nav-item dropdown" key="{item.text}">
+                  <li class="nav-item dropdown" key="${item.text}">
                     <a
                       class="nav-link dropdown-toggle"
                       href="#"
                       role="button"
-                      data-toggle="dropdown"
+                      data-bs-toggle="dropdown"
                       aria-haspopup="true"
                       aria-expanded="false"
                     >

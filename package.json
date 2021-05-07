@@ -7,7 +7,7 @@
     "format": "prettier --write ./*.{js,ts,tsx} ./src/*.{js,ts,tsx}",
     "clean": "rimraf dist/ src/**/*~",
     "build": "gulp all",
-    "serve": "npx http-server dist/default/",
+    "serve": "npx http-server dist/",
     "inspect": "npx source-map-explorer dist/default/lib/index.bundle.js"
   },
   "repository": {
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/bibliobibulus/wikibox#readme",
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
     "bootstrap": "^5.0.0",
     "bootswatch": "^5.0.0",
     "highlight.js": "^10.7.2",
