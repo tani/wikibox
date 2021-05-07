@@ -53,7 +53,7 @@ export default ({ filename }) => {
   }, [filename]);
   return html`
     <${Helmet} title=${state.title} />
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-primary">
       <a class="navbar-brand" href="#/">
         ${state.title}
       </a>
