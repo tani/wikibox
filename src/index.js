@@ -85,6 +85,7 @@ function compileHeader(text) {
 const contentPath = window.location.hash.replace(/#\//, "").replace(/#.*$/, "");
 if (contentPath === "") {
   window.location.href = window.location.href + "#/page/index.md";
+  window.location.reload();
 }
 
 const processor = unified()
