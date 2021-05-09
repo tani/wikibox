@@ -1,6 +1,7 @@
 import unified from "unified";
 import remarkParse from "remark-parse";
 import remark2rehype from "remark-rehype";
+import remarkDirective from "remark-directive";
 import remarkMath from "remark-math";
 import rehypeMathJax from "rehype-mathjax/chtml";
 import rehypeHighlight from "rehype-highlight";
@@ -88,6 +89,7 @@ if (contentPath === "") {
 
 const processor = unified()
   .use(remarkParse)
+  .use(remarkDirective)
   .use(remarkMath)
   .use(remark2rehype)
   .use(rehypeMathJax, { fontURL: "lib" })
