@@ -34,7 +34,7 @@ gulp.task("default", () => {
   const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/page"));
   const archive = gulp
     .src(`./dist/**/*`, { base: "./dist" })
-    .pipe(zip("wikibox.zip", { compress: false }))
+    .pipe(zip("wikibox.zip", { compress: true }))
     .pipe(gulp.dest("./dist/"));
   return merge(js, woff, html, md, page, archive);
 });
