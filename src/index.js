@@ -79,13 +79,14 @@ function compileHeader(text) {
       text: element.getElementsByTagName("a")[0]?.innerHTML || "",
     })
   );
+  document.title = title;
   return navbarTemplate({ title, navigation });
 }
 
-const contentPath = window.location.hash.replace(/#\//, "").replace(/#.*$/, "");
+const contentPath = location.hash.replace(/#\//, "").replace(/#.*$/, "");
 if (contentPath === "") {
-  window.location.href = window.location.href + "#/page/index.md";
-  window.location.reload();
+  location.href = location.href + "#/page/index.md";
+  location.reload();
 }
 
 const processor = unified()
