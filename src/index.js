@@ -126,7 +126,7 @@ Promise.all([
         </header>
         <main>
             <div class="container py-3 border-bottom">
-                <div class="row justify-content-center">
+                <div class="row">
                     <div class="col-md-10">
                         <article>
                             ${article}
