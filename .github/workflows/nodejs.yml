@@ -22,11 +22,9 @@ jobs:
           ${{ runner.os }}-node-
     - name: npm install, build
       run: |
-        npm ci
+        npm install
         npm run build
         ls -R dist/
-      env:
-        CI: true
     - name: GitHub Pages action
       uses: peaceiris/actions-gh-pages@v3.7.3
       with:
