@@ -24,6 +24,7 @@ jobs:
       run: |
         npm ci
         npm run build
+        ls -R dist/
       env:
         CI: true
     - name: GitHub Pages action
