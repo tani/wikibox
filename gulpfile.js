@@ -22,19 +22,19 @@ gulp.task("default", () => {
         outfile: "index.bundle.min.js",
       })
     )
-    .pipe(gulp.dest("./dist/default/lib"));
+    .pipe(gulp.dest("./dist/lib"));
   const woff = gulp
     .src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
-    .pipe(gulp.dest("./dist/default/lib/fonts"));
+    .pipe(gulp.dest("./dist/lib/fonts"));
   const md = gulp
     .src("./README.md")
     .pipe(rename("index.md"))
-    .pipe(gulp.dest("./dist/default/page"));
-  const html = gulp.src("./src/index.html").pipe(gulp.dest("./dist/default"));
-  const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/default/page"));
+    .pipe(gulp.dest("./dist/page"));
+  const html = gulp.src("./src/index.html").pipe(gulp.dest("./dist"));
+  const page = gulp.src("./src/page/*").pipe(gulp.dest("./dist/page"));
   const archive = gulp
-    .src(`./dist/default/**/*`, { base: "./dist/default" })
-    .pipe(zip("default.zip", { compress: false }))
-    .pipe(gulp.dest("./dist/package"));
+    .src(`./dist/**/*`, { base: "./dist" })
+    .pipe(zip("wikibox.zip", { compress: false }))
+    .pipe(gulp.dest("./dist/"));
   return merge(js, woff, html, md, page, archive);
 });
