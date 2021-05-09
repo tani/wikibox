@@ -94,7 +94,7 @@ const processor = unified()
   .use(remarkDirective)
   .use(remarkMath)
   .use(remark2rehype)
-  .use(rehypeMathJax, { fontURL: "lib" })
+  .use(rehypeMathJax, { fontURL: "lib/fonts" })
   .use(rehypeHighlight)
   .use(rehypeSlug)
   .use(rehypeTOC, {

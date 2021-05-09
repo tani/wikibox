@@ -6,7 +6,7 @@
     "lint": "eslint --ext .js,.ts,.tsx --fix ./src",
     "format": "prettier --write ./*.{js,ts,tsx} ./src/*.{js,ts,tsx}",
     "clean": "rimraf dist/ src/**/*~",
-    "build": "gulp all",
+    "build": "gulp",
     "serve": "npx http-server dist/",
     "inspect": "npx source-map-explorer dist/default/lib/index.bundle.js"
   },
