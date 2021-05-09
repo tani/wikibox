@@ -6,26 +6,54 @@ const cleanCSS = require("gulp-clean-css");
 const esbuld = require("gulp-esbuild");
 const sourcemaps = require("gulp-sourcemaps");
 
-const themes = ["cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "litera", "lumen", "lux", "materia", "minty", "morph", "pulse", "quartz", "sandstone", "simplex", "sketchy", "slate", "solar", "spacelab", "superhero", "united", "vapor", "yeti", "zephyr"]
+const themes = [
+  "cerulean",
+  "cosmo",
+  "cyborg",
+  "darkly",
+  "flatly",
+  "journal",
+  "litera",
+  "lumen",
+  "lux",
+  "materia",
+  "minty",
+  "morph",
+  "pulse",
+  "quartz",
+  "sandstone",
+  "simplex",
+  "sketchy",
+  "slate",
+  "solar",
+  "spacelab",
+  "superhero",
+  "united",
+  "vapor",
+  "yeti",
+  "zephyr",
+];
 
 gulp.task("watch", () => {
   gulp.watch(["./src/**/*.js"], gulp.series("default"));
 });
 
-for(const theme of themes) {
+for (const theme of themes) {
   gulp.task(theme, () => {
     const js = gulp
       .src("./src/index.js")
-      .pipe(esbuld({
-        define: {
-          global: "window"
-        },
-        sourcemap: true,
-        bundle: true,
-        minify: true,
-        outfile: "index.bundle.min.js"
-      }))
-      .pipe(gulp.dest(`./dist/${theme}/lib`))
+      .pipe(
+        esbuld({
+          define: {
+            global: "window",
+          },
+          sourcemap: true,
+          bundle: true,
+          minify: true,
+          outfile: "index.bundle.min.js",
+        })
+      )
+      .pipe(gulp.dest(`./dist/${theme}/lib`));
     const woff = gulp
       .src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
       .pipe(gulp.dest(`./dist/${theme}/lib`));
@@ -58,22 +86,24 @@ for(const theme of themes) {
       .pipe(zip(`${theme}.zip`, { compress: false }))
       .pipe(gulp.dest("./dist/package"));
     return merge(js, woff, bsCss, hlCss, html, md, page, archive);
-  })
+  });
 }
 
 gulp.task("default", () => {
   const js = gulp
     .src("./src/index.js")
-    .pipe(esbuld({
-      define: {
-        global: "window"
-      },
-      sourcemap: true,
-      bundle: true,
-      minify: true,
-      outfile: "index.bundle.min.js"
-    }))
-    .pipe(gulp.dest("./dist/default/lib"))
+    .pipe(
+      esbuld({
+        define: {
+          global: "window",
+        },
+        sourcemap: true,
+        bundle: true,
+        minify: true,
+        outfile: "index.bundle.min.js",
+      })
+    )
+    .pipe(gulp.dest("./dist/default/lib"));
   const woff = gulp
     .src("node_modules/mathjax-full/es5/output/chtml/fonts/woff-v2/*")
     .pipe(gulp.dest("./dist/default/lib"));
@@ -104,4 +134,4 @@ gulp.task("default", () => {
   return merge(js, woff, bsCss, hlCss, html, md, page, archive);
 });
 
-gulp.task("all", gulp.parallel("default", ...themes))
+gulp.task("all", gulp.parallel("default", ...themes));
