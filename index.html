@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+                                WikiBox
+    ==================================================================== 
+    - Homepage https://github.com/tani/wikibox
+    - Copyright (c) 2020 TANIGUCHI Masaya All Right Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>WikiBox</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net.com/" crossorigin>
+  <link rel="stylesheet" id="bootstrap" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" id="highlight" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
+  <script type="text/template" id="navbar">
+    <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-primary">
+      <a class="navbar-brand" href="#/"><%= title %></a>
+      <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse"
+          aria-controls="collapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+      />
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapse">
+          <ul class="navbar-nav mr-auto">
+          <% for (item of navigation) { %>
+              <% if (item.dropdown.length === 0) { %>
+                  <li class="nav-item">
+                      <a class="nav-link" href="<%= item.href %>">
+                          <%= item.text %>
+                      </a>
+                  </li>
+              <% } else { %>
+                  <li class="nav-item dropdown">
+                      <a
+                          class="nav-link dropdown-toggle"
+                          href="#"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                      >
+                          <%= item.text %>
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <% for (item1 of item.dropdown) { %>
+                          <a class="dropdown-item" href="<%= item1.href %>">
+                              <%= item1.text %>
+                          </a>
+                      <% } %>
+                      </div>
+                  </li>
+              <% } %>
+          <% } %>
+          </ul>
+      </div>
+  </nav>
+  </script>
+  <script type="text/template" id="body">
+    <header>
+      <%= header %>
+  </header>
+  <main>
+      <div class="container py-3 border-bottom">
+          <div class="row">
+              <div class="col-md-10">
+                  <article>
+                      <%= article %>
+                  </article>
+              </div>
+              <div class="col-md-2 d-none d-md-block">
+                  <aside>
+                      <%= aside %>
+                  </aside>
+              </div>
+          </div>
+      </div>
+  </main>
+  <footer>
+      <div class="container py-3">
+        <%= footer %>
+      </div>
+  </footer>
+  </script>
+  <script type="module">
+    import unified from "https://cdn.skypack.dev/unified";
+    import remarkParse from "https://esm.sh/remark-parse";
+    import remark2rehype from "https://esm.sh/remark-rehype";
+    import remarkDirective from "https://esm.sh/remark-directive";
+    import remarkMath from "https://esm.sh/remark-math";
+    import rehypeMathJax from "https://esm.sh/rehype-mathjax/chtml";
+    import rehypeHighlight from "https://esm.sh/rehype-highlight";
+    import rehypeSlug from "https://esm.sh/rehype-slug";
+    import rehypeStringify from "https://esm.sh/rehype-stringify";
+    import rehypeTOC from "https://esm.sh/rehype-toc";
+    import template from "https://esm.sh/lodash.template";
+    import { Dropdown, Collapse } from "https://esm.sh/bootstrap";
+
+    const navbarTemplate = template(document.getElementById("navbar").innerHTML);
+    const bodyTemplate = template(document.getElementById("body").innerHTML);
+    const parser = new DOMParser();
+
+    function compileHeader(text) {
+      const doc = parser.parseFromString(text, "text/html");
+      const title = doc.getElementsByTagName("h1")[0]?.innerHTML || "";
+      const navigation = Array.from(doc.querySelectorAll("menu > li")).map(
+        (element) => ({
+          href: element.getElementsByTagName("a")[0]?.getAttribute("href") || "",
+          dropdown: Array.from(element.getElementsByTagName("li")).map(
+            (element1) => ({
+              href:
+                element1.getElementsByTagName("a")[0]?.getAttribute("href") || "",
+              text: element1.getElementsByTagName("a")[0]?.innerHTML || "",
+            })
+          ),
+          text: element.getElementsByTagName("a")[0]?.innerHTML || "",
+        })
+      );
+      document.title = title;
+      return navbarTemplate({ title, navigation });
+    }
+
+    const contentPath = location.hash.replace(/#\//, "").replace(/#.*$/, "");
+    if (contentPath === "") {
+      location.href = location.href + "#/page/index.md";
+      location.reload();
+    }
+
+    const processor = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .use(remarkMath)
+      .use(remark2rehype)
+      .use(rehypeMathJax, { fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2" })
+      .use(rehypeHighlight)
+      .use(rehypeSlug)
+      .use(rehypeTOC, {
+        customizeTOCItem(item) {
+          item.children[0].properties.href =
+            "#/" + contentPath + item.children[0].properties.href;
+          return item;
+        },
+        cssClasses: {
+          toc: "toc border-start",
+        },
+      })
+      .use(rehypeStringify);
+
+    Promise.all([
+      fetch("./page/header.html").then((r) => r.text()),
+      fetch("./page/footer.html").then((r) => r.text()),
+      fetch(contentPath)
+        .then((r) => r.text())
+        .then(processor.process),
+    ]).then(([header, footer, main]) => {
+      const doc = parser.parseFromString(main, "text/html");
+      const aside = doc.querySelector("nav").outerHTML;
+      doc.querySelector("nav").remove();
+      const article = doc.body.innerHTML;
+      document.body.innerHTML = bodyTemplate({ header: compileHeader(header), footer, article, aside });
+      Array.from(document.querySelectorAll("h1,h2,h3,h4,h5")).forEach(
+        (e) => (e.id = "/" + contentPath + "#" + e.id)
+      );
+      Array.from(document.querySelectorAll(".dropdown-toggle")).forEach(
+        (e) => new Dropdown(e)
+      );
+      Array.from(document.querySelectorAll(".collapse")).forEach(
+        (e) => new Collapse(e, { toggle: false })
+      );
+    });
+  </script>
+  <style>
+    nav ol {
+      list-style-type: none;
+    }
+  </style>
+</head>
+
+<body>
+</body>
+
+</html>
