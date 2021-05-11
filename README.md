@@ -1,6 +1,6 @@
 # WikiBox 
 
-WikiBox is inspired by [MDWiki](https://github.com/Dynalon/mdwiki/), which is a static site generator without any building steps. MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using Bootstrap 5 to be faster and beautiful. Of course, LaTeX syntax equations are also upgraded to MathJax v3.
+WikiBox is inspired by [MDWiki](https://github.com/Dynalon/mdwiki/), which is a static site generator without any building steps. MDWiki works with jQuery and Bootstrap 3, and WikiBox modernize it using ESModules and Bootstrap 5 to be faster and beautiful. Of course, LaTeX syntax equations are also upgraded to MathJax v3.
 
 ## Features
 
