@@ -36,76 +36,74 @@
     <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-primary">
       <a class="navbar-brand" href="#/"><%= title %></a>
       <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapse"
-          aria-controls="collapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-      />
-          <span class="navbar-toggler-icon"></span>
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapse"
+        aria-controls="collapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="collapse">
           <ul class="navbar-nav mr-auto">
           <% for (item of navigation) { %>
-              <% if (item.dropdown.length === 0) { %>
-                  <li class="nav-item">
-                      <a class="nav-link" href="<%= item.href %>">
-                          <%= item.text %>
-                      </a>
-                  </li>
-              <% } else { %>
-                  <li class="nav-item dropdown">
-                      <a
-                          class="nav-link dropdown-toggle"
-                          href="#"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                      >
-                          <%= item.text %>
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <% for (item1 of item.dropdown) { %>
-                          <a class="dropdown-item" href="<%= item1.href %>">
-                              <%= item1.text %>
-                          </a>
-                      <% } %>
-                      </div>
-                  </li>
-              <% } %>
+            <% if (item.dropdown.length === 0) { %>
+              <li class="nav-item">
+                <a class="nav-link" href="<%= item.href %>">
+                  <%= item.text %>
+                </a>
+              </li>
+            <% } else { %>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                    <%= item.text %>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <% for (item1 of item.dropdown) { %>
+                    <a class="dropdown-item" href="<%= item1.href %>">
+                      <%= item1.text %>
+                    </a>
+                <% } %>
+                </div>
+              </li>
+            <% } %>
           <% } %>
           </ul>
       </div>
-  </nav>
+    </nav>
   </script>
   <script type="text/template" id="body">
     <header>
       <%= header %>
-  </header>
-  <main>
+    </header>
+    <main>
       <div class="container py-3 border-bottom">
-          <div class="row">
-              <div class="col-md-10">
-                  <article>
-                      <%= article %>
-                  </article>
-              </div>
-              <div class="col-md-2 d-none d-md-block">
-                  <aside>
-                      <%= aside %>
-                  </aside>
-              </div>
+        <div class="row">
+          <div class="col-md-10">
+            <article>
+              <%= article %>
+            </article>
           </div>
+          <div class="col-md-2 d-none d-md-block">
+            <aside>
+              <%= aside %>
+            </aside>
+          </div>
+        </div>
       </div>
-  </main>
-  <footer>
+    </main>
+    <footer>
       <div class="container py-3">
         <%= footer %>
       </div>
-  </footer>
+    </footer>
   </script>
   <script type="module">
     import unified from "https://cdn.skypack.dev/unified";
@@ -147,7 +145,7 @@
 
     const contentPath = location.hash.replace(/#\//, "").replace(/#.*$/, "");
     if (contentPath === "") {
-      location.href = location.href + "#/page/index.md";
+      location.href = location.href + "#/page/README.md";
       location.reload();
     }
 
