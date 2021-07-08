@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
                                 WikiBox
-    ==================================================================== 
+    ====================================================================
     - Homepage https://github.com/tani/wikibox
     - Copyright (c) 2020 TANIGUCHI Masaya All Right Reserved.
 
@@ -18,11 +18,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net/" crossorigin>
-  <link rel="preconnect" href="https://jspm.dev/" crossorigin>
   <link rel="preconnect" href="https://esm.sh/" crossorigin>
   <link rel="stylesheet" id="bootstrap" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
   <link rel="stylesheet" id="highlight" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/default.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
   <template id="navbar">
     <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-primary">
       <a class="navbar-brand" href="#/">{{= title }}</a>
@@ -86,7 +84,7 @@
     </footer>
   </template>
   <script type="module">
-    import unified from "https://jspm.dev/unified";
+    import unified from "https://esm.sh/unified";
     import remarkParse from "https://esm.sh/remark-parse";
     import remark2rehype from "https://esm.sh/remark-rehype";
     import remarkDirective from "https://esm.sh/remark-directive";
